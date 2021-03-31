@@ -720,19 +720,19 @@ var app = (function () {
         $inject_state() { }
     }
 
-    var version = "6.6.0";
+    var version = "6.6.2";
 
-    function ascending$4(a, b) {
+    function ascending$3(a, b) {
       return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
     }
 
-    function bisector$1(f) {
+    function bisector(f) {
       let delta = f;
       let compare = f;
 
       if (f.length === 1) {
         delta = (d, x) => f(d) - x;
-        compare = ascendingComparator$1(f);
+        compare = ascendingComparator(f);
       }
 
       function left(a, x, lo, hi) {
@@ -767,11 +767,11 @@ var app = (function () {
       return {left, center, right};
     }
 
-    function ascendingComparator$1(f) {
-      return (d, x) => ascending$4(f(d), x);
+    function ascendingComparator(f) {
+      return (d, x) => ascending$3(f(d), x);
     }
 
-    function number$6(x) {
+    function number$3(x) {
       return x === null ? NaN : +x;
     }
 
@@ -792,10 +792,10 @@ var app = (function () {
       }
     }
 
-    const ascendingBisect$1 = bisector$1(ascending$4);
-    const bisectRight$1 = ascendingBisect$1.right;
-    const bisectLeft = ascendingBisect$1.left;
-    const bisectCenter = bisector$1(number$6).center;
+    const ascendingBisect = bisector(ascending$3);
+    const bisectRight = ascendingBisect.right;
+    const bisectLeft = ascendingBisect.left;
+    const bisectCenter = bisector(number$3).center;
 
     function count$1(values, valueof) {
       let count = 0;
@@ -892,7 +892,7 @@ var app = (function () {
       return v ? Math.sqrt(v) : v;
     }
 
-    function extent$2(values, valueof) {
+    function extent$1(values, valueof) {
       let min;
       let max;
       if (valueof === undefined) {
@@ -1054,20 +1054,20 @@ var app = (function () {
       return value !== null && typeof value === "object" ? value.valueOf() : value;
     }
 
-    function identity$b(x) {
+    function identity$9(x) {
       return x;
     }
 
     function group(values, ...keys) {
-      return nest(values, identity$b, identity$b, keys);
+      return nest(values, identity$9, identity$9, keys);
     }
 
     function groups(values, ...keys) {
-      return nest(values, Array.from, identity$b, keys);
+      return nest(values, Array.from, identity$9, keys);
     }
 
     function rollup(values, reduce, ...keys) {
-      return nest(values, identity$b, reduce, keys);
+      return nest(values, identity$9, reduce, keys);
     }
 
     function rollups(values, reduce, ...keys) {
@@ -1075,7 +1075,7 @@ var app = (function () {
     }
 
     function index$4(values, ...keys) {
-      return nest(values, identity$b, unique, keys);
+      return nest(values, identity$9, unique, keys);
     }
 
     function indexes(values, ...keys) {
@@ -1113,20 +1113,20 @@ var app = (function () {
     function sort(values, ...F) {
       if (typeof values[Symbol.iterator] !== "function") throw new TypeError("values is not iterable");
       values = Array.from(values);
-      let [f = ascending$4] = F;
+      let [f = ascending$3] = F;
       if (f.length === 1 || F.length > 1) {
         const index = Uint32Array.from(values, (d, i) => i);
         if (F.length > 1) {
           F = F.map(f => values.map(f));
           index.sort((i, j) => {
             for (const f of F) {
-              const c = ascending$4(f[i], f[j]);
+              const c = ascending$3(f[i], f[j]);
               if (c) return c;
             }
           });
         } else {
           f = values.map(f);
-          index.sort((i, j) => ascending$4(f[i], f[j]));
+          index.sort((i, j) => ascending$3(f[i], f[j]));
         }
         return permute(values, index);
       }
@@ -1135,8 +1135,8 @@ var app = (function () {
 
     function groupSort(values, reduce, key) {
       return (reduce.length === 1
-        ? sort(rollup(values, reduce, key), (([ak, av], [bk, bv]) => ascending$4(av, bv) || ascending$4(ak, bk)))
-        : sort(group(values, key), (([ak, av], [bk, bv]) => reduce(av, bv) || ascending$4(ak, bk))))
+        ? sort(rollup(values, reduce, key), (([ak, av], [bk, bv]) => ascending$3(av, bv) || ascending$3(ak, bk)))
+        : sort(group(values, key), (([ak, av], [bk, bv]) => reduce(av, bv) || ascending$3(ak, bk))))
         .map(([key]) => key);
     }
 
@@ -1144,17 +1144,17 @@ var app = (function () {
 
     var slice$4 = array$5.slice;
 
-    function constant$c(x) {
+    function constant$b(x) {
       return function() {
         return x;
       };
     }
 
-    var e10$1 = Math.sqrt(50),
-        e5$1 = Math.sqrt(10),
-        e2$1 = Math.sqrt(2);
+    var e10 = Math.sqrt(50),
+        e5 = Math.sqrt(10),
+        e2 = Math.sqrt(2);
 
-    function ticks$1(start, stop, count) {
+    function ticks(start, stop, count) {
       var reverse,
           i = -1,
           n,
@@ -1164,19 +1164,21 @@ var app = (function () {
       stop = +stop, start = +start, count = +count;
       if (start === stop && count > 0) return [start];
       if (reverse = stop < start) n = start, start = stop, stop = n;
-      if ((step = tickIncrement$1(start, stop, count)) === 0 || !isFinite(step)) return [];
+      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
 
       if (step > 0) {
-        start = Math.ceil(start / step);
-        stop = Math.floor(stop / step);
-        ticks = new Array(n = Math.ceil(stop - start + 1));
-        while (++i < n) ticks[i] = (start + i) * step;
+        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+        if (r0 * step < start) ++r0;
+        if (r1 * step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) * step;
       } else {
         step = -step;
-        start = Math.ceil(start * step);
-        stop = Math.floor(stop * step);
-        ticks = new Array(n = Math.ceil(stop - start + 1));
-        while (++i < n) ticks[i] = (start + i) / step;
+        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
+        if (r0 / step < start) ++r0;
+        if (r1 / step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) / step;
       }
 
       if (reverse) ticks.reverse();
@@ -1184,29 +1186,29 @@ var app = (function () {
       return ticks;
     }
 
-    function tickIncrement$1(start, stop, count) {
+    function tickIncrement(start, stop, count) {
       var step = (stop - start) / Math.max(0, count),
           power = Math.floor(Math.log(step) / Math.LN10),
           error = step / Math.pow(10, power);
       return power >= 0
-          ? (error >= e10$1 ? 10 : error >= e5$1 ? 5 : error >= e2$1 ? 2 : 1) * Math.pow(10, power)
-          : -Math.pow(10, -power) / (error >= e10$1 ? 10 : error >= e5$1 ? 5 : error >= e2$1 ? 2 : 1);
+          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
+          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
     }
 
-    function tickStep$1(start, stop, count) {
+    function tickStep(start, stop, count) {
       var step0 = Math.abs(stop - start) / Math.max(0, count),
           step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
           error = step0 / step1;
-      if (error >= e10$1) step1 *= 10;
-      else if (error >= e5$1) step1 *= 5;
-      else if (error >= e2$1) step1 *= 2;
+      if (error >= e10) step1 *= 10;
+      else if (error >= e5) step1 *= 5;
+      else if (error >= e2) step1 *= 2;
       return stop < start ? -step1 : step1;
     }
 
-    function nice$2(start, stop, count) {
+    function nice$1(start, stop, count) {
       let prestep;
       while (true) {
-        const step = tickIncrement$1(start, stop, count);
+        const step = tickIncrement(start, stop, count);
         if (step === prestep || step === 0 || !isFinite(step)) {
           return [start, stop];
         } else if (step > 0) {
@@ -1225,8 +1227,8 @@ var app = (function () {
     }
 
     function bin() {
-      var value = identity$b,
-          domain = extent$2,
+      var value = identity$9,
+          domain = extent$1,
           threshold = thresholdSturges;
 
       function histogram(data) {
@@ -1250,8 +1252,8 @@ var app = (function () {
         // default domain accordingly.
         if (!Array.isArray(tz)) {
           const max = x1, tn = +tz;
-          if (domain === extent$2) [x0, x1] = nice$2(x0, x1, tn);
-          tz = ticks$1(x0, x1, tn);
+          if (domain === extent$1) [x0, x1] = nice$1(x0, x1, tn);
+          tz = ticks(x0, x1, tn);
 
           // If the last threshold is coincident with the domain’s upper bound, the
           // last bin will be zero-width. If the default domain is used, and this
@@ -1261,8 +1263,8 @@ var app = (function () {
           // coerce values or the domain to numbers, and thus must be careful to
           // compare order (>=) rather than strict equality (===)!
           if (tz[tz.length - 1] >= x1) {
-            if (max >= x1 && domain === extent$2) {
-              const step = tickIncrement$1(x0, x1, tn);
+            if (max >= x1 && domain === extent$1) {
+              const step = tickIncrement(x0, x1, tn);
               if (isFinite(step)) {
                 if (step > 0) {
                   x1 = (Math.floor(x1 / step) + 1) * step;
@@ -1295,7 +1297,7 @@ var app = (function () {
         for (i = 0; i < n; ++i) {
           x = values[i];
           if (x0 <= x && x <= x1) {
-            bins[bisectRight$1(tz, x, 0, m)].push(data[i]);
+            bins[bisectRight(tz, x, 0, m)].push(data[i]);
           }
         }
 
@@ -1303,21 +1305,21 @@ var app = (function () {
       }
 
       histogram.value = function(_) {
-        return arguments.length ? (value = typeof _ === "function" ? _ : constant$c(_), histogram) : value;
+        return arguments.length ? (value = typeof _ === "function" ? _ : constant$b(_), histogram) : value;
       };
 
       histogram.domain = function(_) {
-        return arguments.length ? (domain = typeof _ === "function" ? _ : constant$c([_[0], _[1]]), histogram) : domain;
+        return arguments.length ? (domain = typeof _ === "function" ? _ : constant$b([_[0], _[1]]), histogram) : domain;
       };
 
       histogram.thresholds = function(_) {
-        return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$c(slice$4.call(_)) : constant$c(_), histogram) : threshold;
+        return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$b(slice$4.call(_)) : constant$b(_), histogram) : threshold;
       };
 
       return histogram;
     }
 
-    function max$4(values, valueof) {
+    function max$3(values, valueof) {
       let max;
       if (valueof === undefined) {
         for (const value of values) {
@@ -1361,7 +1363,7 @@ var app = (function () {
 
     // Based on https://github.com/mourner/quickselect
     // ISC license, Copyright 2018 Vladimir Agafonkin.
-    function quickselect(array, k, left = 0, right = array.length - 1, compare = ascending$4) {
+    function quickselect(array, k, left = 0, right = array.length - 1, compare = ascending$3) {
       while (right > left) {
         if (right - left > 600) {
           const n = right - left + 1;
@@ -1406,16 +1408,16 @@ var app = (function () {
       values = Float64Array.from(numbers(values, valueof));
       if (!(n = values.length)) return;
       if ((p = +p) <= 0 || n < 2) return min$2(values);
-      if (p >= 1) return max$4(values);
+      if (p >= 1) return max$3(values);
       var n,
           i = (n - 1) * p,
           i0 = Math.floor(i),
-          value0 = max$4(quickselect(values, i0).subarray(0, i0 + 1)),
+          value0 = max$3(quickselect(values, i0).subarray(0, i0 + 1)),
           value1 = min$2(values.subarray(i0 + 1));
       return value0 + (value1 - value0) * (i - i0);
     }
 
-    function quantileSorted(values, p, valueof = number$6) {
+    function quantileSorted(values, p, valueof = number$3) {
       if (!(n = values.length)) return;
       if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
       if (p >= 1) return +valueof(values[n - 1], n - 1, values);
@@ -1545,7 +1547,7 @@ var app = (function () {
       return range;
     }
 
-    function least(values, compare = ascending$4) {
+    function least(values, compare = ascending$3) {
       let min;
       let defined = false;
       if (compare.length === 1) {
@@ -1553,8 +1555,8 @@ var app = (function () {
         for (const element of values) {
           const value = compare(element);
           if (defined
-              ? ascending$4(value, minValue) < 0
-              : ascending$4(value, value) === 0) {
+              ? ascending$3(value, minValue) < 0
+              : ascending$3(value, value) === 0) {
             min = element;
             minValue = value;
             defined = true;
@@ -1573,7 +1575,7 @@ var app = (function () {
       return min;
     }
 
-    function leastIndex(values, compare = ascending$4) {
+    function leastIndex(values, compare = ascending$3) {
       if (compare.length === 1) return minIndex(values, compare);
       let minValue;
       let min = -1;
@@ -1590,7 +1592,7 @@ var app = (function () {
       return min;
     }
 
-    function greatest(values, compare = ascending$4) {
+    function greatest(values, compare = ascending$3) {
       let max;
       let defined = false;
       if (compare.length === 1) {
@@ -1598,8 +1600,8 @@ var app = (function () {
         for (const element of values) {
           const value = compare(element);
           if (defined
-              ? ascending$4(value, maxValue) > 0
-              : ascending$4(value, value) === 0) {
+              ? ascending$3(value, maxValue) > 0
+              : ascending$3(value, value) === 0) {
             max = element;
             maxValue = value;
             defined = true;
@@ -1618,7 +1620,7 @@ var app = (function () {
       return max;
     }
 
-    function greatestIndex(values, compare = ascending$4) {
+    function greatestIndex(values, compare = ascending$3) {
       if (compare.length === 1) return maxIndex(values, compare);
       let maxValue;
       let max = -1;
@@ -1725,7 +1727,7 @@ var app = (function () {
       return array;
     }
 
-    function map$2(values, mapper) {
+    function map$1(values, mapper) {
       if (typeof values[Symbol.iterator] !== "function") throw new TypeError("values is not iterable");
       if (typeof mapper !== "function") throw new TypeError("mapper is not a function");
       return Array.from(values, (value, index) => mapper(value, index, values));
@@ -1823,7 +1825,7 @@ var app = (function () {
 
     var slice$3 = Array.prototype.slice;
 
-    function identity$a(x) {
+    function identity$8(x) {
       return x;
     }
 
@@ -1841,7 +1843,7 @@ var app = (function () {
       return "translate(0," + y + ")";
     }
 
-    function number$5(scale) {
+    function number$2(scale) {
       return d => +scale(d);
     }
 
@@ -1869,12 +1871,12 @@ var app = (function () {
 
       function axis(context) {
         var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
-            format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$a) : tickFormat,
+            format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity$8) : tickFormat,
             spacing = Math.max(tickSizeInner, 0) + tickPadding,
             range = scale.range(),
             range0 = +range[0] + offset,
             range1 = +range[range.length - 1] + offset,
-            position = (scale.bandwidth ? center$1 : number$5)(scale.copy(), offset),
+            position = (scale.bandwidth ? center$1 : number$2)(scale.copy(), offset),
             selection = context.selection ? context.selection() : context,
             path = selection.selectAll(".domain").data([null]),
             tick = selection.selectAll(".tick").data(values, scale).order(),
@@ -2268,7 +2270,7 @@ var app = (function () {
       querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
     };
 
-    function constant$b(x) {
+    function constant$a(x) {
       return function() {
         return x;
       };
@@ -2355,7 +2357,7 @@ var app = (function () {
           parents = this._parents,
           groups = this._groups;
 
-      if (typeof value !== "function") value = constant$b(value);
+      if (typeof value !== "function") value = constant$a(value);
 
       for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
         var parent = parents[j],
@@ -2432,7 +2434,7 @@ var app = (function () {
     }
 
     function selection_sort(compare) {
-      if (!compare) compare = ascending$3;
+      if (!compare) compare = ascending$2;
 
       function compareNode(a, b) {
         return a && b ? compare(a.__data__, b.__data__) : !a - !b;
@@ -2450,7 +2452,7 @@ var app = (function () {
       return new Selection$1(sortgroups, this._parents).order();
     }
 
-    function ascending$3(a, b) {
+    function ascending$2(a, b) {
       return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
     }
 
@@ -3091,7 +3093,7 @@ var app = (function () {
       }
     }
 
-    var constant$a = x => () => x;
+    var constant$9 = x => () => x;
 
     function DragEvent(type, {
       sourceEvent,
@@ -3281,19 +3283,19 @@ var app = (function () {
       }
 
       drag.filter = function(_) {
-        return arguments.length ? (filter = typeof _ === "function" ? _ : constant$a(!!_), drag) : filter;
+        return arguments.length ? (filter = typeof _ === "function" ? _ : constant$9(!!_), drag) : filter;
       };
 
       drag.container = function(_) {
-        return arguments.length ? (container = typeof _ === "function" ? _ : constant$a(_), drag) : container;
+        return arguments.length ? (container = typeof _ === "function" ? _ : constant$9(_), drag) : container;
       };
 
       drag.subject = function(_) {
-        return arguments.length ? (subject = typeof _ === "function" ? _ : constant$a(_), drag) : subject;
+        return arguments.length ? (subject = typeof _ === "function" ? _ : constant$9(_), drag) : subject;
       };
 
       drag.touchable = function(_) {
-        return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$a(!!_), drag) : touchable;
+        return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$9(!!_), drag) : touchable;
       };
 
       drag.on = function() {
@@ -3308,34 +3310,34 @@ var app = (function () {
       return drag;
     }
 
-    function define$1(constructor, factory, prototype) {
+    function define(constructor, factory, prototype) {
       constructor.prototype = factory.prototype = prototype;
       prototype.constructor = constructor;
     }
 
-    function extend$1(parent, definition) {
+    function extend(parent, definition) {
       var prototype = Object.create(parent.prototype);
       for (var key in definition) prototype[key] = definition[key];
       return prototype;
     }
 
-    function Color$1() {}
+    function Color() {}
 
-    var darker$1 = 0.7;
-    var brighter$1 = 1 / darker$1;
+    var darker = 0.7;
+    var brighter = 1 / darker;
 
-    var reI$1 = "\\s*([+-]?\\d+)\\s*",
-        reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex$1 = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
-        reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
-        reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
-        reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
-        reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
-        reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
+    var reI = "\\s*([+-]?\\d+)\\s*",
+        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reHex = /^#([0-9a-f]{3,8})$/,
+        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
 
-    var named$1 = {
+    var named = {
       aliceblue: 0xf0f8ff,
       antiquewhite: 0xfaebd7,
       aqua: 0x00ffff,
@@ -3486,86 +3488,86 @@ var app = (function () {
       yellowgreen: 0x9acd32
     };
 
-    define$1(Color$1, color$1, {
+    define(Color, color, {
       copy: function(channels) {
         return Object.assign(new this.constructor, this, channels);
       },
       displayable: function() {
         return this.rgb().displayable();
       },
-      hex: color_formatHex$1, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex$1,
-      formatHsl: color_formatHsl$1,
-      formatRgb: color_formatRgb$1,
-      toString: color_formatRgb$1
+      hex: color_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: color_formatHex,
+      formatHsl: color_formatHsl,
+      formatRgb: color_formatRgb,
+      toString: color_formatRgb
     });
 
-    function color_formatHex$1() {
+    function color_formatHex() {
       return this.rgb().formatHex();
     }
 
-    function color_formatHsl$1() {
-      return hslConvert$1(this).formatHsl();
+    function color_formatHsl() {
+      return hslConvert(this).formatHsl();
     }
 
-    function color_formatRgb$1() {
+    function color_formatRgb() {
       return this.rgb().formatRgb();
     }
 
-    function color$1(format) {
+    function color(format) {
       var m, l;
       format = (format + "").trim().toLowerCase();
-      return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
-          : l === 3 ? new Rgb$1((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba$1((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
           : null) // invalid hex
-          : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0)
+          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
           : null;
     }
 
-    function rgbn$1(n) {
-      return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    function rgbn(n) {
+      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
     }
 
-    function rgba$1(r, g, b, a) {
+    function rgba(r, g, b, a) {
       if (a <= 0) r = g = b = NaN;
-      return new Rgb$1(r, g, b, a);
+      return new Rgb(r, g, b, a);
     }
 
-    function rgbConvert$1(o) {
-      if (!(o instanceof Color$1)) o = color$1(o);
-      if (!o) return new Rgb$1;
+    function rgbConvert(o) {
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Rgb;
       o = o.rgb();
-      return new Rgb$1(o.r, o.g, o.b, o.opacity);
+      return new Rgb(o.r, o.g, o.b, o.opacity);
     }
 
-    function rgb$2(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+    function rgb(r, g, b, opacity) {
+      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
     }
 
-    function Rgb$1(r, g, b, opacity) {
+    function Rgb(r, g, b, opacity) {
       this.r = +r;
       this.g = +g;
       this.b = +b;
       this.opacity = +opacity;
     }
 
-    define$1(Rgb$1, rgb$2, extend$1(Color$1, {
+    define(Rgb, rgb, extend(Color, {
       brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
       },
       rgb: function() {
         return this;
@@ -3576,17 +3578,17 @@ var app = (function () {
             && (-0.5 <= this.b && this.b < 255.5)
             && (0 <= this.opacity && this.opacity <= 1);
       },
-      hex: rgb_formatHex$1, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex$1,
-      formatRgb: rgb_formatRgb$1,
-      toString: rgb_formatRgb$1
+      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: rgb_formatHex,
+      formatRgb: rgb_formatRgb,
+      toString: rgb_formatRgb
     }));
 
-    function rgb_formatHex$1() {
-      return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
+    function rgb_formatHex() {
+      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
     }
 
-    function rgb_formatRgb$1() {
+    function rgb_formatRgb() {
       var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
       return (a === 1 ? "rgb(" : "rgba(")
           + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
@@ -3595,23 +3597,23 @@ var app = (function () {
           + (a === 1 ? ")" : ", " + a + ")");
     }
 
-    function hex$1(value) {
+    function hex(value) {
       value = Math.max(0, Math.min(255, Math.round(value) || 0));
       return (value < 16 ? "0" : "") + value.toString(16);
     }
 
-    function hsla$1(h, s, l, a) {
+    function hsla(h, s, l, a) {
       if (a <= 0) h = s = l = NaN;
       else if (l <= 0 || l >= 1) h = s = NaN;
       else if (s <= 0) h = NaN;
-      return new Hsl$1(h, s, l, a);
+      return new Hsl(h, s, l, a);
     }
 
-    function hslConvert$1(o) {
-      if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color$1)) o = color$1(o);
-      if (!o) return new Hsl$1;
-      if (o instanceof Hsl$1) return o;
+    function hslConvert(o) {
+      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Hsl;
+      if (o instanceof Hsl) return o;
       o = o.rgb();
       var r = o.r / 255,
           g = o.g / 255,
@@ -3630,28 +3632,28 @@ var app = (function () {
       } else {
         s = l > 0 && l < 1 ? 0 : h;
       }
-      return new Hsl$1(h, s, l, o.opacity);
+      return new Hsl(h, s, l, o.opacity);
     }
 
-    function hsl$3(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+    function hsl$2(h, s, l, opacity) {
+      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
     }
 
-    function Hsl$1(h, s, l, opacity) {
+    function Hsl(h, s, l, opacity) {
       this.h = +h;
       this.s = +s;
       this.l = +l;
       this.opacity = +opacity;
     }
 
-    define$1(Hsl$1, hsl$3, extend$1(Color$1, {
+    define(Hsl, hsl$2, extend(Color, {
       brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
-        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
-        return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
       },
       rgb: function() {
         var h = this.h % 360 + (this.h < 0) * 360,
@@ -3659,10 +3661,10 @@ var app = (function () {
             l = this.l,
             m2 = l + (l < 0.5 ? l : 1 - l) * s,
             m1 = 2 * l - m2;
-        return new Rgb$1(
-          hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb$1(h, m1, m2),
-          hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2),
+        return new Rgb(
+          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+          hsl2rgb(h, m1, m2),
+          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
           this.opacity
         );
       },
@@ -3682,7 +3684,7 @@ var app = (function () {
     }));
 
     /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb$1(h, m1, m2) {
+    function hsl2rgb(h, m1, m2) {
       return (h < 60 ? m1 + (m2 - m1) * h / 60
           : h < 180 ? m2
           : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
@@ -3697,15 +3699,15 @@ var app = (function () {
         Xn = 0.96422,
         Yn = 1,
         Zn = 0.82521,
-        t0$2 = 4 / 29,
-        t1$2 = 6 / 29,
-        t2 = 3 * t1$2 * t1$2,
-        t3 = t1$2 * t1$2 * t1$2;
+        t0$1 = 4 / 29,
+        t1$1 = 6 / 29,
+        t2 = 3 * t1$1 * t1$1,
+        t3 = t1$1 * t1$1 * t1$1;
 
     function labConvert(o) {
       if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
       if (o instanceof Hcl) return hcl2lab(o);
-      if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
+      if (!(o instanceof Rgb)) o = rgbConvert(o);
       var r = rgb2lrgb(o.r),
           g = rgb2lrgb(o.g),
           b = rgb2lrgb(o.b),
@@ -3732,7 +3734,7 @@ var app = (function () {
       this.opacity = +opacity;
     }
 
-    define$1(Lab, lab$1, extend$1(Color$1, {
+    define(Lab, lab$1, extend(Color, {
       brighter: function(k) {
         return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
       },
@@ -3746,7 +3748,7 @@ var app = (function () {
         x = Xn * lab2xyz(x);
         y = Yn * lab2xyz(y);
         z = Zn * lab2xyz(z);
-        return new Rgb$1(
+        return new Rgb(
           lrgb2rgb( 3.1338561 * x - 1.6168667 * y - 0.4906146 * z),
           lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z),
           lrgb2rgb( 0.0719453 * x - 0.2289914 * y + 1.4052427 * z),
@@ -3756,11 +3758,11 @@ var app = (function () {
     }));
 
     function xyz2lab(t) {
-      return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0$2;
+      return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0$1;
     }
 
     function lab2xyz(t) {
-      return t > t1$2 ? t * t * t : t2 * (t - t0$2);
+      return t > t1$1 ? t * t * t : t2 * (t - t0$1);
     }
 
     function lrgb2rgb(x) {
@@ -3800,7 +3802,7 @@ var app = (function () {
       return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
     }
 
-    define$1(Hcl, hcl$2, extend$1(Color$1, {
+    define(Hcl, hcl$2, extend(Color, {
       brighter: function(k) {
         return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
       },
@@ -3823,7 +3825,7 @@ var app = (function () {
 
     function cubehelixConvert(o) {
       if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Rgb$1)) o = rgbConvert$1(o);
+      if (!(o instanceof Rgb)) o = rgbConvert(o);
       var r = o.r / 255,
           g = o.g / 255,
           b = o.b / 255,
@@ -3846,13 +3848,13 @@ var app = (function () {
       this.opacity = +opacity;
     }
 
-    define$1(Cubehelix, cubehelix$3, extend$1(Color$1, {
+    define(Cubehelix, cubehelix$3, extend(Color, {
       brighter: function(k) {
-        k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+        k = k == null ? brighter : Math.pow(brighter, k);
         return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
       },
       darker: function(k) {
-        k = k == null ? darker$1 : Math.pow(darker$1, k);
+        k = k == null ? darker : Math.pow(darker, k);
         return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
       },
       rgb: function() {
@@ -3861,7 +3863,7 @@ var app = (function () {
             a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
             cosh = Math.cos(h),
             sinh = Math.sin(h);
-        return new Rgb$1(
+        return new Rgb(
           255 * (l + a * (A * cosh + B * sinh)),
           255 * (l + a * (C * cosh + D * sinh)),
           255 * (l + a * (E * cosh)),
@@ -3902,15 +3904,15 @@ var app = (function () {
       };
     }
 
-    var constant$9 = x => () => x;
+    var constant$8 = x => () => x;
 
-    function linear$4(a, d) {
+    function linear$2(a, d) {
       return function(t) {
         return a + t * d;
       };
     }
 
-    function exponential$2(a, b, y) {
+    function exponential$1(a, b, y) {
       return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
         return Math.pow(a + t * b, y);
       };
@@ -3918,28 +3920,28 @@ var app = (function () {
 
     function hue$1(a, b) {
       var d = b - a;
-      return d ? linear$4(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$9(isNaN(a) ? b : a);
+      return d ? linear$2(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$8(isNaN(a) ? b : a);
     }
 
-    function gamma$2(y) {
-      return (y = +y) === 1 ? nogamma$1 : function(a, b) {
-        return b - a ? exponential$2(a, b, y) : constant$9(isNaN(a) ? b : a);
+    function gamma$1(y) {
+      return (y = +y) === 1 ? nogamma : function(a, b) {
+        return b - a ? exponential$1(a, b, y) : constant$8(isNaN(a) ? b : a);
       };
     }
 
-    function nogamma$1(a, b) {
+    function nogamma(a, b) {
       var d = b - a;
-      return d ? linear$4(a, d) : constant$9(isNaN(a) ? b : a);
+      return d ? linear$2(a, d) : constant$8(isNaN(a) ? b : a);
     }
 
     var interpolateRgb = (function rgbGamma(y) {
-      var color = gamma$2(y);
+      var color = gamma$1(y);
 
-      function rgb(start, end) {
-        var r = color((start = rgb$2(start)).r, (end = rgb$2(end)).r),
+      function rgb$1(start, end) {
+        var r = color((start = rgb(start)).r, (end = rgb(end)).r),
             g = color(start.g, end.g),
             b = color(start.b, end.b),
-            opacity = nogamma$1(start.opacity, end.opacity);
+            opacity = nogamma(start.opacity, end.opacity);
         return function(t) {
           start.r = r(t);
           start.g = g(t);
@@ -3949,9 +3951,9 @@ var app = (function () {
         };
       }
 
-      rgb.gamma = rgbGamma;
+      rgb$1.gamma = rgbGamma;
 
-      return rgb;
+      return rgb$1;
     })(1);
 
     function rgbSpline(spline) {
@@ -3962,7 +3964,7 @@ var app = (function () {
             b = new Array(n),
             i, color;
         for (i = 0; i < n; ++i) {
-          color = rgb$2(colors[i]);
+          color = rgb(colors[i]);
           r[i] = color.r || 0;
           g[i] = color.g || 0;
           b[i] = color.b || 0;
@@ -3983,7 +3985,7 @@ var app = (function () {
     var rgbBasis = rgbSpline(basis$2);
     var rgbBasisClosed = rgbSpline(basisClosed$1);
 
-    function numberArray$1(a, b) {
+    function numberArray(a, b) {
       if (!b) b = [];
       var n = a ? Math.min(b.length, a.length) : 0,
           c = b.slice(),
@@ -3994,22 +3996,22 @@ var app = (function () {
       };
     }
 
-    function isNumberArray$1(x) {
+    function isNumberArray(x) {
       return ArrayBuffer.isView(x) && !(x instanceof DataView);
     }
 
     function array$3(a, b) {
-      return (isNumberArray$1(b) ? numberArray$1 : genericArray$1)(a, b);
+      return (isNumberArray(b) ? numberArray : genericArray)(a, b);
     }
 
-    function genericArray$1(a, b) {
+    function genericArray(a, b) {
       var nb = b ? b.length : 0,
           na = a ? Math.min(nb, a.length) : 0,
           x = new Array(na),
           c = new Array(nb),
           i;
 
-      for (i = 0; i < na; ++i) x[i] = interpolate$3(a[i], b[i]);
+      for (i = 0; i < na; ++i) x[i] = interpolate$2(a[i], b[i]);
       for (; i < nb; ++i) c[i] = b[i];
 
       return function(t) {
@@ -4025,13 +4027,13 @@ var app = (function () {
       };
     }
 
-    function interpolateNumber$1(a, b) {
+    function interpolateNumber(a, b) {
       return a = +a, b = +b, function(t) {
         return a * (1 - t) + b * t;
       };
     }
 
-    function object$2(a, b) {
+    function object$1(a, b) {
       var i = {},
           c = {},
           k;
@@ -4041,7 +4043,7 @@ var app = (function () {
 
       for (k in b) {
         if (k in a) {
-          i[k] = interpolate$3(a[k], b[k]);
+          i[k] = interpolate$2(a[k], b[k]);
         } else {
           c[k] = b[k];
         }
@@ -4053,23 +4055,23 @@ var app = (function () {
       };
     }
 
-    var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-        reB$1 = new RegExp(reA$1.source, "g");
+    var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+        reB = new RegExp(reA.source, "g");
 
-    function zero$1(b) {
+    function zero(b) {
       return function() {
         return b;
       };
     }
 
-    function one$1(b) {
+    function one(b) {
       return function(t) {
         return b(t) + "";
       };
     }
 
     function interpolateString(a, b) {
-      var bi = reA$1.lastIndex = reB$1.lastIndex = 0, // scan index for next number in b
+      var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
           am, // current match in a
           bm, // current match in b
           bs, // string preceding current number in b, if any
@@ -4081,8 +4083,8 @@ var app = (function () {
       a = a + "", b = b + "";
 
       // Interpolate pairs of numbers in a & b.
-      while ((am = reA$1.exec(a))
-          && (bm = reB$1.exec(b))) {
+      while ((am = reA.exec(a))
+          && (bm = reB.exec(b))) {
         if ((bs = bm.index) > bi) { // a string precedes the next number in b
           bs = b.slice(bi, bs);
           if (s[i]) s[i] += bs; // coalesce with previous string
@@ -4093,9 +4095,9 @@ var app = (function () {
           else s[++i] = bm;
         } else { // interpolate non-matching numbers
           s[++i] = null;
-          q.push({i: i, x: interpolateNumber$1(am, bm)});
+          q.push({i: i, x: interpolateNumber(am, bm)});
         }
-        bi = reB$1.lastIndex;
+        bi = reB.lastIndex;
       }
 
       // Add remains of b.
@@ -4108,25 +4110,25 @@ var app = (function () {
       // Special optimization for only a single match.
       // Otherwise, interpolate each of the numbers and rejoin the string.
       return s.length < 2 ? (q[0]
-          ? one$1(q[0].x)
-          : zero$1(b))
+          ? one(q[0].x)
+          : zero(b))
           : (b = q.length, function(t) {
               for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
               return s.join("");
             });
     }
 
-    function interpolate$3(a, b) {
+    function interpolate$2(a, b) {
       var t = typeof b, c;
-      return b == null || t === "boolean" ? constant$9(b)
-          : (t === "number" ? interpolateNumber$1
-          : t === "string" ? ((c = color$1(b)) ? (b = c, interpolateRgb) : interpolateString)
-          : b instanceof color$1 ? interpolateRgb
+      return b == null || t === "boolean" ? constant$8(b)
+          : (t === "number" ? interpolateNumber
+          : t === "string" ? ((c = color(b)) ? (b = c, interpolateRgb) : interpolateString)
+          : b instanceof color ? interpolateRgb
           : b instanceof Date ? date$9
-          : isNumberArray$1(b) ? numberArray$1
-          : Array.isArray(b) ? genericArray$1
-          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object$2
-          : interpolateNumber$1)(a, b);
+          : isNumberArray(b) ? numberArray
+          : Array.isArray(b) ? genericArray
+          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object$1
+          : interpolateNumber)(a, b);
     }
 
     function discrete(range) {
@@ -4144,7 +4146,7 @@ var app = (function () {
       };
     }
 
-    function interpolateRound$1(a, b) {
+    function interpolateRound(a, b) {
       return a = +a, b = +b, function(t) {
         return Math.round(a * (1 - t) + b * t);
       };
@@ -4152,7 +4154,7 @@ var app = (function () {
 
     var degrees$1 = 180 / Math.PI;
 
-    var identity$9 = {
+    var identity$7 = {
       translateX: 0,
       translateY: 0,
       rotate: 0,
@@ -4182,14 +4184,14 @@ var app = (function () {
     /* eslint-disable no-undef */
     function parseCss(value) {
       const m = new (typeof DOMMatrix === "function" ? DOMMatrix : WebKitCSSMatrix)(value + "");
-      return m.isIdentity ? identity$9 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
+      return m.isIdentity ? identity$7 : decompose(m.a, m.b, m.c, m.d, m.e, m.f);
     }
 
     function parseSvg(value) {
-      if (value == null) return identity$9;
+      if (value == null) return identity$7;
       if (!svgNode) svgNode = document.createElementNS("http://www.w3.org/2000/svg", "g");
       svgNode.setAttribute("transform", value);
-      if (!(value = svgNode.transform.baseVal.consolidate())) return identity$9;
+      if (!(value = svgNode.transform.baseVal.consolidate())) return identity$7;
       value = value.matrix;
       return decompose(value.a, value.b, value.c, value.d, value.e, value.f);
     }
@@ -4203,7 +4205,7 @@ var app = (function () {
       function translate(xa, ya, xb, yb, s, q) {
         if (xa !== xb || ya !== yb) {
           var i = s.push("translate(", null, pxComma, null, pxParen);
-          q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
+          q.push({i: i - 4, x: interpolateNumber(xa, xb)}, {i: i - 2, x: interpolateNumber(ya, yb)});
         } else if (xb || yb) {
           s.push("translate(" + xb + pxComma + yb + pxParen);
         }
@@ -4212,7 +4214,7 @@ var app = (function () {
       function rotate(a, b, s, q) {
         if (a !== b) {
           if (a - b > 180) b += 360; else if (b - a > 180) a += 360; // shortest path
-          q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
+          q.push({i: s.push(pop(s) + "rotate(", null, degParen) - 2, x: interpolateNumber(a, b)});
         } else if (b) {
           s.push(pop(s) + "rotate(" + b + degParen);
         }
@@ -4220,7 +4222,7 @@ var app = (function () {
 
       function skewX(a, b, s, q) {
         if (a !== b) {
-          q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber$1(a, b)});
+          q.push({i: s.push(pop(s) + "skewX(", null, degParen) - 2, x: interpolateNumber(a, b)});
         } else if (b) {
           s.push(pop(s) + "skewX(" + b + degParen);
         }
@@ -4229,7 +4231,7 @@ var app = (function () {
       function scale(xa, ya, xb, yb, s, q) {
         if (xa !== xb || ya !== yb) {
           var i = s.push(pop(s) + "scale(", null, ",", null, ")");
-          q.push({i: i - 4, x: interpolateNumber$1(xa, xb)}, {i: i - 2, x: interpolateNumber$1(ya, yb)});
+          q.push({i: i - 4, x: interpolateNumber(xa, xb)}, {i: i - 2, x: interpolateNumber(ya, yb)});
         } else if (xb !== 1 || yb !== 1) {
           s.push(pop(s) + "scale(" + xb + "," + yb + ")");
         }
@@ -4327,12 +4329,12 @@ var app = (function () {
       return zoom;
     })(Math.SQRT2, 2, 4);
 
-    function hsl$1(hue) {
+    function hsl(hue) {
       return function(start, end) {
-        var h = hue((start = hsl$3(start)).h, (end = hsl$3(end)).h),
-            s = nogamma$1(start.s, end.s),
-            l = nogamma$1(start.l, end.l),
-            opacity = nogamma$1(start.opacity, end.opacity);
+        var h = hue((start = hsl$2(start)).h, (end = hsl$2(end)).h),
+            s = nogamma(start.s, end.s),
+            l = nogamma(start.l, end.l),
+            opacity = nogamma(start.opacity, end.opacity);
         return function(t) {
           start.h = h(t);
           start.s = s(t);
@@ -4343,14 +4345,14 @@ var app = (function () {
       }
     }
 
-    var hsl$2 = hsl$1(hue$1);
-    var hslLong = hsl$1(nogamma$1);
+    var hsl$1 = hsl(hue$1);
+    var hslLong = hsl(nogamma);
 
     function lab(start, end) {
-      var l = nogamma$1((start = lab$1(start)).l, (end = lab$1(end)).l),
-          a = nogamma$1(start.a, end.a),
-          b = nogamma$1(start.b, end.b),
-          opacity = nogamma$1(start.opacity, end.opacity);
+      var l = nogamma((start = lab$1(start)).l, (end = lab$1(end)).l),
+          a = nogamma(start.a, end.a),
+          b = nogamma(start.b, end.b),
+          opacity = nogamma(start.opacity, end.opacity);
       return function(t) {
         start.l = l(t);
         start.a = a(t);
@@ -4363,9 +4365,9 @@ var app = (function () {
     function hcl(hue) {
       return function(start, end) {
         var h = hue((start = hcl$2(start)).h, (end = hcl$2(end)).h),
-            c = nogamma$1(start.c, end.c),
-            l = nogamma$1(start.l, end.l),
-            opacity = nogamma$1(start.opacity, end.opacity);
+            c = nogamma(start.c, end.c),
+            l = nogamma(start.l, end.l),
+            opacity = nogamma(start.opacity, end.opacity);
         return function(t) {
           start.h = h(t);
           start.c = c(t);
@@ -4377,7 +4379,7 @@ var app = (function () {
     }
 
     var hcl$1 = hcl(hue$1);
-    var hclLong = hcl(nogamma$1);
+    var hclLong = hcl(nogamma);
 
     function cubehelix$1(hue) {
       return (function cubehelixGamma(y) {
@@ -4385,9 +4387,9 @@ var app = (function () {
 
         function cubehelix(start, end) {
           var h = hue((start = cubehelix$3(start)).h, (end = cubehelix$3(end)).h),
-              s = nogamma$1(start.s, end.s),
-              l = nogamma$1(start.l, end.l),
-              opacity = nogamma$1(start.opacity, end.opacity);
+              s = nogamma(start.s, end.s),
+              l = nogamma(start.l, end.l),
+              opacity = nogamma(start.opacity, end.opacity);
           return function(t) {
             start.h = h(t);
             start.s = s(t);
@@ -4404,10 +4406,10 @@ var app = (function () {
     }
 
     var cubehelix$2 = cubehelix$1(hue$1);
-    var cubehelixLong = cubehelix$1(nogamma$1);
+    var cubehelixLong = cubehelix$1(nogamma);
 
     function piecewise(interpolate, values) {
-      if (values === undefined) values = interpolate, interpolate = interpolate$3;
+      if (values === undefined) values = interpolate, interpolate = interpolate$2;
       var i = 0, n = values.length - 1, v = values[0], I = new Array(n < 0 ? 0 : n);
       while (i < n) I[i] = interpolate(v, v = values[++i]);
       return function(t) {
@@ -4819,11 +4821,11 @@ var app = (function () {
       };
     }
 
-    function interpolate$2(a, b) {
+    function interpolate$1(a, b) {
       var c;
-      return (typeof b === "number" ? interpolateNumber$1
-          : b instanceof color$1 ? interpolateRgb
-          : (c = color$1(b)) ? (b = c, interpolateRgb)
+      return (typeof b === "number" ? interpolateNumber
+          : b instanceof color ? interpolateRgb
+          : (c = color(b)) ? (b = c, interpolateRgb)
           : interpolateString)(a, b);
     }
 
@@ -4894,7 +4896,7 @@ var app = (function () {
     }
 
     function transition_attr(name, value) {
-      var fullname = namespace(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate$2;
+      var fullname = namespace(name), i = fullname === "transform" ? interpolateTransformSvg : interpolate$1;
       return this.attrTween(name, typeof value === "function"
           ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value))
           : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname)
@@ -5202,7 +5204,7 @@ var app = (function () {
     }
 
     function transition_style(name, value, priority) {
-      var i = (name += "") === "transform" ? interpolateTransformCss : interpolate$2;
+      var i = (name += "") === "transform" ? interpolateTransformCss : interpolate$1;
       return value == null ? this
           .styleTween(name, styleNull(name, i))
           .on("end.style." + name, styleRemove(name))
@@ -5383,7 +5385,7 @@ var app = (function () {
       [Symbol.iterator]: selection_prototype[Symbol.iterator]
     };
 
-    const linear$3 = t => +t;
+    const linear$1 = t => +t;
 
     function quadIn(t) {
       return t * t;
@@ -5409,7 +5411,7 @@ var app = (function () {
       return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
     }
 
-    var exponent$2 = 3;
+    var exponent$1 = 3;
 
     var polyIn = (function custom(e) {
       e = +e;
@@ -5421,7 +5423,7 @@ var app = (function () {
       polyIn.exponent = custom;
 
       return polyIn;
-    })(exponent$2);
+    })(exponent$1);
 
     var polyOut = (function custom(e) {
       e = +e;
@@ -5433,7 +5435,7 @@ var app = (function () {
       polyOut.exponent = custom;
 
       return polyOut;
-    })(exponent$2);
+    })(exponent$1);
 
     var polyInOut = (function custom(e) {
       e = +e;
@@ -5445,7 +5447,7 @@ var app = (function () {
       polyInOut.exponent = custom;
 
       return polyInOut;
-    })(exponent$2);
+    })(exponent$1);
 
     var pi$4 = Math.PI,
         halfPi$3 = pi$4 / 2;
@@ -5657,7 +5659,7 @@ var app = (function () {
       return null;
     }
 
-    var constant$8 = x => () => x;
+    var constant$7 = x => () => x;
 
     function BrushEvent(type, {
       sourceEvent,
@@ -5690,7 +5692,7 @@ var app = (function () {
         MODE_HANDLE = {name: "handle"},
         MODE_CENTER = {name: "center"};
 
-    const {abs: abs$3, max: max$3, min: min$1} = Math;
+    const {abs: abs$3, max: max$2, min: min$1} = Math;
 
     function number1(e) {
       return [+e[0], +e[1]];
@@ -5900,7 +5902,7 @@ var app = (function () {
                     emit = emitter(that, arguments),
                     selection0 = state.selection,
                     selection1 = dim.input(typeof selection === "function" ? selection.apply(this, arguments) : selection, state.extent),
-                    i = interpolate$3(selection0, selection1);
+                    i = interpolate$2(selection0, selection1);
 
                 function tween(t) {
                   state.selection = t === 1 && selection1 === null ? null : i(t);
@@ -6046,8 +6048,8 @@ var app = (function () {
               w0 = dim === Y ? W : min$1(pts[0][0], pts[1][0]),
               n0 = dim === X ? N : min$1(pts[0][1], pts[1][1])
             ], [
-              e0 = dim === Y ? E : max$3(pts[0][0], pts[1][0]),
-              s0 = dim === X ? S : max$3(pts[0][1], pts[1][1])
+              e0 = dim === Y ? E : max$2(pts[0][0], pts[1][0]),
+              s0 = dim === X ? S : max$2(pts[0][1], pts[1][1])
             ]];
           if (points.length > 1) move();
         } else {
@@ -6117,25 +6119,25 @@ var app = (function () {
           switch (mode) {
             case MODE_SPACE:
             case MODE_DRAG: {
-              if (signX) dx = max$3(W - w0, min$1(E - e0, dx)), w1 = w0 + dx, e1 = e0 + dx;
-              if (signY) dy = max$3(N - n0, min$1(S - s0, dy)), n1 = n0 + dy, s1 = s0 + dy;
+              if (signX) dx = max$2(W - w0, min$1(E - e0, dx)), w1 = w0 + dx, e1 = e0 + dx;
+              if (signY) dy = max$2(N - n0, min$1(S - s0, dy)), n1 = n0 + dy, s1 = s0 + dy;
               break;
             }
             case MODE_HANDLE: {
               if (points[1]) {
-                if (signX) w1 = max$3(W, min$1(E, points[0][0])), e1 = max$3(W, min$1(E, points[1][0])), signX = 1;
-                if (signY) n1 = max$3(N, min$1(S, points[0][1])), s1 = max$3(N, min$1(S, points[1][1])), signY = 1;
+                if (signX) w1 = max$2(W, min$1(E, points[0][0])), e1 = max$2(W, min$1(E, points[1][0])), signX = 1;
+                if (signY) n1 = max$2(N, min$1(S, points[0][1])), s1 = max$2(N, min$1(S, points[1][1])), signY = 1;
               } else {
-                if (signX < 0) dx = max$3(W - w0, min$1(E - w0, dx)), w1 = w0 + dx, e1 = e0;
-                else if (signX > 0) dx = max$3(W - e0, min$1(E - e0, dx)), w1 = w0, e1 = e0 + dx;
-                if (signY < 0) dy = max$3(N - n0, min$1(S - n0, dy)), n1 = n0 + dy, s1 = s0;
-                else if (signY > 0) dy = max$3(N - s0, min$1(S - s0, dy)), n1 = n0, s1 = s0 + dy;
+                if (signX < 0) dx = max$2(W - w0, min$1(E - w0, dx)), w1 = w0 + dx, e1 = e0;
+                else if (signX > 0) dx = max$2(W - e0, min$1(E - e0, dx)), w1 = w0, e1 = e0 + dx;
+                if (signY < 0) dy = max$2(N - n0, min$1(S - n0, dy)), n1 = n0 + dy, s1 = s0;
+                else if (signY > 0) dy = max$2(N - s0, min$1(S - s0, dy)), n1 = n0, s1 = s0 + dy;
               }
               break;
             }
             case MODE_CENTER: {
-              if (signX) w1 = max$3(W, min$1(E, w0 - dx * signX)), e1 = max$3(W, min$1(E, e0 + dx * signX));
-              if (signY) n1 = max$3(N, min$1(S, n0 - dy * signY)), s1 = max$3(N, min$1(S, s0 + dy * signY));
+              if (signX) w1 = max$2(W, min$1(E, w0 - dx * signX)), e1 = max$2(W, min$1(E, e0 + dx * signX));
+              if (signY) n1 = max$2(N, min$1(S, n0 - dy * signY)), s1 = max$2(N, min$1(S, s0 + dy * signY));
               break;
             }
           }
@@ -6271,15 +6273,15 @@ var app = (function () {
       }
 
       brush.extent = function(_) {
-        return arguments.length ? (extent = typeof _ === "function" ? _ : constant$8(number2(_)), brush) : extent;
+        return arguments.length ? (extent = typeof _ === "function" ? _ : constant$7(number2(_)), brush) : extent;
       };
 
       brush.filter = function(_) {
-        return arguments.length ? (filter = typeof _ === "function" ? _ : constant$8(!!_), brush) : filter;
+        return arguments.length ? (filter = typeof _ === "function" ? _ : constant$7(!!_), brush) : filter;
       };
 
       brush.touchable = function(_) {
-        return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$8(!!_), brush) : touchable;
+        return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$7(!!_), brush) : touchable;
       };
 
       brush.handleSize = function(_) {
@@ -6304,7 +6306,7 @@ var app = (function () {
     var pi$3 = Math.PI;
     var halfPi$2 = pi$3 / 2;
     var tau$4 = pi$3 * 2;
-    var max$2 = Math.max;
+    var max$1 = Math.max;
     var epsilon$4 = 1e-12;
 
     function range$1(i, j) {
@@ -6356,7 +6358,7 @@ var app = (function () {
           for (let j = 0; j < n; ++j) x += matrix[i * n + j] + directed * matrix[j * n + i];
           k += groupSums[i] = x;
         }
-        k = max$2(0, tau$4 - padAngle * n) / k;
+        k = max$1(0, tau$4 - padAngle * n) / k;
         dx = k ? padAngle : tau$4 / n;
 
         // Compute the angles for each group and constituent chord.
@@ -6410,7 +6412,7 @@ var app = (function () {
       }
 
       chord.padAngle = function(_) {
-        return arguments.length ? (padAngle = max$2(0, _), chord) : padAngle;
+        return arguments.length ? (padAngle = max$1(0, _), chord) : padAngle;
       };
 
       chord.sortGroups = function(_) {
@@ -6559,7 +6561,7 @@ var app = (function () {
 
     var slice$2 = Array.prototype.slice;
 
-    function constant$7(x) {
+    function constant$6(x) {
       return function() {
         return x;
       };
@@ -6645,31 +6647,31 @@ var app = (function () {
       }
 
       if (headRadius) ribbon.headRadius = function(_) {
-        return arguments.length ? (headRadius = typeof _ === "function" ? _ : constant$7(+_), ribbon) : headRadius;
+        return arguments.length ? (headRadius = typeof _ === "function" ? _ : constant$6(+_), ribbon) : headRadius;
       };
 
       ribbon.radius = function(_) {
-        return arguments.length ? (sourceRadius = targetRadius = typeof _ === "function" ? _ : constant$7(+_), ribbon) : sourceRadius;
+        return arguments.length ? (sourceRadius = targetRadius = typeof _ === "function" ? _ : constant$6(+_), ribbon) : sourceRadius;
       };
 
       ribbon.sourceRadius = function(_) {
-        return arguments.length ? (sourceRadius = typeof _ === "function" ? _ : constant$7(+_), ribbon) : sourceRadius;
+        return arguments.length ? (sourceRadius = typeof _ === "function" ? _ : constant$6(+_), ribbon) : sourceRadius;
       };
 
       ribbon.targetRadius = function(_) {
-        return arguments.length ? (targetRadius = typeof _ === "function" ? _ : constant$7(+_), ribbon) : targetRadius;
+        return arguments.length ? (targetRadius = typeof _ === "function" ? _ : constant$6(+_), ribbon) : targetRadius;
       };
 
       ribbon.startAngle = function(_) {
-        return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$7(+_), ribbon) : startAngle;
+        return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$6(+_), ribbon) : startAngle;
       };
 
       ribbon.endAngle = function(_) {
-        return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$7(+_), ribbon) : endAngle;
+        return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$6(+_), ribbon) : endAngle;
       };
 
       ribbon.padAngle = function(_) {
-        return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$7(+_), ribbon) : padAngle;
+        return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$6(+_), ribbon) : padAngle;
       };
 
       ribbon.source = function(_) {
@@ -6699,7 +6701,7 @@ var app = (function () {
 
     var slice$1 = array$2.slice;
 
-    function ascending$2(a, b) {
+    function ascending$1(a, b) {
       return a - b;
     }
 
@@ -6709,7 +6711,7 @@ var app = (function () {
       return area;
     }
 
-    var constant$6 = x => () => x;
+    var constant$5 = x => () => x;
 
     function contains$2(ring, hole) {
       var i = -1, n = hole.length, c;
@@ -6771,11 +6773,11 @@ var app = (function () {
 
         // Convert number of thresholds into uniform thresholds.
         if (!Array.isArray(tz)) {
-          var domain = extent$2(values), start = domain[0], stop = domain[1];
-          tz = tickStep$1(start, stop, tz);
+          var domain = extent$1(values), start = domain[0], stop = domain[1];
+          tz = tickStep(start, stop, tz);
           tz = sequence(Math.floor(start / tz) * tz, Math.floor(stop / tz) * tz, tz);
         } else {
-          tz = tz.slice().sort(ascending$2);
+          tz = tz.slice().sort(ascending$1);
         }
 
         return tz.map(function(value) {
@@ -6927,7 +6929,7 @@ var app = (function () {
       };
 
       contours.thresholds = function(_) {
-        return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$6(slice$1.call(_)) : constant$6(_), contours) : threshold;
+        return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$5(slice$1.call(_)) : constant$5(_), contours) : threshold;
       };
 
       contours.smooth = function(_) {
@@ -7004,7 +7006,7 @@ var app = (function () {
           o = r * 3, // grid offset, to pad for blur
           n = (dx + o * 2) >> k, // grid width
           m = (dy + o * 2) >> k, // grid height
-          threshold = constant$6(20);
+          threshold = constant$5(20);
 
       function density(data) {
         var values0 = new Float32Array(n * m),
@@ -7031,8 +7033,8 @@ var app = (function () {
 
         // Convert number of thresholds into uniform thresholds.
         if (!Array.isArray(tz)) {
-          var stop = max$4(values0);
-          tz = tickStep$1(0, stop, tz);
+          var stop = max$3(values0);
+          tz = tickStep(0, stop, tz);
           tz = sequence(0, Math.floor(stop / tz) * tz, tz);
           tz.shift();
         }
@@ -7072,15 +7074,15 @@ var app = (function () {
       }
 
       density.x = function(_) {
-        return arguments.length ? (x = typeof _ === "function" ? _ : constant$6(+_), density) : x;
+        return arguments.length ? (x = typeof _ === "function" ? _ : constant$5(+_), density) : x;
       };
 
       density.y = function(_) {
-        return arguments.length ? (y = typeof _ === "function" ? _ : constant$6(+_), density) : y;
+        return arguments.length ? (y = typeof _ === "function" ? _ : constant$5(+_), density) : y;
       };
 
       density.weight = function(_) {
-        return arguments.length ? (weight = typeof _ === "function" ? _ : constant$6(+_), density) : weight;
+        return arguments.length ? (weight = typeof _ === "function" ? _ : constant$5(+_), density) : weight;
       };
 
       density.size = function(_) {
@@ -7097,7 +7099,7 @@ var app = (function () {
       };
 
       density.thresholds = function(_) {
-        return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$6(slice$1.call(_)) : constant$6(_), density) : threshold;
+        return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant$5(slice$1.call(_)) : constant$5(_), density) : threshold;
       };
 
       density.bandwidth = function(_) {
@@ -8218,27 +8220,27 @@ var app = (function () {
       }
     }
 
-    var EOL$1 = {},
-        EOF$1 = {},
-        QUOTE$1 = 34,
-        NEWLINE$1 = 10,
-        RETURN$1 = 13;
+    var EOL = {},
+        EOF = {},
+        QUOTE = 34,
+        NEWLINE = 10,
+        RETURN = 13;
 
-    function objectConverter$1(columns) {
+    function objectConverter(columns) {
       return new Function("d", "return {" + columns.map(function(name, i) {
         return JSON.stringify(name) + ": d[" + i + "] || \"\"";
       }).join(",") + "}");
     }
 
-    function customConverter$1(columns, f) {
-      var object = objectConverter$1(columns);
+    function customConverter(columns, f) {
+      var object = objectConverter(columns);
       return function(row, i) {
         return f(object(row), i, columns);
       };
     }
 
     // Compute unique columns in order of discovery.
-    function inferColumns$1(rows) {
+    function inferColumns(rows) {
       var columnSet = Object.create(null),
           columns = [];
 
@@ -8253,27 +8255,27 @@ var app = (function () {
       return columns;
     }
 
-    function pad$3(value, width) {
+    function pad$1(value, width) {
       var s = value + "", length = s.length;
       return length < width ? new Array(width - length + 1).join(0) + s : s;
     }
 
-    function formatYear$3(year) {
-      return year < 0 ? "-" + pad$3(-year, 6)
-        : year > 9999 ? "+" + pad$3(year, 6)
-        : pad$3(year, 4);
+    function formatYear$1(year) {
+      return year < 0 ? "-" + pad$1(-year, 6)
+        : year > 9999 ? "+" + pad$1(year, 6)
+        : pad$1(year, 4);
     }
 
-    function formatDate$1(date) {
+    function formatDate(date) {
       var hours = date.getUTCHours(),
           minutes = date.getUTCMinutes(),
           seconds = date.getUTCSeconds(),
           milliseconds = date.getUTCMilliseconds();
       return isNaN(date) ? "Invalid Date"
-          : formatYear$3(date.getUTCFullYear()) + "-" + pad$3(date.getUTCMonth() + 1, 2) + "-" + pad$3(date.getUTCDate(), 2)
-          + (milliseconds ? "T" + pad$3(hours, 2) + ":" + pad$3(minutes, 2) + ":" + pad$3(seconds, 2) + "." + pad$3(milliseconds, 3) + "Z"
-          : seconds ? "T" + pad$3(hours, 2) + ":" + pad$3(minutes, 2) + ":" + pad$3(seconds, 2) + "Z"
-          : minutes || hours ? "T" + pad$3(hours, 2) + ":" + pad$3(minutes, 2) + "Z"
+          : formatYear$1(date.getUTCFullYear()) + "-" + pad$1(date.getUTCMonth() + 1, 2) + "-" + pad$1(date.getUTCDate(), 2)
+          + (milliseconds ? "T" + pad$1(hours, 2) + ":" + pad$1(minutes, 2) + ":" + pad$1(seconds, 2) + "." + pad$1(milliseconds, 3) + "Z"
+          : seconds ? "T" + pad$1(hours, 2) + ":" + pad$1(minutes, 2) + ":" + pad$1(seconds, 2) + "Z"
+          : minutes || hours ? "T" + pad$1(hours, 2) + ":" + pad$1(minutes, 2) + "Z"
           : "");
     }
 
@@ -8284,7 +8286,7 @@ var app = (function () {
       function parse(text, f) {
         var convert, columns, rows = parseRows(text, function(row, i) {
           if (convert) return convert(row, i - 1);
-          columns = row, convert = f ? customConverter$1(row, f) : objectConverter$1(row);
+          columns = row, convert = f ? customConverter(row, f) : objectConverter(row);
         });
         rows.columns = columns || [];
         return rows;
@@ -8300,27 +8302,27 @@ var app = (function () {
             eol = false; // current token followed by EOL?
 
         // Strip the trailing newline.
-        if (text.charCodeAt(N - 1) === NEWLINE$1) --N;
-        if (text.charCodeAt(N - 1) === RETURN$1) --N;
+        if (text.charCodeAt(N - 1) === NEWLINE) --N;
+        if (text.charCodeAt(N - 1) === RETURN) --N;
 
         function token() {
-          if (eof) return EOF$1;
-          if (eol) return eol = false, EOL$1;
+          if (eof) return EOF;
+          if (eol) return eol = false, EOL;
 
           // Unescape quotes.
           var i, j = I, c;
-          if (text.charCodeAt(j) === QUOTE$1) {
-            while (I++ < N && text.charCodeAt(I) !== QUOTE$1 || text.charCodeAt(++I) === QUOTE$1);
+          if (text.charCodeAt(j) === QUOTE) {
+            while (I++ < N && text.charCodeAt(I) !== QUOTE || text.charCodeAt(++I) === QUOTE);
             if ((i = I) >= N) eof = true;
-            else if ((c = text.charCodeAt(I++)) === NEWLINE$1) eol = true;
-            else if (c === RETURN$1) { eol = true; if (text.charCodeAt(I) === NEWLINE$1) ++I; }
+            else if ((c = text.charCodeAt(I++)) === NEWLINE) eol = true;
+            else if (c === RETURN) { eol = true; if (text.charCodeAt(I) === NEWLINE) ++I; }
             return text.slice(j + 1, i - 1).replace(/""/g, "\"");
           }
 
           // Find next delimiter or newline.
           while (I < N) {
-            if ((c = text.charCodeAt(i = I++)) === NEWLINE$1) eol = true;
-            else if (c === RETURN$1) { eol = true; if (text.charCodeAt(I) === NEWLINE$1) ++I; }
+            if ((c = text.charCodeAt(i = I++)) === NEWLINE) eol = true;
+            else if (c === RETURN) { eol = true; if (text.charCodeAt(I) === NEWLINE) ++I; }
             else if (c !== DELIMITER) continue;
             return text.slice(j, i);
           }
@@ -8329,9 +8331,9 @@ var app = (function () {
           return eof = true, text.slice(j, N);
         }
 
-        while ((t = token()) !== EOF$1) {
+        while ((t = token()) !== EOF) {
           var row = [];
-          while (t !== EOL$1 && t !== EOF$1) row.push(t), t = token();
+          while (t !== EOL && t !== EOF) row.push(t), t = token();
           if (f && (row = f(row, n++)) == null) continue;
           rows.push(row);
         }
@@ -8348,12 +8350,12 @@ var app = (function () {
       }
 
       function format(rows, columns) {
-        if (columns == null) columns = inferColumns$1(rows);
+        if (columns == null) columns = inferColumns(rows);
         return [columns.map(formatValue).join(delimiter)].concat(preformatBody(rows, columns)).join("\n");
       }
 
       function formatBody(rows, columns) {
-        if (columns == null) columns = inferColumns$1(rows);
+        if (columns == null) columns = inferColumns(rows);
         return preformatBody(rows, columns).join("\n");
       }
 
@@ -8367,7 +8369,7 @@ var app = (function () {
 
       function formatValue(value) {
         return value == null ? ""
-            : value instanceof Date ? formatDate$1(value)
+            : value instanceof Date ? formatDate(value)
             : reFormat.test(value += "") ? "\"" + value.replace(/"/g, "\"\"") + "\""
             : value;
       }
@@ -8383,15 +8385,15 @@ var app = (function () {
       };
     }
 
-    var csv$2 = dsvFormat(",");
+    var csv$1 = dsvFormat(",");
 
-    var csvParse$1 = csv$2.parse;
-    var csvParseRows = csv$2.parseRows;
-    var csvFormat = csv$2.format;
-    var csvFormatBody = csv$2.formatBody;
-    var csvFormatRows = csv$2.formatRows;
-    var csvFormatRow = csv$2.formatRow;
-    var csvFormatValue = csv$2.formatValue;
+    var csvParse = csv$1.parse;
+    var csvParseRows = csv$1.parseRows;
+    var csvFormat = csv$1.format;
+    var csvFormatBody = csv$1.formatBody;
+    var csvFormatRows = csv$1.formatRows;
+    var csvFormatRow = csv$1.formatRow;
+    var csvFormatValue = csv$1.formatValue;
 
     var tsv$1 = dsvFormat("\t");
 
@@ -8403,7 +8405,7 @@ var app = (function () {
     var tsvFormatRow = tsv$1.formatRow;
     var tsvFormatValue = tsv$1.formatValue;
 
-    function autoType$1(object) {
+    function autoType(object) {
       for (var key in object) {
         var value = object[key].trim(), number, m;
         if (!value) value = null;
@@ -8412,7 +8414,7 @@ var app = (function () {
         else if (value === "NaN") value = NaN;
         else if (!isNaN(number = +value)) value = number;
         else if (m = value.match(/^([-+]\d{2})?\d{4}(-\d{2}(-\d{2})?)?(T\d{2}:\d{2}(:\d{2}(\.\d{3})?)?(Z|[-+]\d{2}:\d{2})?)?$/)) {
-          if (fixtz$1 && !!m[4] && !m[7]) value = value.replace(/-/g, "/").replace(/T/, " ");
+          if (fixtz && !!m[4] && !m[7]) value = value.replace(/-/g, "/").replace(/T/, " ");
           value = new Date(value);
         }
         else continue;
@@ -8422,7 +8424,7 @@ var app = (function () {
     }
 
     // https://github.com/d3/d3-dsv/issues/45
-    const fixtz$1 = new Date("2019-01-01T00:00").getHours() || new Date("2019-07-01T00:00").getHours();
+    const fixtz = new Date("2019-01-01T00:00").getHours() || new Date("2019-07-01T00:00").getHours();
 
     function responseBlob(response) {
       if (!response.ok) throw new Error(response.status + " " + response.statusText);
@@ -8460,7 +8462,7 @@ var app = (function () {
       };
     }
 
-    function dsv$1(delimiter, input, init, row) {
+    function dsv(delimiter, input, init, row) {
       if (arguments.length === 3 && typeof init === "function") row = init, init = undefined;
       var format = dsvFormat(delimiter);
       return text(input, init).then(function(response) {
@@ -8468,7 +8470,7 @@ var app = (function () {
       });
     }
 
-    var csv$1 = dsvParse(csvParse$1);
+    var csv = dsvParse(csvParse);
     var tsv = dsvParse(tsvParse);
 
     function image(input, init) {
@@ -8950,7 +8952,7 @@ var app = (function () {
     treeProto.x = tree_x;
     treeProto.y = tree_y;
 
-    function constant$5(x) {
+    function constant$4(x) {
       return function() {
         return x;
       };
@@ -8975,7 +8977,7 @@ var app = (function () {
           strength = 1,
           iterations = 1;
 
-      if (typeof radius !== "function") radius = constant$5(radius == null ? 1 : +radius);
+      if (typeof radius !== "function") radius = constant$4(radius == null ? 1 : +radius);
 
       function force() {
         var i, n = nodes.length,
@@ -9051,7 +9053,7 @@ var app = (function () {
       };
 
       force.radius = function(_) {
-        return arguments.length ? (radius = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : radius;
+        return arguments.length ? (radius = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : radius;
       };
 
       return force;
@@ -9071,7 +9073,7 @@ var app = (function () {
       var id = index$3,
           strength = defaultStrength,
           strengths,
-          distance = constant$5(30),
+          distance = constant$4(30),
           distances,
           nodes,
           count,
@@ -9162,11 +9164,11 @@ var app = (function () {
       };
 
       force.strength = function(_) {
-        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$5(+_), initializeStrength(), force) : strength;
+        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$4(+_), initializeStrength(), force) : strength;
       };
 
       force.distance = function(_) {
-        return arguments.length ? (distance = typeof _ === "function" ? _ : constant$5(+_), initializeDistance(), force) : distance;
+        return arguments.length ? (distance = typeof _ === "function" ? _ : constant$4(+_), initializeDistance(), force) : distance;
       };
 
       return force;
@@ -9340,7 +9342,7 @@ var app = (function () {
           node,
           random,
           alpha,
-          strength = constant$5(-30),
+          strength = constant$4(-30),
           strengths,
           distanceMin2 = 1,
           distanceMax2 = Infinity,
@@ -9429,7 +9431,7 @@ var app = (function () {
       };
 
       force.strength = function(_) {
-        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : strength;
+        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : strength;
       };
 
       force.distanceMin = function(_) {
@@ -9449,11 +9451,11 @@ var app = (function () {
 
     function radial$1(radius, x, y) {
       var nodes,
-          strength = constant$5(0.1),
+          strength = constant$4(0.1),
           strengths,
           radiuses;
 
-      if (typeof radius !== "function") radius = constant$5(+radius);
+      if (typeof radius !== "function") radius = constant$4(+radius);
       if (x == null) x = 0;
       if (y == null) y = 0;
 
@@ -9485,11 +9487,11 @@ var app = (function () {
       };
 
       force.strength = function(_) {
-        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : strength;
+        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : strength;
       };
 
       force.radius = function(_) {
-        return arguments.length ? (radius = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : radius;
+        return arguments.length ? (radius = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : radius;
       };
 
       force.x = function(_) {
@@ -9504,12 +9506,12 @@ var app = (function () {
     }
 
     function x$1(x) {
-      var strength = constant$5(0.1),
+      var strength = constant$4(0.1),
           nodes,
           strengths,
           xz;
 
-      if (typeof x !== "function") x = constant$5(x == null ? 0 : +x);
+      if (typeof x !== "function") x = constant$4(x == null ? 0 : +x);
 
       function force(alpha) {
         for (var i = 0, n = nodes.length, node; i < n; ++i) {
@@ -9533,23 +9535,23 @@ var app = (function () {
       };
 
       force.strength = function(_) {
-        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : strength;
+        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : strength;
       };
 
       force.x = function(_) {
-        return arguments.length ? (x = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : x;
+        return arguments.length ? (x = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : x;
       };
 
       return force;
     }
 
     function y$1(y) {
-      var strength = constant$5(0.1),
+      var strength = constant$4(0.1),
           nodes,
           strengths,
           yz;
 
-      if (typeof y !== "function") y = constant$5(y == null ? 0 : +y);
+      if (typeof y !== "function") y = constant$4(y == null ? 0 : +y);
 
       function force(alpha) {
         for (var i = 0, n = nodes.length, node; i < n; ++i) {
@@ -9573,17 +9575,17 @@ var app = (function () {
       };
 
       force.strength = function(_) {
-        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : strength;
+        return arguments.length ? (strength = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : strength;
       };
 
       force.y = function(_) {
-        return arguments.length ? (y = typeof _ === "function" ? _ : constant$5(+_), initialize(), force) : y;
+        return arguments.length ? (y = typeof _ === "function" ? _ : constant$4(+_), initialize(), force) : y;
       };
 
       return force;
     }
 
-    function formatDecimal$1(x) {
+    function formatDecimal(x) {
       return Math.abs(x = Math.round(x)) >= 1e21
           ? x.toLocaleString("en").replace(/,/g, "")
           : x.toString(10);
@@ -9592,7 +9594,7 @@ var app = (function () {
     // Computes the decimal coefficient and exponent of the specified number x with
     // significant digits p, where x is positive and p is in [1, 21] or undefined.
     // For example, formatDecimalParts(1.23) returns ["123", 0].
-    function formatDecimalParts$1(x, p) {
+    function formatDecimalParts(x, p) {
       if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
       var i, coefficient = x.slice(0, i);
 
@@ -9604,11 +9606,11 @@ var app = (function () {
       ];
     }
 
-    function exponent$1(x) {
-      return x = formatDecimalParts$1(Math.abs(x)), x ? x[1] : NaN;
+    function exponent(x) {
+      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
     }
 
-    function formatGroup$1(grouping, thousands) {
+    function formatGroup(grouping, thousands) {
       return function(value, width) {
         var i = value.length,
             t = [],
@@ -9627,7 +9629,7 @@ var app = (function () {
       };
     }
 
-    function formatNumerals$1(numerals) {
+    function formatNumerals(numerals) {
       return function(value) {
         return value.replace(/[0-9]/g, function(i) {
           return numerals[+i];
@@ -9636,12 +9638,12 @@ var app = (function () {
     }
 
     // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-    var re$1 = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 
-    function formatSpecifier$1(specifier) {
-      if (!(match = re$1.exec(specifier))) throw new Error("invalid format: " + specifier);
+    function formatSpecifier(specifier) {
+      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
       var match;
-      return new FormatSpecifier$1({
+      return new FormatSpecifier({
         fill: match[1],
         align: match[2],
         sign: match[3],
@@ -9655,9 +9657,9 @@ var app = (function () {
       });
     }
 
-    formatSpecifier$1.prototype = FormatSpecifier$1.prototype; // instanceof
+    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
-    function FormatSpecifier$1(specifier) {
+    function FormatSpecifier(specifier) {
       this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
       this.align = specifier.align === undefined ? ">" : specifier.align + "";
       this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
@@ -9670,7 +9672,7 @@ var app = (function () {
       this.type = specifier.type === undefined ? "" : specifier.type + "";
     }
 
-    FormatSpecifier$1.prototype.toString = function() {
+    FormatSpecifier.prototype.toString = function() {
       return this.fill
           + this.align
           + this.sign
@@ -9684,7 +9686,7 @@ var app = (function () {
     };
 
     // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-    function formatTrim$1(s) {
+    function formatTrim(s) {
       out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
         switch (s[i]) {
           case ".": i0 = i1 = i; break;
@@ -9695,23 +9697,23 @@ var app = (function () {
       return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
     }
 
-    var prefixExponent$1;
+    var prefixExponent;
 
-    function formatPrefixAuto$1(x, p) {
-      var d = formatDecimalParts$1(x, p);
+    function formatPrefixAuto(x, p) {
+      var d = formatDecimalParts(x, p);
       if (!d) return x + "";
       var coefficient = d[0],
           exponent = d[1],
-          i = exponent - (prefixExponent$1 = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
           n = coefficient.length;
       return i === n ? coefficient
           : i > n ? coefficient + new Array(i - n + 1).join("0")
           : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-          : "0." + new Array(1 - i).join("0") + formatDecimalParts$1(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
     }
 
-    function formatRounded$1(x, p) {
-      var d = formatDecimalParts$1(x, p);
+    function formatRounded(x, p) {
+      var d = formatDecimalParts(x, p);
       if (!d) return x + "";
       var coefficient = d[0],
           exponent = d[1];
@@ -9720,41 +9722,41 @@ var app = (function () {
           : coefficient + new Array(exponent - coefficient.length + 2).join("0");
     }
 
-    var formatTypes$1 = {
+    var formatTypes = {
       "%": (x, p) => (x * 100).toFixed(p),
       "b": (x) => Math.round(x).toString(2),
       "c": (x) => x + "",
-      "d": formatDecimal$1,
+      "d": formatDecimal,
       "e": (x, p) => x.toExponential(p),
       "f": (x, p) => x.toFixed(p),
       "g": (x, p) => x.toPrecision(p),
       "o": (x) => Math.round(x).toString(8),
-      "p": (x, p) => formatRounded$1(x * 100, p),
-      "r": formatRounded$1,
-      "s": formatPrefixAuto$1,
+      "p": (x, p) => formatRounded(x * 100, p),
+      "r": formatRounded,
+      "s": formatPrefixAuto,
       "X": (x) => Math.round(x).toString(16).toUpperCase(),
       "x": (x) => Math.round(x).toString(16)
     };
 
-    function identity$8(x) {
+    function identity$6(x) {
       return x;
     }
 
-    var map$1 = Array.prototype.map,
-        prefixes$1 = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+    var map = Array.prototype.map,
+        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
-    function formatLocale$3(locale) {
-      var group = locale.grouping === undefined || locale.thousands === undefined ? identity$8 : formatGroup$1(map$1.call(locale.grouping, Number), locale.thousands + ""),
+    function formatLocale$1(locale) {
+      var group = locale.grouping === undefined || locale.thousands === undefined ? identity$6 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
           currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
           currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
           decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-          numerals = locale.numerals === undefined ? identity$8 : formatNumerals$1(map$1.call(locale.numerals, String)),
+          numerals = locale.numerals === undefined ? identity$6 : formatNumerals(map.call(locale.numerals, String)),
           percent = locale.percent === undefined ? "%" : locale.percent + "",
           minus = locale.minus === undefined ? "−" : locale.minus + "",
           nan = locale.nan === undefined ? "NaN" : locale.nan + "";
 
       function newFormat(specifier) {
-        specifier = formatSpecifier$1(specifier);
+        specifier = formatSpecifier(specifier);
 
         var fill = specifier.fill,
             align = specifier.align,
@@ -9771,7 +9773,7 @@ var app = (function () {
         if (type === "n") comma = true, type = "g";
 
         // The "" type, and any invalid type, is an alias for ".12~g".
-        else if (!formatTypes$1[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
 
         // If zero fill is specified, padding goes after sign and before digits.
         if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
@@ -9784,7 +9786,7 @@ var app = (function () {
         // What format function should we use?
         // Is this an integer type?
         // Can this type generate exponential notation?
-        var formatType = formatTypes$1[type],
+        var formatType = formatTypes[type],
             maybeSuffix = /[defgprs%]/.test(type);
 
         // Set the default precision if not specified,
@@ -9813,14 +9815,14 @@ var app = (function () {
             value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
 
             // Trim insignificant zeros.
-            if (trim) value = formatTrim$1(value);
+            if (trim) value = formatTrim(value);
 
             // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
             if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
 
             // Compute the prefix and suffix.
             valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-            valueSuffix = (type === "s" ? prefixes$1[8 + prefixExponent$1 / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
 
             // Break the formatted value into the integer “value” part that can be
             // grouped, and fractional or exponential “suffix” part that is not.
@@ -9865,10 +9867,10 @@ var app = (function () {
       }
 
       function formatPrefix(specifier, value) {
-        var f = newFormat((specifier = formatSpecifier$1(specifier), specifier.type = "f", specifier)),
-            e = Math.max(-8, Math.min(8, Math.floor(exponent$1(value) / 3))) * 3,
+        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
             k = Math.pow(10, -e),
-            prefix = prefixes$1[8 + e / 3];
+            prefix = prefixes[8 + e / 3];
         return function(value) {
           return f(k * value) + prefix;
         };
@@ -9880,35 +9882,48 @@ var app = (function () {
       };
     }
 
-    var locale$3;
-    var format$1;
-    var formatPrefix$1;
+    var locale$1;
+    var format;
+    var formatPrefix;
 
-    defaultLocale$3({
+    defaultLocale$1({
       thousands: ",",
       grouping: [3],
       currency: ["$", ""]
     });
 
-    function defaultLocale$3(definition) {
-      locale$3 = formatLocale$3(definition);
-      format$1 = locale$3.format;
-      formatPrefix$1 = locale$3.formatPrefix;
-      return locale$3;
+    function defaultLocale$1(definition) {
+      locale$1 = formatLocale$1(definition);
+      format = locale$1.format;
+      formatPrefix = locale$1.formatPrefix;
+      return locale$1;
     }
 
-    function precisionFixed$1(step) {
-      return Math.max(0, -exponent$1(Math.abs(step)));
+    function precisionFixed(step) {
+      return Math.max(0, -exponent(Math.abs(step)));
     }
 
-    function precisionPrefix$1(step, value) {
-      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent$1(value) / 3))) * 3 - exponent$1(Math.abs(step)));
+    function precisionPrefix(step, value) {
+      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
     }
 
-    function precisionRound$1(step, max) {
+    function precisionRound(step, max) {
       step = Math.abs(step), max = Math.abs(max) - step;
-      return Math.max(0, exponent$1(max) - exponent$1(step)) + 1;
+      return Math.max(0, exponent(max) - exponent(step)) + 1;
     }
+
+    var src$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        formatDefaultLocale: defaultLocale$1,
+        get format () { return format; },
+        get formatPrefix () { return formatPrefix; },
+        formatLocale: formatLocale$1,
+        formatSpecifier: formatSpecifier,
+        FormatSpecifier: FormatSpecifier,
+        precisionFixed: precisionFixed,
+        precisionPrefix: precisionPrefix,
+        precisionRound: precisionRound
+    });
 
     var epsilon$1 = 1e-6;
     var epsilon2 = 1e-12;
@@ -10435,7 +10450,7 @@ var app = (function () {
       return [atan2$1(y, x) * degrees, asin$1(z / m) * degrees];
     }
 
-    function constant$4(x) {
+    function constant$3(x) {
       return function() {
         return x;
       };
@@ -10557,9 +10572,9 @@ var app = (function () {
     }
 
     function circle$2() {
-      var center = constant$4([0, 0]),
-          radius = constant$4(90),
-          precision = constant$4(6),
+      var center = constant$3([0, 0]),
+          radius = constant$3(90),
+          precision = constant$3(6),
           ring,
           rotate,
           stream = {point: point};
@@ -10582,15 +10597,15 @@ var app = (function () {
       }
 
       circle.center = function(_) {
-        return arguments.length ? (center = typeof _ === "function" ? _ : constant$4([+_[0], +_[1]]), circle) : center;
+        return arguments.length ? (center = typeof _ === "function" ? _ : constant$3([+_[0], +_[1]]), circle) : center;
       };
 
       circle.radius = function(_) {
-        return arguments.length ? (radius = typeof _ === "function" ? _ : constant$4(+_), circle) : radius;
+        return arguments.length ? (radius = typeof _ === "function" ? _ : constant$3(+_), circle) : radius;
       };
 
       circle.precision = function(_) {
-        return arguments.length ? (precision = typeof _ === "function" ? _ : constant$4(+_), circle) : precision;
+        return arguments.length ? (precision = typeof _ === "function" ? _ : constant$3(+_), circle) : precision;
       };
 
       return circle;
@@ -11409,7 +11424,7 @@ var app = (function () {
       };
     }
 
-    function extent$1() {
+    function extent() {
       var x0 = 0,
           y0 = 0,
           x1 = 960,
@@ -11478,12 +11493,12 @@ var app = (function () {
     }
 
     var coordinates = [null, null],
-        object$1 = {type: "LineString", coordinates: coordinates};
+        object = {type: "LineString", coordinates: coordinates};
 
     function distance(a, b) {
       coordinates[0] = a;
       coordinates[1] = b;
-      return length$1(object$1);
+      return length$1(object);
     }
 
     var containsObjectType = {
@@ -11683,7 +11698,7 @@ var app = (function () {
       return graticule()();
     }
 
-    function interpolate$1(a, b) {
+    function interpolate(a, b) {
       var x0 = a[0] * radians,
           y0 = a[1] * radians,
           x1 = b[0] * radians,
@@ -11718,7 +11733,7 @@ var app = (function () {
       return interpolate;
     }
 
-    var identity$7 = x => x;
+    var identity$5 = x => x;
 
     var areaSum = new Adder(),
         areaRingSum = new Adder(),
@@ -12064,7 +12079,7 @@ var app = (function () {
       };
 
       path.projection = function(_) {
-        return arguments.length ? (projectionStream = _ == null ? (projection = null, identity$7) : (projection = _).stream, path) : projection;
+        return arguments.length ? (projectionStream = _ == null ? (projection = null, identity$5) : (projection = _).stream, path) : projection;
       };
 
       path.context = function(_) {
@@ -12085,11 +12100,11 @@ var app = (function () {
 
     function transform$1(methods) {
       return {
-        stream: transformer$4(methods)
+        stream: transformer$3(methods)
       };
     }
 
-    function transformer$4(methods) {
+    function transformer$3(methods) {
       return function(stream) {
         var s = new TransformStream;
         for (var key in methods) s[key] = methods[key];
@@ -12163,7 +12178,7 @@ var app = (function () {
     }
 
     function resampleNone(project) {
-      return transformer$4({
+      return transformer$3({
         point: function(x, y) {
           x = project(x, y);
           this.stream.point(x[0], x[1]);
@@ -12254,14 +12269,14 @@ var app = (function () {
       };
     }
 
-    var transformRadians = transformer$4({
+    var transformRadians = transformer$3({
       point: function(x, y) {
         this.stream.point(x * radians, y * radians);
       }
     });
 
     function transformRotate(rotate) {
-      return transformer$4({
+      return transformer$3({
         point: function(x, y) {
           var r = rotate(x, y);
           return this.stream.point(r[0], r[1]);
@@ -12314,7 +12329,7 @@ var app = (function () {
           sx = 1, // reflectX
           sy = 1, // reflectX
           theta = null, preclip = clipAntimeridian, // pre-clip angle
-          x0 = null, y0, x1, y1, postclip = identity$7, // post-clip extent
+          x0 = null, y0, x1, y1, postclip = identity$5, // post-clip extent
           delta2 = 0.5, // precision
           projectResample,
           projectTransform,
@@ -12348,7 +12363,7 @@ var app = (function () {
       };
 
       projection.clipExtent = function(_) {
-        return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$7) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+        return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$5) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
       };
 
       projection.scale = function(_) {
@@ -12819,18 +12834,18 @@ var app = (function () {
           .clipAngle(60);
     }
 
-    function identity$6() {
+    function identity$4() {
       var k = 1, tx = 0, ty = 0, sx = 1, sy = 1, // scale, translate and reflect
           alpha = 0, ca, sa, // angle
           x0 = null, y0, x1, y1, // clip extent
           kx = 1, ky = 1,
-          transform = transformer$4({
+          transform = transformer$3({
             point: function(x, y) {
               var p = projection([x, y]);
               this.stream.point(p[0], p[1]);
             }
           }),
-          postclip = identity$7,
+          postclip = identity$5,
           cache,
           cacheStream;
 
@@ -12866,7 +12881,7 @@ var app = (function () {
         return arguments.length ? (postclip = _, x0 = y0 = x1 = y1 = null, reset()) : postclip;
       };
       projection.clipExtent = function(_) {
-        return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$7) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+        return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity$5) : clipRectangle(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
       };
       projection.scale = function(_) {
         return arguments.length ? (k = +_, reset()) : k;
@@ -13563,7 +13578,7 @@ var app = (function () {
       return 0;
     }
 
-    function constant$3(x) {
+    function constant$2(x) {
       return function() {
         return x;
       };
@@ -13603,7 +13618,7 @@ var app = (function () {
       };
 
       pack.padding = function(x) {
-        return arguments.length ? (padding = typeof x === "function" ? x : constant$3(+x), pack) : padding;
+        return arguments.length ? (padding = typeof x === "function" ? x : constant$2(+x), pack) : padding;
       };
 
       return pack;
@@ -14165,7 +14180,7 @@ var app = (function () {
       };
 
       treemap.paddingInner = function(x) {
-        return arguments.length ? (paddingInner = typeof x === "function" ? x : constant$3(+x), treemap) : paddingInner;
+        return arguments.length ? (paddingInner = typeof x === "function" ? x : constant$2(+x), treemap) : paddingInner;
       };
 
       treemap.paddingOuter = function(x) {
@@ -14173,19 +14188,19 @@ var app = (function () {
       };
 
       treemap.paddingTop = function(x) {
-        return arguments.length ? (paddingTop = typeof x === "function" ? x : constant$3(+x), treemap) : paddingTop;
+        return arguments.length ? (paddingTop = typeof x === "function" ? x : constant$2(+x), treemap) : paddingTop;
       };
 
       treemap.paddingRight = function(x) {
-        return arguments.length ? (paddingRight = typeof x === "function" ? x : constant$3(+x), treemap) : paddingRight;
+        return arguments.length ? (paddingRight = typeof x === "function" ? x : constant$2(+x), treemap) : paddingRight;
       };
 
       treemap.paddingBottom = function(x) {
-        return arguments.length ? (paddingBottom = typeof x === "function" ? x : constant$3(+x), treemap) : paddingBottom;
+        return arguments.length ? (paddingBottom = typeof x === "function" ? x : constant$2(+x), treemap) : paddingBottom;
       };
 
       treemap.paddingLeft = function(x) {
-        return arguments.length ? (paddingLeft = typeof x === "function" ? x : constant$3(+x), treemap) : paddingLeft;
+        return arguments.length ? (paddingLeft = typeof x === "function" ? x : constant$2(+x), treemap) : paddingLeft;
       };
 
       return treemap;
@@ -14515,7 +14530,7 @@ var app = (function () {
       return randomBates;
     })(defaultSource);
 
-    var exponential$1 = (function sourceRandomExponential(source) {
+    var exponential = (function sourceRandomExponential(source) {
       function randomExponential(lambda) {
         return function() {
           return -Math.log1p(-source()) / lambda;
@@ -14570,7 +14585,7 @@ var app = (function () {
       return randomGeometric;
     })(defaultSource);
 
-    var gamma$1 = (function sourceRandomGamma(source) {
+    var gamma = (function sourceRandomGamma(source) {
       var randomNormal = normal.source(source)();
 
       function randomGamma(k, theta) {
@@ -14603,7 +14618,7 @@ var app = (function () {
     })(defaultSource);
 
     var beta = (function sourceRandomBeta(source) {
-      var G = gamma$1.source(source);
+      var G = gamma.source(source);
 
       function randomBeta(alpha, beta) {
         var X = G(alpha),
@@ -14705,7 +14720,7 @@ var app = (function () {
     })(defaultSource);
 
     var poisson = (function sourceRandomPoisson(source) {
-      var G = gamma$1.source(source),
+      var G = gamma.source(source),
           B = binomial.source(source);
 
       function randomPoisson(lambda) {
@@ -14738,7 +14753,7 @@ var app = (function () {
       return () => (state = mul * state + inc | 0, eps * (state >>> 0));
     }
 
-    function initRange$1(domain, range) {
+    function initRange(domain, range) {
       switch (arguments.length) {
         case 0: break;
         case 1: this.range(domain); break;
@@ -14805,7 +14820,7 @@ var app = (function () {
         return ordinal(domain, range).unknown(unknown);
       };
 
-      initRange$1.apply(scale, arguments);
+      initRange.apply(scale, arguments);
 
       return scale;
     }
@@ -14887,7 +14902,7 @@ var app = (function () {
             .align(align);
       };
 
-      return initRange$1.apply(rescale(), arguments);
+      return initRange.apply(rescale(), arguments);
     }
 
     function pointish(scale) {
@@ -14908,29 +14923,29 @@ var app = (function () {
       return pointish(band.apply(null, arguments).paddingInner(1));
     }
 
-    function constants$1(x) {
+    function constants(x) {
       return function() {
         return x;
       };
     }
 
-    function number$4(x) {
+    function number$1(x) {
       return +x;
     }
 
-    var unit$1 = [0, 1];
+    var unit = [0, 1];
 
-    function identity$5(x) {
+    function identity$3(x) {
       return x;
     }
 
-    function normalize$1(a, b) {
+    function normalize(a, b) {
       return (b -= (a = +a))
           ? function(x) { return (x - a) / b; }
-          : constants$1(isNaN(b) ? NaN : 0.5);
+          : constants(isNaN(b) ? NaN : 0.5);
     }
 
-    function clamper$1(a, b) {
+    function clamper(a, b) {
       var t;
       if (a > b) t = a, a = b, b = t;
       return function(x) { return Math.max(a, Math.min(b, x)); };
@@ -14938,14 +14953,14 @@ var app = (function () {
 
     // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
     // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
-    function bimap$1(domain, range, interpolate) {
+    function bimap(domain, range, interpolate) {
       var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
-      if (d1 < d0) d0 = normalize$1(d1, d0), r0 = interpolate(r1, r0);
-      else d0 = normalize$1(d0, d1), r0 = interpolate(r0, r1);
+      if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+      else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
       return function(x) { return r0(d0(x)); };
     }
 
-    function polymap$1(domain, range, interpolate) {
+    function polymap(domain, range, interpolate) {
       var j = Math.min(domain.length, range.length) - 1,
           d = new Array(j),
           r = new Array(j),
@@ -14958,17 +14973,17 @@ var app = (function () {
       }
 
       while (++i < j) {
-        d[i] = normalize$1(domain[i], domain[i + 1]);
+        d[i] = normalize(domain[i], domain[i + 1]);
         r[i] = interpolate(range[i], range[i + 1]);
       }
 
       return function(x) {
-        var i = bisectRight$1(domain, x, 1, j) - 1;
+        var i = bisectRight(domain, x, 1, j) - 1;
         return r[i](d[i](x));
       };
     }
 
-    function copy$2(source, target) {
+    function copy$1(source, target) {
       return target
           .domain(source.domain())
           .range(source.range())
@@ -14977,36 +14992,36 @@ var app = (function () {
           .unknown(source.unknown());
     }
 
-    function transformer$3() {
-      var domain = unit$1,
-          range = unit$1,
-          interpolate = interpolate$3,
+    function transformer$2() {
+      var domain = unit,
+          range = unit,
+          interpolate = interpolate$2,
           transform,
           untransform,
           unknown,
-          clamp = identity$5,
+          clamp = identity$3,
           piecewise,
           output,
           input;
 
       function rescale() {
         var n = Math.min(domain.length, range.length);
-        if (clamp !== identity$5) clamp = clamper$1(domain[0], domain[n - 1]);
-        piecewise = n > 2 ? polymap$1 : bimap$1;
+        if (clamp !== identity$3) clamp = clamper(domain[0], domain[n - 1]);
+        piecewise = n > 2 ? polymap : bimap;
         output = input = null;
         return scale;
       }
 
       function scale(x) {
-        return isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
+        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate)))(transform(clamp(x)));
       }
 
       scale.invert = function(y) {
-        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber$1)))(y)));
+        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
       };
 
       scale.domain = function(_) {
-        return arguments.length ? (domain = Array.from(_, number$4), rescale()) : domain.slice();
+        return arguments.length ? (domain = Array.from(_, number$1), rescale()) : domain.slice();
       };
 
       scale.range = function(_) {
@@ -15014,11 +15029,11 @@ var app = (function () {
       };
 
       scale.rangeRound = function(_) {
-        return range = Array.from(_), interpolate = interpolateRound$1, rescale();
+        return range = Array.from(_), interpolate = interpolateRound, rescale();
       };
 
       scale.clamp = function(_) {
-        return arguments.length ? (clamp = _ ? true : identity$5, rescale()) : clamp !== identity$5;
+        return arguments.length ? (clamp = _ ? true : identity$3, rescale()) : clamp !== identity$3;
       };
 
       scale.interpolate = function(_) {
@@ -15035,48 +15050,48 @@ var app = (function () {
       };
     }
 
-    function continuous$1() {
-      return transformer$3()(identity$5, identity$5);
+    function continuous() {
+      return transformer$2()(identity$3, identity$3);
     }
 
-    function tickFormat$1(start, stop, count, specifier) {
-      var step = tickStep$1(start, stop, count),
+    function tickFormat(start, stop, count, specifier) {
+      var step = tickStep(start, stop, count),
           precision;
-      specifier = formatSpecifier$1(specifier == null ? ",f" : specifier);
+      specifier = formatSpecifier(specifier == null ? ",f" : specifier);
       switch (specifier.type) {
         case "s": {
           var value = Math.max(Math.abs(start), Math.abs(stop));
-          if (specifier.precision == null && !isNaN(precision = precisionPrefix$1(step, value))) specifier.precision = precision;
-          return formatPrefix$1(specifier, value);
+          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
+          return formatPrefix(specifier, value);
         }
         case "":
         case "e":
         case "g":
         case "p":
         case "r": {
-          if (specifier.precision == null && !isNaN(precision = precisionRound$1(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
           break;
         }
         case "f":
         case "%": {
-          if (specifier.precision == null && !isNaN(precision = precisionFixed$1(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
           break;
         }
       }
-      return format$1(specifier);
+      return format(specifier);
     }
 
-    function linearish$1(scale) {
+    function linearish(scale) {
       var domain = scale.domain;
 
       scale.ticks = function(count) {
         var d = domain();
-        return ticks$1(d[0], d[d.length - 1], count == null ? 10 : count);
+        return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
       };
 
       scale.tickFormat = function(count, specifier) {
         var d = domain();
-        return tickFormat$1(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+        return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
       };
 
       scale.nice = function(count) {
@@ -15097,7 +15112,7 @@ var app = (function () {
         }
         
         while (maxIter-- > 0) {
-          step = tickIncrement$1(start, stop, count);
+          step = tickIncrement(start, stop, count);
           if (step === prestep) {
             d[i0] = start;
             d[i1] = stop;
@@ -15120,29 +15135,29 @@ var app = (function () {
       return scale;
     }
 
-    function linear$2() {
-      var scale = continuous$1();
+    function linear() {
+      var scale = continuous();
 
       scale.copy = function() {
-        return copy$2(scale, linear$2());
+        return copy$1(scale, linear());
       };
 
-      initRange$1.apply(scale, arguments);
+      initRange.apply(scale, arguments);
 
-      return linearish$1(scale);
+      return linearish(scale);
     }
 
-    function identity$4(domain) {
+    function identity$2(domain) {
       var unknown;
 
       function scale(x) {
-        return isNaN(x = +x) ? unknown : x;
+        return x == null || isNaN(x = +x) ? unknown : x;
       }
 
       scale.invert = scale;
 
       scale.domain = scale.range = function(_) {
-        return arguments.length ? (domain = Array.from(_, number$4), scale) : domain.slice();
+        return arguments.length ? (domain = Array.from(_, number$1), scale) : domain.slice();
       };
 
       scale.unknown = function(_) {
@@ -15150,15 +15165,15 @@ var app = (function () {
       };
 
       scale.copy = function() {
-        return identity$4(domain).unknown(unknown);
+        return identity$2(domain).unknown(unknown);
       };
 
-      domain = arguments.length ? Array.from(domain, number$4) : [0, 1];
+      domain = arguments.length ? Array.from(domain, number$1) : [0, 1];
 
-      return linearish$1(scale);
+      return linearish(scale);
     }
 
-    function nice$1(domain, interval) {
+    function nice(domain, interval) {
       domain = domain.slice();
 
       var i0 = 0,
@@ -15275,9 +15290,9 @@ var app = (function () {
               z.push(t);
             }
           }
-          if (z.length * 2 < n) z = ticks$1(u, v, n);
+          if (z.length * 2 < n) z = ticks(u, v, n);
         } else {
-          z = ticks$1(i, j, Math.min(j - i, n)).map(pows);
+          z = ticks(i, j, Math.min(j - i, n)).map(pows);
         }
 
         return r ? z.reverse() : z;
@@ -15285,7 +15300,7 @@ var app = (function () {
 
       scale.tickFormat = function(count, specifier) {
         if (specifier == null) specifier = base === 10 ? ".0e" : ",";
-        if (typeof specifier !== "function") specifier = format$1(specifier);
+        if (typeof specifier !== "function") specifier = format(specifier);
         if (count === Infinity) return specifier;
         if (count == null) count = 10;
         var k = Math.max(1, base * count / scale.ticks().length); // TODO fast estimate?
@@ -15297,7 +15312,7 @@ var app = (function () {
       };
 
       scale.nice = function() {
-        return domain(nice$1(domain(), {
+        return domain(nice(domain(), {
           floor: function(x) { return pows(Math.floor(logs(x))); },
           ceil: function(x) { return pows(Math.ceil(logs(x))); }
         }));
@@ -15307,13 +15322,13 @@ var app = (function () {
     }
 
     function log() {
-      var scale = loggish(transformer$3()).domain([1, 10]);
+      var scale = loggish(transformer$2()).domain([1, 10]);
 
       scale.copy = function() {
-        return copy$2(scale, log()).base(scale.base());
+        return copy$1(scale, log()).base(scale.base());
       };
 
-      initRange$1.apply(scale, arguments);
+      initRange.apply(scale, arguments);
 
       return scale;
     }
@@ -15337,17 +15352,17 @@ var app = (function () {
         return arguments.length ? transform(transformSymlog(c = +_), transformSymexp(c)) : c;
       };
 
-      return linearish$1(scale);
+      return linearish(scale);
     }
 
     function symlog() {
-      var scale = symlogish(transformer$3());
+      var scale = symlogish(transformer$2());
 
       scale.copy = function() {
-        return copy$2(scale, symlog()).constant(scale.constant());
+        return copy$1(scale, symlog()).constant(scale.constant());
       };
 
-      return initRange$1.apply(scale, arguments);
+      return initRange.apply(scale, arguments);
     }
 
     function transformPow(exponent) {
@@ -15365,11 +15380,11 @@ var app = (function () {
     }
 
     function powish(transform) {
-      var scale = transform(identity$5, identity$5),
+      var scale = transform(identity$3, identity$3),
           exponent = 1;
 
       function rescale() {
-        return exponent === 1 ? transform(identity$5, identity$5)
+        return exponent === 1 ? transform(identity$3, identity$3)
             : exponent === 0.5 ? transform(transformSqrt, transformSquare)
             : transform(transformPow(exponent), transformPow(1 / exponent));
       }
@@ -15378,17 +15393,17 @@ var app = (function () {
         return arguments.length ? (exponent = +_, rescale()) : exponent;
       };
 
-      return linearish$1(scale);
+      return linearish(scale);
     }
 
     function pow() {
-      var scale = powish(transformer$3());
+      var scale = powish(transformer$2());
 
       scale.copy = function() {
-        return copy$2(scale, pow()).exponent(scale.exponent());
+        return copy$1(scale, pow()).exponent(scale.exponent());
       };
 
-      initRange$1.apply(scale, arguments);
+      initRange.apply(scale, arguments);
 
       return scale;
     }
@@ -15406,7 +15421,7 @@ var app = (function () {
     }
 
     function radial() {
-      var squared = continuous$1(),
+      var squared = continuous(),
           range = [0, 1],
           round = false,
           unknown;
@@ -15425,7 +15440,7 @@ var app = (function () {
       };
 
       scale.range = function(_) {
-        return arguments.length ? (squared.range((range = Array.from(_, number$4)).map(square$1)), scale) : range.slice();
+        return arguments.length ? (squared.range((range = Array.from(_, number$1)).map(square$1)), scale) : range.slice();
       };
 
       scale.rangeRound = function(_) {
@@ -15451,9 +15466,9 @@ var app = (function () {
             .unknown(unknown);
       };
 
-      initRange$1.apply(scale, arguments);
+      initRange.apply(scale, arguments);
 
-      return linearish$1(scale);
+      return linearish(scale);
     }
 
     function quantile() {
@@ -15470,7 +15485,7 @@ var app = (function () {
       }
 
       function scale(x) {
-        return isNaN(x = +x) ? unknown : range[bisectRight$1(thresholds, x)];
+        return x == null || isNaN(x = +x) ? unknown : range[bisectRight(thresholds, x)];
       }
 
       scale.invertExtent = function(y) {
@@ -15485,7 +15500,7 @@ var app = (function () {
         if (!arguments.length) return domain.slice();
         domain = [];
         for (let d of _) if (d != null && !isNaN(d = +d)) domain.push(d);
-        domain.sort(ascending$4);
+        domain.sort(ascending$3);
         return rescale();
       };
 
@@ -15508,7 +15523,7 @@ var app = (function () {
             .unknown(unknown);
       };
 
-      return initRange$1.apply(scale, arguments);
+      return initRange.apply(scale, arguments);
     }
 
     function quantize() {
@@ -15520,7 +15535,7 @@ var app = (function () {
           unknown;
 
       function scale(x) {
-        return x <= x ? range[bisectRight$1(domain, x, 0, n)] : unknown;
+        return x != null && x <= x ? range[bisectRight(domain, x, 0, n)] : unknown;
       }
 
       function rescale() {
@@ -15561,7 +15576,7 @@ var app = (function () {
             .unknown(unknown);
       };
 
-      return initRange$1.apply(linearish$1(scale), arguments);
+      return initRange.apply(linearish(scale), arguments);
     }
 
     function threshold$1() {
@@ -15571,7 +15586,7 @@ var app = (function () {
           n = 1;
 
       function scale(x) {
-        return x <= x ? range[bisectRight$1(domain, x, 0, n)] : unknown;
+        return x != null && x <= x ? range[bisectRight(domain, x, 0, n)] : unknown;
       }
 
       scale.domain = function(_) {
@@ -15598,13 +15613,13 @@ var app = (function () {
             .unknown(unknown);
       };
 
-      return initRange$1.apply(scale, arguments);
+      return initRange.apply(scale, arguments);
     }
 
-    var t0$1 = new Date,
-        t1$1 = new Date;
+    var t0 = new Date,
+        t1 = new Date;
 
-    function newInterval$1(floori, offseti, count, field) {
+    function newInterval(floori, offseti, count, field) {
 
       function interval(date) {
         return floori(date = arguments.length === 0 ? new Date : new Date(+date)), date;
@@ -15639,7 +15654,7 @@ var app = (function () {
       };
 
       interval.filter = function(test) {
-        return newInterval$1(function(date) {
+        return newInterval(function(date) {
           if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
         }, function(date, step) {
           if (date >= date) {
@@ -15654,9 +15669,9 @@ var app = (function () {
 
       if (count) {
         interval.count = function(start, end) {
-          t0$1.setTime(+start), t1$1.setTime(+end);
-          floori(t0$1), floori(t1$1);
-          return Math.floor(count(t0$1, t1$1));
+          t0.setTime(+start), t1.setTime(+end);
+          floori(t0), floori(t1);
+          return Math.floor(count(t0, t1));
         };
 
         interval.every = function(step) {
@@ -15672,7 +15687,7 @@ var app = (function () {
       return interval;
     }
 
-    var millisecond$1 = newInterval$1(function() {
+    var millisecond = newInterval(function() {
       // noop
     }, function(date, step) {
       date.setTime(+date + step);
@@ -15681,11 +15696,11 @@ var app = (function () {
     });
 
     // An optimized implementation for this simple case.
-    millisecond$1.every = function(k) {
+    millisecond.every = function(k) {
       k = Math.floor(k);
       if (!isFinite(k) || !(k > 0)) return null;
-      if (!(k > 1)) return millisecond$1;
-      return newInterval$1(function(date) {
+      if (!(k > 1)) return millisecond;
+      return newInterval(function(date) {
         date.setTime(Math.floor(date / k) * k);
       }, function(date, step) {
         date.setTime(+date + step * k);
@@ -15693,83 +15708,83 @@ var app = (function () {
         return (end - start) / k;
       });
     };
-    var milliseconds = millisecond$1.range;
+    var milliseconds = millisecond.range;
 
-    var durationSecond$3 = 1e3;
-    var durationMinute$3 = 6e4;
-    var durationHour$3 = 36e5;
-    var durationDay$3 = 864e5;
-    var durationWeek$3 = 6048e5;
+    var durationSecond$1 = 1e3;
+    var durationMinute$1 = 6e4;
+    var durationHour$1 = 36e5;
+    var durationDay$1 = 864e5;
+    var durationWeek$1 = 6048e5;
 
-    var second$1 = newInterval$1(function(date) {
+    var second = newInterval(function(date) {
       date.setTime(date - date.getMilliseconds());
     }, function(date, step) {
-      date.setTime(+date + step * durationSecond$3);
+      date.setTime(+date + step * durationSecond$1);
     }, function(start, end) {
-      return (end - start) / durationSecond$3;
+      return (end - start) / durationSecond$1;
     }, function(date) {
       return date.getUTCSeconds();
     });
-    var seconds = second$1.range;
+    var seconds = second.range;
 
-    var minute$1 = newInterval$1(function(date) {
-      date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$3);
+    var minute = newInterval(function(date) {
+      date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$1);
     }, function(date, step) {
-      date.setTime(+date + step * durationMinute$3);
+      date.setTime(+date + step * durationMinute$1);
     }, function(start, end) {
-      return (end - start) / durationMinute$3;
+      return (end - start) / durationMinute$1;
     }, function(date) {
       return date.getMinutes();
     });
-    var minutes = minute$1.range;
+    var minutes = minute.range;
 
-    var hour$1 = newInterval$1(function(date) {
-      date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$3 - date.getMinutes() * durationMinute$3);
+    var hour = newInterval(function(date) {
+      date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$1 - date.getMinutes() * durationMinute$1);
     }, function(date, step) {
-      date.setTime(+date + step * durationHour$3);
+      date.setTime(+date + step * durationHour$1);
     }, function(start, end) {
-      return (end - start) / durationHour$3;
+      return (end - start) / durationHour$1;
     }, function(date) {
       return date.getHours();
     });
-    var hours = hour$1.range;
+    var hours = hour.range;
 
-    var day$1 = newInterval$1(
+    var day = newInterval(
       date => date.setHours(0, 0, 0, 0),
       (date, step) => date.setDate(date.getDate() + step),
-      (start, end) => (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$3) / durationDay$3,
+      (start, end) => (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$1) / durationDay$1,
       date => date.getDate() - 1
     );
-    var days$8 = day$1.range;
+    var days$8 = day.range;
 
-    function weekday$1(i) {
-      return newInterval$1(function(date) {
+    function weekday(i) {
+      return newInterval(function(date) {
         date.setDate(date.getDate() - (date.getDay() + 7 - i) % 7);
         date.setHours(0, 0, 0, 0);
       }, function(date, step) {
         date.setDate(date.getDate() + step * 7);
       }, function(start, end) {
-        return (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$3) / durationWeek$3;
+        return (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$1) / durationWeek$1;
       });
     }
 
-    var sunday$1 = weekday$1(0);
-    var monday$1 = weekday$1(1);
-    var tuesday = weekday$1(2);
-    var wednesday = weekday$1(3);
-    var thursday$1 = weekday$1(4);
-    var friday = weekday$1(5);
-    var saturday = weekday$1(6);
+    var sunday = weekday(0);
+    var monday = weekday(1);
+    var tuesday = weekday(2);
+    var wednesday = weekday(3);
+    var thursday = weekday(4);
+    var friday = weekday(5);
+    var saturday = weekday(6);
 
-    var sundays = sunday$1.range;
-    var mondays = monday$1.range;
+    var sundays = sunday.range;
+    var mondays = monday.range;
     var tuesdays = tuesday.range;
     var wednesdays = wednesday.range;
-    var thursdays = thursday$1.range;
+    var thursdays = thursday.range;
     var fridays = friday.range;
     var saturdays = saturday.range;
 
-    var month$1 = newInterval$1(function(date) {
+    var month = newInterval(function(date) {
       date.setDate(1);
       date.setHours(0, 0, 0, 0);
     }, function(date, step) {
@@ -15779,9 +15794,9 @@ var app = (function () {
     }, function(date) {
       return date.getMonth();
     });
-    var months$8 = month$1.range;
+    var months$8 = month.range;
 
-    var year$1 = newInterval$1(function(date) {
+    var year = newInterval(function(date) {
       date.setMonth(0, 1);
       date.setHours(0, 0, 0, 0);
     }, function(date, step) {
@@ -15793,8 +15808,8 @@ var app = (function () {
     });
 
     // An optimized implementation for this simple case.
-    year$1.every = function(k) {
-      return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval$1(function(date) {
+    year.every = function(k) {
+      return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval(function(date) {
         date.setFullYear(Math.floor(date.getFullYear() / k) * k);
         date.setMonth(0, 1);
         date.setHours(0, 0, 0, 0);
@@ -15802,69 +15817,69 @@ var app = (function () {
         date.setFullYear(date.getFullYear() + step * k);
       });
     };
-    var years = year$1.range;
+    var years = year.range;
 
-    var utcMinute = newInterval$1(function(date) {
+    var utcMinute = newInterval(function(date) {
       date.setUTCSeconds(0, 0);
     }, function(date, step) {
-      date.setTime(+date + step * durationMinute$3);
+      date.setTime(+date + step * durationMinute$1);
     }, function(start, end) {
-      return (end - start) / durationMinute$3;
+      return (end - start) / durationMinute$1;
     }, function(date) {
       return date.getUTCMinutes();
     });
     var utcMinutes = utcMinute.range;
 
-    var utcHour = newInterval$1(function(date) {
+    var utcHour = newInterval(function(date) {
       date.setUTCMinutes(0, 0, 0);
     }, function(date, step) {
-      date.setTime(+date + step * durationHour$3);
+      date.setTime(+date + step * durationHour$1);
     }, function(start, end) {
-      return (end - start) / durationHour$3;
+      return (end - start) / durationHour$1;
     }, function(date) {
       return date.getUTCHours();
     });
     var utcHours = utcHour.range;
 
-    var utcDay$1 = newInterval$1(function(date) {
+    var utcDay = newInterval(function(date) {
       date.setUTCHours(0, 0, 0, 0);
     }, function(date, step) {
       date.setUTCDate(date.getUTCDate() + step);
     }, function(start, end) {
-      return (end - start) / durationDay$3;
+      return (end - start) / durationDay$1;
     }, function(date) {
       return date.getUTCDate() - 1;
     });
-    var utcDays = utcDay$1.range;
+    var utcDays = utcDay.range;
 
-    function utcWeekday$1(i) {
-      return newInterval$1(function(date) {
+    function utcWeekday(i) {
+      return newInterval(function(date) {
         date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 7 - i) % 7);
         date.setUTCHours(0, 0, 0, 0);
       }, function(date, step) {
         date.setUTCDate(date.getUTCDate() + step * 7);
       }, function(start, end) {
-        return (end - start) / durationWeek$3;
+        return (end - start) / durationWeek$1;
       });
     }
 
-    var utcSunday$1 = utcWeekday$1(0);
-    var utcMonday$1 = utcWeekday$1(1);
-    var utcTuesday = utcWeekday$1(2);
-    var utcWednesday = utcWeekday$1(3);
-    var utcThursday$1 = utcWeekday$1(4);
-    var utcFriday = utcWeekday$1(5);
-    var utcSaturday = utcWeekday$1(6);
+    var utcSunday = utcWeekday(0);
+    var utcMonday = utcWeekday(1);
+    var utcTuesday = utcWeekday(2);
+    var utcWednesday = utcWeekday(3);
+    var utcThursday = utcWeekday(4);
+    var utcFriday = utcWeekday(5);
+    var utcSaturday = utcWeekday(6);
 
-    var utcSundays = utcSunday$1.range;
-    var utcMondays = utcMonday$1.range;
+    var utcSundays = utcSunday.range;
+    var utcMondays = utcMonday.range;
     var utcTuesdays = utcTuesday.range;
     var utcWednesdays = utcWednesday.range;
-    var utcThursdays = utcThursday$1.range;
+    var utcThursdays = utcThursday.range;
     var utcFridays = utcFriday.range;
     var utcSaturdays = utcSaturday.range;
 
-    var utcMonth = newInterval$1(function(date) {
+    var utcMonth = newInterval(function(date) {
       date.setUTCDate(1);
       date.setUTCHours(0, 0, 0, 0);
     }, function(date, step) {
@@ -15876,7 +15891,7 @@ var app = (function () {
     });
     var utcMonths = utcMonth.range;
 
-    var utcYear$1 = newInterval$1(function(date) {
+    var utcYear = newInterval(function(date) {
       date.setUTCMonth(0, 1);
       date.setUTCHours(0, 0, 0, 0);
     }, function(date, step) {
@@ -15888,8 +15903,8 @@ var app = (function () {
     });
 
     // An optimized implementation for this simple case.
-    utcYear$1.every = function(k) {
-      return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval$1(function(date) {
+    utcYear.every = function(k) {
+      return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval(function(date) {
         date.setUTCFullYear(Math.floor(date.getUTCFullYear() / k) * k);
         date.setUTCMonth(0, 1);
         date.setUTCHours(0, 0, 0, 0);
@@ -15897,9 +15912,9 @@ var app = (function () {
         date.setUTCFullYear(date.getUTCFullYear() + step * k);
       });
     };
-    var utcYears = utcYear$1.range;
+    var utcYears = utcYear.range;
 
-    function localDate$1(d) {
+    function localDate(d) {
       if (0 <= d.y && d.y < 100) {
         var date = new Date(-1, d.m, d.d, d.H, d.M, d.S, d.L);
         date.setFullYear(d.y);
@@ -15908,7 +15923,7 @@ var app = (function () {
       return new Date(d.y, d.m, d.d, d.H, d.M, d.S, d.L);
     }
 
-    function utcDate$1(d) {
+    function utcDate(d) {
       if (0 <= d.y && d.y < 100) {
         var date = new Date(Date.UTC(-1, d.m, d.d, d.H, d.M, d.S, d.L));
         date.setUTCFullYear(d.y);
@@ -15917,11 +15932,11 @@ var app = (function () {
       return new Date(Date.UTC(d.y, d.m, d.d, d.H, d.M, d.S, d.L));
     }
 
-    function newDate$1(y, m, d) {
+    function newDate(y, m, d) {
       return {y: y, m: m, d: d, H: 0, M: 0, S: 0, L: 0};
     }
 
-    function formatLocale$2(locale) {
+    function formatLocale(locale) {
       var locale_dateTime = locale.dateTime,
           locale_date = locale.date,
           locale_time = locale.time,
@@ -15931,16 +15946,16 @@ var app = (function () {
           locale_months = locale.months,
           locale_shortMonths = locale.shortMonths;
 
-      var periodRe = formatRe$1(locale_periods),
-          periodLookup = formatLookup$1(locale_periods),
-          weekdayRe = formatRe$1(locale_weekdays),
-          weekdayLookup = formatLookup$1(locale_weekdays),
-          shortWeekdayRe = formatRe$1(locale_shortWeekdays),
-          shortWeekdayLookup = formatLookup$1(locale_shortWeekdays),
-          monthRe = formatRe$1(locale_months),
-          monthLookup = formatLookup$1(locale_months),
-          shortMonthRe = formatRe$1(locale_shortMonths),
-          shortMonthLookup = formatLookup$1(locale_shortMonths);
+      var periodRe = formatRe(locale_periods),
+          periodLookup = formatLookup(locale_periods),
+          weekdayRe = formatRe(locale_weekdays),
+          weekdayLookup = formatLookup(locale_weekdays),
+          shortWeekdayRe = formatRe(locale_shortWeekdays),
+          shortWeekdayLookup = formatLookup(locale_shortWeekdays),
+          monthRe = formatRe(locale_months),
+          monthLookup = formatLookup(locale_months),
+          shortMonthRe = formatRe(locale_shortMonths),
+          shortMonthLookup = formatLookup(locale_shortMonths);
 
       var formats = {
         "a": formatShortWeekday,
@@ -15948,33 +15963,33 @@ var app = (function () {
         "b": formatShortMonth,
         "B": formatMonth,
         "c": null,
-        "d": formatDayOfMonth$1,
-        "e": formatDayOfMonth$1,
-        "f": formatMicroseconds$1,
-        "g": formatYearISO$1,
-        "G": formatFullYearISO$1,
-        "H": formatHour24$1,
-        "I": formatHour12$1,
-        "j": formatDayOfYear$1,
-        "L": formatMilliseconds$1,
-        "m": formatMonthNumber$1,
-        "M": formatMinutes$1,
+        "d": formatDayOfMonth,
+        "e": formatDayOfMonth,
+        "f": formatMicroseconds,
+        "g": formatYearISO,
+        "G": formatFullYearISO,
+        "H": formatHour24,
+        "I": formatHour12,
+        "j": formatDayOfYear,
+        "L": formatMilliseconds,
+        "m": formatMonthNumber,
+        "M": formatMinutes,
         "p": formatPeriod,
         "q": formatQuarter,
-        "Q": formatUnixTimestamp$1,
-        "s": formatUnixTimestampSeconds$1,
-        "S": formatSeconds$1,
-        "u": formatWeekdayNumberMonday$1,
-        "U": formatWeekNumberSunday$1,
-        "V": formatWeekNumberISO$1,
-        "w": formatWeekdayNumberSunday$1,
-        "W": formatWeekNumberMonday$1,
+        "Q": formatUnixTimestamp,
+        "s": formatUnixTimestampSeconds,
+        "S": formatSeconds,
+        "u": formatWeekdayNumberMonday,
+        "U": formatWeekNumberSunday,
+        "V": formatWeekNumberISO,
+        "w": formatWeekdayNumberSunday,
+        "W": formatWeekNumberMonday,
         "x": null,
         "X": null,
-        "y": formatYear$2,
-        "Y": formatFullYear$1,
-        "Z": formatZone$1,
-        "%": formatLiteralPercent$1
+        "y": formatYear,
+        "Y": formatFullYear,
+        "Z": formatZone,
+        "%": formatLiteralPercent
       };
 
       var utcFormats = {
@@ -15983,33 +15998,33 @@ var app = (function () {
         "b": formatUTCShortMonth,
         "B": formatUTCMonth,
         "c": null,
-        "d": formatUTCDayOfMonth$1,
-        "e": formatUTCDayOfMonth$1,
-        "f": formatUTCMicroseconds$1,
-        "g": formatUTCYearISO$1,
-        "G": formatUTCFullYearISO$1,
-        "H": formatUTCHour24$1,
-        "I": formatUTCHour12$1,
-        "j": formatUTCDayOfYear$1,
-        "L": formatUTCMilliseconds$1,
-        "m": formatUTCMonthNumber$1,
-        "M": formatUTCMinutes$1,
+        "d": formatUTCDayOfMonth,
+        "e": formatUTCDayOfMonth,
+        "f": formatUTCMicroseconds,
+        "g": formatUTCYearISO,
+        "G": formatUTCFullYearISO,
+        "H": formatUTCHour24,
+        "I": formatUTCHour12,
+        "j": formatUTCDayOfYear,
+        "L": formatUTCMilliseconds,
+        "m": formatUTCMonthNumber,
+        "M": formatUTCMinutes,
         "p": formatUTCPeriod,
         "q": formatUTCQuarter,
-        "Q": formatUnixTimestamp$1,
-        "s": formatUnixTimestampSeconds$1,
-        "S": formatUTCSeconds$1,
-        "u": formatUTCWeekdayNumberMonday$1,
-        "U": formatUTCWeekNumberSunday$1,
-        "V": formatUTCWeekNumberISO$1,
-        "w": formatUTCWeekdayNumberSunday$1,
-        "W": formatUTCWeekNumberMonday$1,
+        "Q": formatUnixTimestamp,
+        "s": formatUnixTimestampSeconds,
+        "S": formatUTCSeconds,
+        "u": formatUTCWeekdayNumberMonday,
+        "U": formatUTCWeekNumberSunday,
+        "V": formatUTCWeekNumberISO,
+        "w": formatUTCWeekdayNumberSunday,
+        "W": formatUTCWeekNumberMonday,
         "x": null,
         "X": null,
-        "y": formatUTCYear$1,
-        "Y": formatUTCFullYear$1,
-        "Z": formatUTCZone$1,
-        "%": formatLiteralPercent$1
+        "y": formatUTCYear,
+        "Y": formatUTCFullYear,
+        "Z": formatUTCZone,
+        "%": formatLiteralPercent
       };
 
       var parses = {
@@ -16018,33 +16033,33 @@ var app = (function () {
         "b": parseShortMonth,
         "B": parseMonth,
         "c": parseLocaleDateTime,
-        "d": parseDayOfMonth$1,
-        "e": parseDayOfMonth$1,
-        "f": parseMicroseconds$1,
-        "g": parseYear$1,
-        "G": parseFullYear$1,
-        "H": parseHour24$1,
-        "I": parseHour24$1,
-        "j": parseDayOfYear$1,
-        "L": parseMilliseconds$1,
-        "m": parseMonthNumber$1,
-        "M": parseMinutes$1,
+        "d": parseDayOfMonth,
+        "e": parseDayOfMonth,
+        "f": parseMicroseconds,
+        "g": parseYear,
+        "G": parseFullYear,
+        "H": parseHour24,
+        "I": parseHour24,
+        "j": parseDayOfYear,
+        "L": parseMilliseconds,
+        "m": parseMonthNumber,
+        "M": parseMinutes,
         "p": parsePeriod,
-        "q": parseQuarter$1,
-        "Q": parseUnixTimestamp$1,
-        "s": parseUnixTimestampSeconds$1,
-        "S": parseSeconds$1,
-        "u": parseWeekdayNumberMonday$1,
-        "U": parseWeekNumberSunday$1,
-        "V": parseWeekNumberISO$1,
-        "w": parseWeekdayNumberSunday$1,
-        "W": parseWeekNumberMonday$1,
+        "q": parseQuarter,
+        "Q": parseUnixTimestamp,
+        "s": parseUnixTimestampSeconds,
+        "S": parseSeconds,
+        "u": parseWeekdayNumberMonday,
+        "U": parseWeekNumberSunday,
+        "V": parseWeekNumberISO,
+        "w": parseWeekdayNumberSunday,
+        "W": parseWeekNumberMonday,
         "x": parseLocaleDate,
         "X": parseLocaleTime,
-        "y": parseYear$1,
-        "Y": parseFullYear$1,
-        "Z": parseZone$1,
-        "%": parseLiteralPercent$1
+        "y": parseYear,
+        "Y": parseFullYear,
+        "Z": parseZone,
+        "%": parseLiteralPercent
       };
 
       // These recursive directive definitions must be deferred.
@@ -16070,7 +16085,7 @@ var app = (function () {
           while (++i < n) {
             if (specifier.charCodeAt(i) === 37) {
               string.push(specifier.slice(j, i));
-              if ((pad = pads$1[c = specifier.charAt(++i)]) != null) c = specifier.charAt(++i);
+              if ((pad = pads[c = specifier.charAt(++i)]) != null) c = specifier.charAt(++i);
               else pad = c === "e" ? " " : "0";
               if (format = formats[c]) c = format(date, pad);
               string.push(c);
@@ -16085,9 +16100,9 @@ var app = (function () {
 
       function newParse(specifier, Z) {
         return function(string) {
-          var d = newDate$1(1900, undefined, 1),
+          var d = newDate(1900, undefined, 1),
               i = parseSpecifier(d, specifier, string += "", 0),
-              week, day;
+              week, day$1;
           if (i != string.length) return null;
 
           // If a UNIX timestamp is specified, return it.
@@ -16108,25 +16123,25 @@ var app = (function () {
             if (d.V < 1 || d.V > 53) return null;
             if (!("w" in d)) d.w = 1;
             if ("Z" in d) {
-              week = utcDate$1(newDate$1(d.y, 0, 1)), day = week.getUTCDay();
-              week = day > 4 || day === 0 ? utcMonday$1.ceil(week) : utcMonday$1(week);
-              week = utcDay$1.offset(week, (d.V - 1) * 7);
+              week = utcDate(newDate(d.y, 0, 1)), day$1 = week.getUTCDay();
+              week = day$1 > 4 || day$1 === 0 ? utcMonday.ceil(week) : utcMonday(week);
+              week = utcDay.offset(week, (d.V - 1) * 7);
               d.y = week.getUTCFullYear();
               d.m = week.getUTCMonth();
               d.d = week.getUTCDate() + (d.w + 6) % 7;
             } else {
-              week = localDate$1(newDate$1(d.y, 0, 1)), day = week.getDay();
-              week = day > 4 || day === 0 ? monday$1.ceil(week) : monday$1(week);
-              week = day$1.offset(week, (d.V - 1) * 7);
+              week = localDate(newDate(d.y, 0, 1)), day$1 = week.getDay();
+              week = day$1 > 4 || day$1 === 0 ? monday.ceil(week) : monday(week);
+              week = day.offset(week, (d.V - 1) * 7);
               d.y = week.getFullYear();
               d.m = week.getMonth();
               d.d = week.getDate() + (d.w + 6) % 7;
             }
           } else if ("W" in d || "U" in d) {
             if (!("w" in d)) d.w = "u" in d ? d.u % 7 : "W" in d ? 1 : 0;
-            day = "Z" in d ? utcDate$1(newDate$1(d.y, 0, 1)).getUTCDay() : localDate$1(newDate$1(d.y, 0, 1)).getDay();
+            day$1 = "Z" in d ? utcDate(newDate(d.y, 0, 1)).getUTCDay() : localDate(newDate(d.y, 0, 1)).getDay();
             d.m = 0;
-            d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day + 5) % 7 : d.w + d.U * 7 - (day + 6) % 7;
+            d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day$1 + 5) % 7 : d.w + d.U * 7 - (day$1 + 6) % 7;
           }
 
           // If a time zone is specified, all fields are interpreted as UTC and then
@@ -16134,11 +16149,11 @@ var app = (function () {
           if ("Z" in d) {
             d.H += d.Z / 100 | 0;
             d.M += d.Z % 100;
-            return utcDate$1(d);
+            return utcDate(d);
           }
 
           // Otherwise, all fields are in local time.
-          return localDate$1(d);
+          return localDate(d);
         };
       }
 
@@ -16154,7 +16169,7 @@ var app = (function () {
           c = specifier.charCodeAt(i++);
           if (c === 37) {
             c = specifier.charAt(i++);
-            parse = parses[c in pads$1 ? specifier.charAt(i++) : c];
+            parse = parses[c in pads ? specifier.charAt(i++) : c];
             if (!parse || ((j = parse(d, string, j)) < 0)) return -1;
           } else if (c != string.charCodeAt(j++)) {
             return -1;
@@ -16273,324 +16288,324 @@ var app = (function () {
       };
     }
 
-    var pads$1 = {"-": "", "_": " ", "0": "0"},
-        numberRe$1 = /^\s*\d+/, // note: ignores next directive
-        percentRe$1 = /^%/,
-        requoteRe$1 = /[\\^$*+?|[\]().{}]/g;
+    var pads = {"-": "", "_": " ", "0": "0"},
+        numberRe = /^\s*\d+/, // note: ignores next directive
+        percentRe = /^%/,
+        requoteRe = /[\\^$*+?|[\]().{}]/g;
 
-    function pad$2(value, fill, width) {
+    function pad(value, fill, width) {
       var sign = value < 0 ? "-" : "",
           string = (sign ? -value : value) + "",
           length = string.length;
       return sign + (length < width ? new Array(width - length + 1).join(fill) + string : string);
     }
 
-    function requote$1(s) {
-      return s.replace(requoteRe$1, "\\$&");
+    function requote(s) {
+      return s.replace(requoteRe, "\\$&");
     }
 
-    function formatRe$1(names) {
-      return new RegExp("^(?:" + names.map(requote$1).join("|") + ")", "i");
+    function formatRe(names) {
+      return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
     }
 
-    function formatLookup$1(names) {
+    function formatLookup(names) {
       return new Map(names.map((name, i) => [name.toLowerCase(), i]));
     }
 
-    function parseWeekdayNumberSunday$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 1));
+    function parseWeekdayNumberSunday(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 1));
       return n ? (d.w = +n[0], i + n[0].length) : -1;
     }
 
-    function parseWeekdayNumberMonday$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 1));
+    function parseWeekdayNumberMonday(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 1));
       return n ? (d.u = +n[0], i + n[0].length) : -1;
     }
 
-    function parseWeekNumberSunday$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseWeekNumberSunday(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.U = +n[0], i + n[0].length) : -1;
     }
 
-    function parseWeekNumberISO$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseWeekNumberISO(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.V = +n[0], i + n[0].length) : -1;
     }
 
-    function parseWeekNumberMonday$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseWeekNumberMonday(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.W = +n[0], i + n[0].length) : -1;
     }
 
-    function parseFullYear$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 4));
+    function parseFullYear(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 4));
       return n ? (d.y = +n[0], i + n[0].length) : -1;
     }
 
-    function parseYear$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseYear(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.y = +n[0] + (+n[0] > 68 ? 1900 : 2000), i + n[0].length) : -1;
     }
 
-    function parseZone$1(d, string, i) {
+    function parseZone(d, string, i) {
       var n = /^(Z)|([+-]\d\d)(?::?(\d\d))?/.exec(string.slice(i, i + 6));
       return n ? (d.Z = n[1] ? 0 : -(n[2] + (n[3] || "00")), i + n[0].length) : -1;
     }
 
-    function parseQuarter$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 1));
+    function parseQuarter(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 1));
       return n ? (d.q = n[0] * 3 - 3, i + n[0].length) : -1;
     }
 
-    function parseMonthNumber$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseMonthNumber(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.m = n[0] - 1, i + n[0].length) : -1;
     }
 
-    function parseDayOfMonth$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseDayOfMonth(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.d = +n[0], i + n[0].length) : -1;
     }
 
-    function parseDayOfYear$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 3));
+    function parseDayOfYear(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 3));
       return n ? (d.m = 0, d.d = +n[0], i + n[0].length) : -1;
     }
 
-    function parseHour24$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseHour24(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.H = +n[0], i + n[0].length) : -1;
     }
 
-    function parseMinutes$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseMinutes(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.M = +n[0], i + n[0].length) : -1;
     }
 
-    function parseSeconds$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 2));
+    function parseSeconds(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 2));
       return n ? (d.S = +n[0], i + n[0].length) : -1;
     }
 
-    function parseMilliseconds$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 3));
+    function parseMilliseconds(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 3));
       return n ? (d.L = +n[0], i + n[0].length) : -1;
     }
 
-    function parseMicroseconds$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i, i + 6));
+    function parseMicroseconds(d, string, i) {
+      var n = numberRe.exec(string.slice(i, i + 6));
       return n ? (d.L = Math.floor(n[0] / 1000), i + n[0].length) : -1;
     }
 
-    function parseLiteralPercent$1(d, string, i) {
-      var n = percentRe$1.exec(string.slice(i, i + 1));
+    function parseLiteralPercent(d, string, i) {
+      var n = percentRe.exec(string.slice(i, i + 1));
       return n ? i + n[0].length : -1;
     }
 
-    function parseUnixTimestamp$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i));
+    function parseUnixTimestamp(d, string, i) {
+      var n = numberRe.exec(string.slice(i));
       return n ? (d.Q = +n[0], i + n[0].length) : -1;
     }
 
-    function parseUnixTimestampSeconds$1(d, string, i) {
-      var n = numberRe$1.exec(string.slice(i));
+    function parseUnixTimestampSeconds(d, string, i) {
+      var n = numberRe.exec(string.slice(i));
       return n ? (d.s = +n[0], i + n[0].length) : -1;
     }
 
-    function formatDayOfMonth$1(d, p) {
-      return pad$2(d.getDate(), p, 2);
+    function formatDayOfMonth(d, p) {
+      return pad(d.getDate(), p, 2);
     }
 
-    function formatHour24$1(d, p) {
-      return pad$2(d.getHours(), p, 2);
+    function formatHour24(d, p) {
+      return pad(d.getHours(), p, 2);
     }
 
-    function formatHour12$1(d, p) {
-      return pad$2(d.getHours() % 12 || 12, p, 2);
+    function formatHour12(d, p) {
+      return pad(d.getHours() % 12 || 12, p, 2);
     }
 
-    function formatDayOfYear$1(d, p) {
-      return pad$2(1 + day$1.count(year$1(d), d), p, 3);
+    function formatDayOfYear(d, p) {
+      return pad(1 + day.count(year(d), d), p, 3);
     }
 
-    function formatMilliseconds$1(d, p) {
-      return pad$2(d.getMilliseconds(), p, 3);
+    function formatMilliseconds(d, p) {
+      return pad(d.getMilliseconds(), p, 3);
     }
 
-    function formatMicroseconds$1(d, p) {
-      return formatMilliseconds$1(d, p) + "000";
+    function formatMicroseconds(d, p) {
+      return formatMilliseconds(d, p) + "000";
     }
 
-    function formatMonthNumber$1(d, p) {
-      return pad$2(d.getMonth() + 1, p, 2);
+    function formatMonthNumber(d, p) {
+      return pad(d.getMonth() + 1, p, 2);
     }
 
-    function formatMinutes$1(d, p) {
-      return pad$2(d.getMinutes(), p, 2);
+    function formatMinutes(d, p) {
+      return pad(d.getMinutes(), p, 2);
     }
 
-    function formatSeconds$1(d, p) {
-      return pad$2(d.getSeconds(), p, 2);
+    function formatSeconds(d, p) {
+      return pad(d.getSeconds(), p, 2);
     }
 
-    function formatWeekdayNumberMonday$1(d) {
+    function formatWeekdayNumberMonday(d) {
       var day = d.getDay();
       return day === 0 ? 7 : day;
     }
 
-    function formatWeekNumberSunday$1(d, p) {
-      return pad$2(sunday$1.count(year$1(d) - 1, d), p, 2);
+    function formatWeekNumberSunday(d, p) {
+      return pad(sunday.count(year(d) - 1, d), p, 2);
     }
 
-    function dISO$1(d) {
+    function dISO(d) {
       var day = d.getDay();
-      return (day >= 4 || day === 0) ? thursday$1(d) : thursday$1.ceil(d);
+      return (day >= 4 || day === 0) ? thursday(d) : thursday.ceil(d);
     }
 
-    function formatWeekNumberISO$1(d, p) {
-      d = dISO$1(d);
-      return pad$2(thursday$1.count(year$1(d), d) + (year$1(d).getDay() === 4), p, 2);
+    function formatWeekNumberISO(d, p) {
+      d = dISO(d);
+      return pad(thursday.count(year(d), d) + (year(d).getDay() === 4), p, 2);
     }
 
-    function formatWeekdayNumberSunday$1(d) {
+    function formatWeekdayNumberSunday(d) {
       return d.getDay();
     }
 
-    function formatWeekNumberMonday$1(d, p) {
-      return pad$2(monday$1.count(year$1(d) - 1, d), p, 2);
+    function formatWeekNumberMonday(d, p) {
+      return pad(monday.count(year(d) - 1, d), p, 2);
     }
 
-    function formatYear$2(d, p) {
-      return pad$2(d.getFullYear() % 100, p, 2);
+    function formatYear(d, p) {
+      return pad(d.getFullYear() % 100, p, 2);
     }
 
-    function formatYearISO$1(d, p) {
-      d = dISO$1(d);
-      return pad$2(d.getFullYear() % 100, p, 2);
+    function formatYearISO(d, p) {
+      d = dISO(d);
+      return pad(d.getFullYear() % 100, p, 2);
     }
 
-    function formatFullYear$1(d, p) {
-      return pad$2(d.getFullYear() % 10000, p, 4);
+    function formatFullYear(d, p) {
+      return pad(d.getFullYear() % 10000, p, 4);
     }
 
-    function formatFullYearISO$1(d, p) {
+    function formatFullYearISO(d, p) {
       var day = d.getDay();
-      d = (day >= 4 || day === 0) ? thursday$1(d) : thursday$1.ceil(d);
-      return pad$2(d.getFullYear() % 10000, p, 4);
+      d = (day >= 4 || day === 0) ? thursday(d) : thursday.ceil(d);
+      return pad(d.getFullYear() % 10000, p, 4);
     }
 
-    function formatZone$1(d) {
+    function formatZone(d) {
       var z = d.getTimezoneOffset();
       return (z > 0 ? "-" : (z *= -1, "+"))
-          + pad$2(z / 60 | 0, "0", 2)
-          + pad$2(z % 60, "0", 2);
+          + pad(z / 60 | 0, "0", 2)
+          + pad(z % 60, "0", 2);
     }
 
-    function formatUTCDayOfMonth$1(d, p) {
-      return pad$2(d.getUTCDate(), p, 2);
+    function formatUTCDayOfMonth(d, p) {
+      return pad(d.getUTCDate(), p, 2);
     }
 
-    function formatUTCHour24$1(d, p) {
-      return pad$2(d.getUTCHours(), p, 2);
+    function formatUTCHour24(d, p) {
+      return pad(d.getUTCHours(), p, 2);
     }
 
-    function formatUTCHour12$1(d, p) {
-      return pad$2(d.getUTCHours() % 12 || 12, p, 2);
+    function formatUTCHour12(d, p) {
+      return pad(d.getUTCHours() % 12 || 12, p, 2);
     }
 
-    function formatUTCDayOfYear$1(d, p) {
-      return pad$2(1 + utcDay$1.count(utcYear$1(d), d), p, 3);
+    function formatUTCDayOfYear(d, p) {
+      return pad(1 + utcDay.count(utcYear(d), d), p, 3);
     }
 
-    function formatUTCMilliseconds$1(d, p) {
-      return pad$2(d.getUTCMilliseconds(), p, 3);
+    function formatUTCMilliseconds(d, p) {
+      return pad(d.getUTCMilliseconds(), p, 3);
     }
 
-    function formatUTCMicroseconds$1(d, p) {
-      return formatUTCMilliseconds$1(d, p) + "000";
+    function formatUTCMicroseconds(d, p) {
+      return formatUTCMilliseconds(d, p) + "000";
     }
 
-    function formatUTCMonthNumber$1(d, p) {
-      return pad$2(d.getUTCMonth() + 1, p, 2);
+    function formatUTCMonthNumber(d, p) {
+      return pad(d.getUTCMonth() + 1, p, 2);
     }
 
-    function formatUTCMinutes$1(d, p) {
-      return pad$2(d.getUTCMinutes(), p, 2);
+    function formatUTCMinutes(d, p) {
+      return pad(d.getUTCMinutes(), p, 2);
     }
 
-    function formatUTCSeconds$1(d, p) {
-      return pad$2(d.getUTCSeconds(), p, 2);
+    function formatUTCSeconds(d, p) {
+      return pad(d.getUTCSeconds(), p, 2);
     }
 
-    function formatUTCWeekdayNumberMonday$1(d) {
+    function formatUTCWeekdayNumberMonday(d) {
       var dow = d.getUTCDay();
       return dow === 0 ? 7 : dow;
     }
 
-    function formatUTCWeekNumberSunday$1(d, p) {
-      return pad$2(utcSunday$1.count(utcYear$1(d) - 1, d), p, 2);
+    function formatUTCWeekNumberSunday(d, p) {
+      return pad(utcSunday.count(utcYear(d) - 1, d), p, 2);
     }
 
-    function UTCdISO$1(d) {
+    function UTCdISO(d) {
       var day = d.getUTCDay();
-      return (day >= 4 || day === 0) ? utcThursday$1(d) : utcThursday$1.ceil(d);
+      return (day >= 4 || day === 0) ? utcThursday(d) : utcThursday.ceil(d);
     }
 
-    function formatUTCWeekNumberISO$1(d, p) {
-      d = UTCdISO$1(d);
-      return pad$2(utcThursday$1.count(utcYear$1(d), d) + (utcYear$1(d).getUTCDay() === 4), p, 2);
+    function formatUTCWeekNumberISO(d, p) {
+      d = UTCdISO(d);
+      return pad(utcThursday.count(utcYear(d), d) + (utcYear(d).getUTCDay() === 4), p, 2);
     }
 
-    function formatUTCWeekdayNumberSunday$1(d) {
+    function formatUTCWeekdayNumberSunday(d) {
       return d.getUTCDay();
     }
 
-    function formatUTCWeekNumberMonday$1(d, p) {
-      return pad$2(utcMonday$1.count(utcYear$1(d) - 1, d), p, 2);
+    function formatUTCWeekNumberMonday(d, p) {
+      return pad(utcMonday.count(utcYear(d) - 1, d), p, 2);
     }
 
-    function formatUTCYear$1(d, p) {
-      return pad$2(d.getUTCFullYear() % 100, p, 2);
+    function formatUTCYear(d, p) {
+      return pad(d.getUTCFullYear() % 100, p, 2);
     }
 
-    function formatUTCYearISO$1(d, p) {
-      d = UTCdISO$1(d);
-      return pad$2(d.getUTCFullYear() % 100, p, 2);
+    function formatUTCYearISO(d, p) {
+      d = UTCdISO(d);
+      return pad(d.getUTCFullYear() % 100, p, 2);
     }
 
-    function formatUTCFullYear$1(d, p) {
-      return pad$2(d.getUTCFullYear() % 10000, p, 4);
+    function formatUTCFullYear(d, p) {
+      return pad(d.getUTCFullYear() % 10000, p, 4);
     }
 
-    function formatUTCFullYearISO$1(d, p) {
+    function formatUTCFullYearISO(d, p) {
       var day = d.getUTCDay();
-      d = (day >= 4 || day === 0) ? utcThursday$1(d) : utcThursday$1.ceil(d);
-      return pad$2(d.getUTCFullYear() % 10000, p, 4);
+      d = (day >= 4 || day === 0) ? utcThursday(d) : utcThursday.ceil(d);
+      return pad(d.getUTCFullYear() % 10000, p, 4);
     }
 
-    function formatUTCZone$1() {
+    function formatUTCZone() {
       return "+0000";
     }
 
-    function formatLiteralPercent$1() {
+    function formatLiteralPercent() {
       return "%";
     }
 
-    function formatUnixTimestamp$1(d) {
+    function formatUnixTimestamp(d) {
       return +d;
     }
 
-    function formatUnixTimestampSeconds$1(d) {
+    function formatUnixTimestampSeconds(d) {
       return Math.floor(+d / 1000);
     }
 
-    var locale$2;
-    var timeFormat$1;
-    var timeParse$1;
-    var utcFormat$1;
-    var utcParse$1;
+    var locale;
+    var timeFormat;
+    var timeParse;
+    var utcFormat;
+    var utcParse;
 
-    defaultLocale$2({
+    defaultLocale({
       dateTime: "%x, %X",
       date: "%-m/%-d/%Y",
       time: "%-I:%M:%S %p",
@@ -16601,52 +16616,64 @@ var app = (function () {
       shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     });
 
-    function defaultLocale$2(definition) {
-      locale$2 = formatLocale$2(definition);
-      timeFormat$1 = locale$2.format;
-      timeParse$1 = locale$2.parse;
-      utcFormat$1 = locale$2.utcFormat;
-      utcParse$1 = locale$2.utcParse;
-      return locale$2;
+    function defaultLocale(definition) {
+      locale = formatLocale(definition);
+      timeFormat = locale.format;
+      timeParse = locale.parse;
+      utcFormat = locale.utcFormat;
+      utcParse = locale.utcParse;
+      return locale;
     }
 
-    var isoSpecifier$1 = "%Y-%m-%dT%H:%M:%S.%LZ";
+    var isoSpecifier = "%Y-%m-%dT%H:%M:%S.%LZ";
 
-    function formatIsoNative$1(date) {
+    function formatIsoNative(date) {
       return date.toISOString();
     }
 
-    var formatIso$1 = Date.prototype.toISOString
-        ? formatIsoNative$1
-        : utcFormat$1(isoSpecifier$1);
+    var formatIso = Date.prototype.toISOString
+        ? formatIsoNative
+        : utcFormat(isoSpecifier);
 
-    function parseIsoNative$1(string) {
+    function parseIsoNative(string) {
       var date = new Date(string);
       return isNaN(date) ? null : date;
     }
 
-    var parseIso$1 = +new Date("2000-01-01T00:00:00.000Z")
-        ? parseIsoNative$1
-        : utcParse$1(isoSpecifier$1);
+    var parseIso = +new Date("2000-01-01T00:00:00.000Z")
+        ? parseIsoNative
+        : utcParse(isoSpecifier);
 
-    var durationSecond$2 = 1000,
-        durationMinute$2 = durationSecond$2 * 60,
-        durationHour$2 = durationMinute$2 * 60,
-        durationDay$2 = durationHour$2 * 24,
-        durationWeek$2 = durationDay$2 * 7,
-        durationMonth$1 = durationDay$2 * 30,
-        durationYear$1 = durationDay$2 * 365;
+    var src = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        timeFormatDefaultLocale: defaultLocale,
+        get timeFormat () { return timeFormat; },
+        get timeParse () { return timeParse; },
+        get utcFormat () { return utcFormat; },
+        get utcParse () { return utcParse; },
+        timeFormatLocale: formatLocale,
+        isoFormat: formatIso,
+        isoParse: parseIso
+    });
+
+    var durationSecond = 1000,
+        durationMinute = durationSecond * 60,
+        durationHour = durationMinute * 60,
+        durationDay = durationHour * 24,
+        durationWeek = durationDay * 7,
+        durationMonth = durationDay * 30,
+        durationYear = durationDay * 365;
 
     function date$8(t) {
       return new Date(t);
     }
 
-    function number$3(t) {
+    function number(t) {
       return t instanceof Date ? +t : +new Date(+t);
     }
 
-    function calendar$1(year, month, week, day, hour, minute, second, millisecond, format) {
-      var scale = continuous$1(),
+    function calendar(year, month, week, day, hour, minute, second, millisecond, format) {
+      var scale = continuous(),
           invert = scale.invert,
           domain = scale.domain;
 
@@ -16660,24 +16687,24 @@ var app = (function () {
           formatYear = format("%Y");
 
       var tickIntervals = [
-        [second,  1,      durationSecond$2],
-        [second,  5,  5 * durationSecond$2],
-        [second, 15, 15 * durationSecond$2],
-        [second, 30, 30 * durationSecond$2],
-        [minute,  1,      durationMinute$2],
-        [minute,  5,  5 * durationMinute$2],
-        [minute, 15, 15 * durationMinute$2],
-        [minute, 30, 30 * durationMinute$2],
-        [  hour,  1,      durationHour$2  ],
-        [  hour,  3,  3 * durationHour$2  ],
-        [  hour,  6,  6 * durationHour$2  ],
-        [  hour, 12, 12 * durationHour$2  ],
-        [   day,  1,      durationDay$2   ],
-        [   day,  2,  2 * durationDay$2   ],
-        [  week,  1,      durationWeek$2  ],
-        [ month,  1,      durationMonth$1 ],
-        [ month,  3,  3 * durationMonth$1 ],
-        [  year,  1,      durationYear$1  ]
+        [second,  1,      durationSecond],
+        [second,  5,  5 * durationSecond],
+        [second, 15, 15 * durationSecond],
+        [second, 30, 30 * durationSecond],
+        [minute,  1,      durationMinute],
+        [minute,  5,  5 * durationMinute],
+        [minute, 15, 15 * durationMinute],
+        [minute, 30, 30 * durationMinute],
+        [  hour,  1,      durationHour  ],
+        [  hour,  3,  3 * durationHour  ],
+        [  hour,  6,  6 * durationHour  ],
+        [  hour, 12, 12 * durationHour  ],
+        [   day,  1,      durationDay   ],
+        [   day,  2,  2 * durationDay   ],
+        [  week,  1,      durationWeek  ],
+        [ month,  1,      durationMonth ],
+        [ month,  3,  3 * durationMonth ],
+        [  year,  1,      durationYear  ]
       ];
 
       function tickFormat(date) {
@@ -16698,17 +16725,17 @@ var app = (function () {
         // Otherwise, assume interval is already a time interval and use it.
         if (typeof interval === "number") {
           var target = Math.abs(stop - start) / interval,
-              i = bisector$1(function(i) { return i[2]; }).right(tickIntervals, target),
+              i = bisector(function(i) { return i[2]; }).right(tickIntervals, target),
               step;
           if (i === tickIntervals.length) {
-            step = tickStep$1(start / durationYear$1, stop / durationYear$1, interval);
+            step = tickStep(start / durationYear, stop / durationYear, interval);
             interval = year;
           } else if (i) {
             i = tickIntervals[target / tickIntervals[i - 1][2] < tickIntervals[i][2] / target ? i - 1 : i];
             step = i[1];
             interval = i[0];
           } else {
-            step = Math.max(tickStep$1(start, stop, interval), 1);
+            step = Math.max(tickStep(start, stop, interval), 1);
             interval = millisecond;
           }
           return interval.every(step);
@@ -16722,7 +16749,7 @@ var app = (function () {
       };
 
       scale.domain = function(_) {
-        return arguments.length ? domain(Array.from(_, number$3)) : domain().map(date$8);
+        return arguments.length ? domain(Array.from(_, number)) : domain().map(date$8);
       };
 
       scale.ticks = function(interval) {
@@ -16744,38 +16771,38 @@ var app = (function () {
       scale.nice = function(interval) {
         var d = domain();
         return (interval = tickInterval(interval, d[0], d[d.length - 1]))
-            ? domain(nice$1(d, interval))
+            ? domain(nice(d, interval))
             : scale;
       };
 
       scale.copy = function() {
-        return copy$2(scale, calendar$1(year, month, week, day, hour, minute, second, millisecond, format));
+        return copy$1(scale, calendar(year, month, week, day, hour, minute, second, millisecond, format));
       };
 
       return scale;
     }
 
     function time$8() {
-      return initRange$1.apply(calendar$1(year$1, month$1, sunday$1, day$1, hour$1, minute$1, second$1, millisecond$1, timeFormat$1).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
+      return initRange.apply(calendar(year, month, sunday, day, hour, minute, second, millisecond, timeFormat).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
     }
 
     function utcTime() {
-      return initRange$1.apply(calendar$1(utcYear$1, utcMonth, utcSunday$1, utcDay$1, utcHour, utcMinute, second$1, millisecond$1, utcFormat$1).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
+      return initRange.apply(calendar(utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute, second, millisecond, utcFormat).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
     }
 
-    function transformer$2() {
+    function transformer$1() {
       var x0 = 0,
           x1 = 1,
           t0,
           t1,
           k10,
           transform,
-          interpolator = identity$5,
+          interpolator = identity$3,
           clamp = false,
           unknown;
 
       function scale(x) {
-        return isNaN(x = +x) ? unknown : interpolator(k10 === 0 ? 0.5 : (x = (transform(x) - t0) * k10, clamp ? Math.max(0, Math.min(1, x)) : x));
+        return x == null || isNaN(x = +x) ? unknown : interpolator(k10 === 0 ? 0.5 : (x = (transform(x) - t0) * k10, clamp ? Math.max(0, Math.min(1, x)) : x));
       }
 
       scale.domain = function(_) {
@@ -16797,9 +16824,9 @@ var app = (function () {
         };
       }
 
-      scale.range = range(interpolate$3);
+      scale.range = range(interpolate$2);
 
-      scale.rangeRound = range(interpolateRound$1);
+      scale.rangeRound = range(interpolateRound);
 
       scale.unknown = function(_) {
         return arguments.length ? (unknown = _, scale) : unknown;
@@ -16811,7 +16838,7 @@ var app = (function () {
       };
     }
 
-    function copy$1(source, target) {
+    function copy(source, target) {
       return target
           .domain(source.domain())
           .interpolator(source.interpolator())
@@ -16820,40 +16847,40 @@ var app = (function () {
     }
 
     function sequential() {
-      var scale = linearish$1(transformer$2()(identity$5));
+      var scale = linearish(transformer$1()(identity$3));
 
       scale.copy = function() {
-        return copy$1(scale, sequential());
+        return copy(scale, sequential());
       };
 
       return initInterpolator.apply(scale, arguments);
     }
 
     function sequentialLog() {
-      var scale = loggish(transformer$2()).domain([1, 10]);
+      var scale = loggish(transformer$1()).domain([1, 10]);
 
       scale.copy = function() {
-        return copy$1(scale, sequentialLog()).base(scale.base());
+        return copy(scale, sequentialLog()).base(scale.base());
       };
 
       return initInterpolator.apply(scale, arguments);
     }
 
     function sequentialSymlog() {
-      var scale = symlogish(transformer$2());
+      var scale = symlogish(transformer$1());
 
       scale.copy = function() {
-        return copy$1(scale, sequentialSymlog()).constant(scale.constant());
+        return copy(scale, sequentialSymlog()).constant(scale.constant());
       };
 
       return initInterpolator.apply(scale, arguments);
     }
 
     function sequentialPow() {
-      var scale = powish(transformer$2());
+      var scale = powish(transformer$1());
 
       scale.copy = function() {
-        return copy$1(scale, sequentialPow()).exponent(scale.exponent());
+        return copy(scale, sequentialPow()).exponent(scale.exponent());
       };
 
       return initInterpolator.apply(scale, arguments);
@@ -16865,17 +16892,17 @@ var app = (function () {
 
     function sequentialQuantile() {
       var domain = [],
-          interpolator = identity$5;
+          interpolator = identity$3;
 
       function scale(x) {
-        if (!isNaN(x = +x)) return interpolator((bisectRight$1(domain, x, 1) - 1) / (domain.length - 1));
+        if (x != null && !isNaN(x = +x)) return interpolator((bisectRight(domain, x, 1) - 1) / (domain.length - 1));
       }
 
       scale.domain = function(_) {
         if (!arguments.length) return domain.slice();
         domain = [];
         for (let d of _) if (d != null && !isNaN(d = +d)) domain.push(d);
-        domain.sort(ascending$4);
+        domain.sort(ascending$3);
         return scale;
       };
 
@@ -16898,7 +16925,7 @@ var app = (function () {
       return initInterpolator.apply(scale, arguments);
     }
 
-    function transformer$1() {
+    function transformer() {
       var x0 = 0,
           x1 = 0.5,
           x2 = 1,
@@ -16908,7 +16935,7 @@ var app = (function () {
           t2,
           k10,
           k21,
-          interpolator = identity$5,
+          interpolator = identity$3,
           transform,
           clamp = false,
           unknown;
@@ -16936,9 +16963,9 @@ var app = (function () {
         };
       }
 
-      scale.range = range(interpolate$3);
+      scale.range = range(interpolate$2);
 
-      scale.rangeRound = range(interpolateRound$1);
+      scale.rangeRound = range(interpolateRound);
 
       scale.unknown = function(_) {
         return arguments.length ? (unknown = _, scale) : unknown;
@@ -16951,40 +16978,40 @@ var app = (function () {
     }
 
     function diverging$1() {
-      var scale = linearish$1(transformer$1()(identity$5));
+      var scale = linearish(transformer()(identity$3));
 
       scale.copy = function() {
-        return copy$1(scale, diverging$1());
+        return copy(scale, diverging$1());
       };
 
       return initInterpolator.apply(scale, arguments);
     }
 
     function divergingLog() {
-      var scale = loggish(transformer$1()).domain([0.1, 1, 10]);
+      var scale = loggish(transformer()).domain([0.1, 1, 10]);
 
       scale.copy = function() {
-        return copy$1(scale, divergingLog()).base(scale.base());
+        return copy(scale, divergingLog()).base(scale.base());
       };
 
       return initInterpolator.apply(scale, arguments);
     }
 
     function divergingSymlog() {
-      var scale = symlogish(transformer$1());
+      var scale = symlogish(transformer());
 
       scale.copy = function() {
-        return copy$1(scale, divergingSymlog()).constant(scale.constant());
+        return copy(scale, divergingSymlog()).constant(scale.constant());
       };
 
       return initInterpolator.apply(scale, arguments);
     }
 
     function divergingPow() {
-      var scale = powish(transformer$1());
+      var scale = powish(transformer());
 
       scale.copy = function() {
-        return copy$1(scale, divergingPow()).exponent(scale.exponent());
+        return copy(scale, divergingPow()).exponent(scale.exponent());
       };
 
       return initInterpolator.apply(scale, arguments);
@@ -17390,7 +17417,7 @@ var app = (function () {
       return c$2 + "";
     }
 
-    var c$1 = rgb$2(),
+    var c$1 = rgb(),
         pi_1_3 = Math.PI / 3,
         pi_2_3 = Math.PI * 2 / 3;
 
@@ -17427,7 +17454,7 @@ var app = (function () {
 
     var plasma = ramp(colors("0d088710078813078916078a19068c1b068d1d068e20068f2206902406912605912805922a05932c05942e05952f059631059733059735049837049938049a3a049a3c049b3e049c3f049c41049d43039e44039e46039f48039f4903a04b03a14c02a14e02a25002a25102a35302a35502a45601a45801a45901a55b01a55c01a65e01a66001a66100a76300a76400a76600a76700a86900a86a00a86c00a86e00a86f00a87100a87201a87401a87501a87701a87801a87a02a87b02a87d03a87e03a88004a88104a78305a78405a78606a68707a68808a68a09a58b0aa58d0ba58e0ca48f0da4910ea3920fa39410a29511a19613a19814a099159f9a169f9c179e9d189d9e199da01a9ca11b9ba21d9aa31e9aa51f99a62098a72197a82296aa2395ab2494ac2694ad2793ae2892b02991b12a90b22b8fb32c8eb42e8db52f8cb6308bb7318ab83289ba3388bb3488bc3587bd3786be3885bf3984c03a83c13b82c23c81c33d80c43e7fc5407ec6417dc7427cc8437bc9447aca457acb4679cc4778cc4977cd4a76ce4b75cf4c74d04d73d14e72d24f71d35171d45270d5536fd5546ed6556dd7566cd8576bd9586ada5a6ada5b69db5c68dc5d67dd5e66de5f65de6164df6263e06363e16462e26561e26660e3685fe4695ee56a5de56b5de66c5ce76e5be76f5ae87059e97158e97257ea7457eb7556eb7655ec7754ed7953ed7a52ee7b51ef7c51ef7e50f07f4ff0804ef1814df1834cf2844bf3854bf3874af48849f48948f58b47f58c46f68d45f68f44f79044f79143f79342f89441f89540f9973ff9983ef99a3efa9b3dfa9c3cfa9e3bfb9f3afba139fba238fca338fca537fca636fca835fca934fdab33fdac33fdae32fdaf31fdb130fdb22ffdb42ffdb52efeb72dfeb82cfeba2cfebb2bfebd2afebe2afec029fdc229fdc328fdc527fdc627fdc827fdca26fdcb26fccd25fcce25fcd025fcd225fbd324fbd524fbd724fad824fada24f9dc24f9dd25f8df25f8e125f7e225f7e425f6e626f6e826f5e926f5eb27f4ed27f3ee27f3f027f2f227f1f426f1f525f0f724f0f921"));
 
-    function constant$2(x) {
+    function constant$1(x) {
       return function constant() {
         return x;
       };
@@ -17436,7 +17463,7 @@ var app = (function () {
     var abs = Math.abs;
     var atan2 = Math.atan2;
     var cos = Math.cos;
-    var max$1 = Math.max;
+    var max = Math.max;
     var min = Math.min;
     var sin = Math.sin;
     var sqrt = Math.sqrt;
@@ -17502,7 +17529,7 @@ var app = (function () {
           d2 = dx * dx + dy * dy,
           r = r1 - rc,
           D = x11 * y10 - x10 * y11,
-          d = (dy < 0 ? -1 : 1) * sqrt(max$1(0, r * r * d2 - D * D)),
+          d = (dy < 0 ? -1 : 1) * sqrt(max(0, r * r * d2 - D * D)),
           cx0 = (D * dy - dx * d) / d2,
           cy0 = (-D * dx - dy * d) / d2,
           cx1 = (D * dy + dx * d) / d2,
@@ -17529,7 +17556,7 @@ var app = (function () {
     function arc() {
       var innerRadius = arcInnerRadius,
           outerRadius = arcOuterRadius,
-          cornerRadius = constant$2(0),
+          cornerRadius = constant$1(0),
           padRadius = null,
           startAngle = arcStartAngle,
           endAngle = arcEndAngle,
@@ -17678,31 +17705,31 @@ var app = (function () {
       };
 
       arc.innerRadius = function(_) {
-        return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant$2(+_), arc) : innerRadius;
+        return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant$1(+_), arc) : innerRadius;
       };
 
       arc.outerRadius = function(_) {
-        return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant$2(+_), arc) : outerRadius;
+        return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant$1(+_), arc) : outerRadius;
       };
 
       arc.cornerRadius = function(_) {
-        return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant$2(+_), arc) : cornerRadius;
+        return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant$1(+_), arc) : cornerRadius;
       };
 
       arc.padRadius = function(_) {
-        return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant$2(+_), arc) : padRadius;
+        return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant$1(+_), arc) : padRadius;
       };
 
       arc.startAngle = function(_) {
-        return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$2(+_), arc) : startAngle;
+        return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$1(+_), arc) : startAngle;
       };
 
       arc.endAngle = function(_) {
-        return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$2(+_), arc) : endAngle;
+        return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$1(+_), arc) : endAngle;
       };
 
       arc.padAngle = function(_) {
-        return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$2(+_), arc) : padAngle;
+        return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$1(+_), arc) : padAngle;
       };
 
       arc.context = function(_) {
@@ -17761,13 +17788,13 @@ var app = (function () {
     }
 
     function line(x$1, y$1) {
-      var defined = constant$2(true),
+      var defined = constant$1(true),
           context = null,
           curve = curveLinear,
           output = null;
 
-      x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant$2(x$1);
-      y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant$2(y$1);
+      x$1 = typeof x$1 === "function" ? x$1 : (x$1 === undefined) ? x : constant$1(x$1);
+      y$1 = typeof y$1 === "function" ? y$1 : (y$1 === undefined) ? y : constant$1(y$1);
 
       function line(data) {
         var i,
@@ -17790,15 +17817,15 @@ var app = (function () {
       }
 
       line.x = function(_) {
-        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$2(+_), line) : x$1;
+        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$1(+_), line) : x$1;
       };
 
       line.y = function(_) {
-        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$2(+_), line) : y$1;
+        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$1(+_), line) : y$1;
       };
 
       line.defined = function(_) {
-        return arguments.length ? (defined = typeof _ === "function" ? _ : constant$2(!!_), line) : defined;
+        return arguments.length ? (defined = typeof _ === "function" ? _ : constant$1(!!_), line) : defined;
       };
 
       line.curve = function(_) {
@@ -17814,14 +17841,14 @@ var app = (function () {
 
     function area(x0, y0, y1) {
       var x1 = null,
-          defined = constant$2(true),
+          defined = constant$1(true),
           context = null,
           curve = curveLinear,
           output = null;
 
-      x0 = typeof x0 === "function" ? x0 : (x0 === undefined) ? x : constant$2(+x0);
-      y0 = typeof y0 === "function" ? y0 : (y0 === undefined) ? constant$2(0) : constant$2(+y0);
-      y1 = typeof y1 === "function" ? y1 : (y1 === undefined) ? y : constant$2(+y1);
+      x0 = typeof x0 === "function" ? x0 : (x0 === undefined) ? x : constant$1(+x0);
+      y0 = typeof y0 === "function" ? y0 : (y0 === undefined) ? constant$1(0) : constant$1(+y0);
+      y1 = typeof y1 === "function" ? y1 : (y1 === undefined) ? y : constant$1(+y1);
 
       function area(data) {
         var i,
@@ -17866,27 +17893,27 @@ var app = (function () {
       }
 
       area.x = function(_) {
-        return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$2(+_), x1 = null, area) : x0;
+        return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$1(+_), x1 = null, area) : x0;
       };
 
       area.x0 = function(_) {
-        return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$2(+_), area) : x0;
+        return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$1(+_), area) : x0;
       };
 
       area.x1 = function(_) {
-        return arguments.length ? (x1 = _ == null ? null : typeof _ === "function" ? _ : constant$2(+_), area) : x1;
+        return arguments.length ? (x1 = _ == null ? null : typeof _ === "function" ? _ : constant$1(+_), area) : x1;
       };
 
       area.y = function(_) {
-        return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$2(+_), y1 = null, area) : y0;
+        return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$1(+_), y1 = null, area) : y0;
       };
 
       area.y0 = function(_) {
-        return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$2(+_), area) : y0;
+        return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$1(+_), area) : y0;
       };
 
       area.y1 = function(_) {
-        return arguments.length ? (y1 = _ == null ? null : typeof _ === "function" ? _ : constant$2(+_), area) : y1;
+        return arguments.length ? (y1 = _ == null ? null : typeof _ === "function" ? _ : constant$1(+_), area) : y1;
       };
 
       area.lineX0 =
@@ -17903,7 +17930,7 @@ var app = (function () {
       };
 
       area.defined = function(_) {
-        return arguments.length ? (defined = typeof _ === "function" ? _ : constant$2(!!_), area) : defined;
+        return arguments.length ? (defined = typeof _ === "function" ? _ : constant$1(!!_), area) : defined;
       };
 
       area.curve = function(_) {
@@ -17921,17 +17948,17 @@ var app = (function () {
       return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
     }
 
-    function identity$3(d) {
+    function identity$1(d) {
       return d;
     }
 
     function pie() {
-      var value = identity$3,
+      var value = identity$1,
           sortValues = descending$1,
           sort = null,
-          startAngle = constant$2(0),
-          endAngle = constant$2(tau),
-          padAngle = constant$2(0);
+          startAngle = constant$1(0),
+          endAngle = constant$1(tau),
+          padAngle = constant$1(0);
 
       function pie(data) {
         var i,
@@ -17974,7 +18001,7 @@ var app = (function () {
       }
 
       pie.value = function(_) {
-        return arguments.length ? (value = typeof _ === "function" ? _ : constant$2(+_), pie) : value;
+        return arguments.length ? (value = typeof _ === "function" ? _ : constant$1(+_), pie) : value;
       };
 
       pie.sortValues = function(_) {
@@ -17986,15 +18013,15 @@ var app = (function () {
       };
 
       pie.startAngle = function(_) {
-        return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$2(+_), pie) : startAngle;
+        return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$1(+_), pie) : startAngle;
       };
 
       pie.endAngle = function(_) {
-        return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$2(+_), pie) : endAngle;
+        return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$1(+_), pie) : endAngle;
       };
 
       pie.padAngle = function(_) {
-        return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$2(+_), pie) : padAngle;
+        return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$1(+_), pie) : padAngle;
       };
 
       return pie;
@@ -18113,11 +18140,11 @@ var app = (function () {
       };
 
       link.x = function(_) {
-        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$2(+_), link) : x$1;
+        return arguments.length ? (x$1 = typeof _ === "function" ? _ : constant$1(+_), link) : x$1;
       };
 
       link.y = function(_) {
-        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$2(+_), link) : y$1;
+        return arguments.length ? (y$1 = typeof _ === "function" ? _ : constant$1(+_), link) : y$1;
       };
 
       link.context = function(_) {
@@ -18285,8 +18312,8 @@ var app = (function () {
 
     function symbol(type, size) {
       var context = null;
-      type = typeof type === "function" ? type : constant$2(type || circle);
-      size = typeof size === "function" ? size : constant$2(size === undefined ? 64 : +size);
+      type = typeof type === "function" ? type : constant$1(type || circle);
+      size = typeof size === "function" ? size : constant$1(size === undefined ? 64 : +size);
 
       function symbol() {
         var buffer;
@@ -18296,11 +18323,11 @@ var app = (function () {
       }
 
       symbol.type = function(_) {
-        return arguments.length ? (type = typeof _ === "function" ? _ : constant$2(_), symbol) : type;
+        return arguments.length ? (type = typeof _ === "function" ? _ : constant$1(_), symbol) : type;
       };
 
       symbol.size = function(_) {
-        return arguments.length ? (size = typeof _ === "function" ? _ : constant$2(+_), symbol) : size;
+        return arguments.length ? (size = typeof _ === "function" ? _ : constant$1(+_), symbol) : size;
       };
 
       symbol.context = function(_) {
@@ -19215,7 +19242,7 @@ var app = (function () {
     }
 
     function stack() {
-      var keys = constant$2([]),
+      var keys = constant$1([]),
           order = none,
           offset = none$1,
           value = stackValue;
@@ -19240,15 +19267,15 @@ var app = (function () {
       }
 
       stack.keys = function(_) {
-        return arguments.length ? (keys = typeof _ === "function" ? _ : constant$2(Array.from(_)), stack) : keys;
+        return arguments.length ? (keys = typeof _ === "function" ? _ : constant$1(Array.from(_)), stack) : keys;
       };
 
       stack.value = function(_) {
-        return arguments.length ? (value = typeof _ === "function" ? _ : constant$2(+_), stack) : value;
+        return arguments.length ? (value = typeof _ === "function" ? _ : constant$1(+_), stack) : value;
       };
 
       stack.order = function(_) {
-        return arguments.length ? (order = _ == null ? none : typeof _ === "function" ? _ : constant$2(Array.from(_)), stack) : order;
+        return arguments.length ? (order = _ == null ? none : typeof _ === "function" ? _ : constant$1(Array.from(_)), stack) : order;
       };
 
       stack.offset = function(_) {
@@ -19325,7 +19352,7 @@ var app = (function () {
       return j;
     }
 
-    function ascending$1(series) {
+    function ascending(series) {
       var sums = series.map(sum);
       return none(series).sort(function(a, b) { return sums[a] - sums[b]; });
     }
@@ -19337,7 +19364,7 @@ var app = (function () {
     }
 
     function descending(series) {
-      return ascending$1(series).reverse();
+      return ascending(series).reverse();
     }
 
     function insideOut(series) {
@@ -19369,7 +19396,7 @@ var app = (function () {
       return none(series).reverse();
     }
 
-    var constant$1 = x => () => x;
+    var constant = x => () => x;
 
     function ZoomEvent(type, {
       sourceEvent,
@@ -19429,12 +19456,12 @@ var app = (function () {
       }
     };
 
-    var identity$2 = new Transform(1, 0, 0);
+    var identity = new Transform(1, 0, 0);
 
     transform.prototype = Transform.prototype;
 
     function transform(node) {
-      while (!node.__zoom) if (!(node = node.parentNode)) return identity$2;
+      while (!node.__zoom) if (!(node = node.parentNode)) return identity;
       return node.__zoom;
     }
 
@@ -19467,7 +19494,7 @@ var app = (function () {
     }
 
     function defaultTransform() {
-      return this.__zoom || identity$2;
+      return this.__zoom || identity;
     }
 
     function defaultWheelDelta(event) {
@@ -19570,7 +19597,7 @@ var app = (function () {
           var e = extent.apply(this, arguments),
               t = this.__zoom,
               p0 = p == null ? centroid(e) : typeof p === "function" ? p.apply(this, arguments) : p;
-          return constrain(identity$2.translate(p0[0], p0[1]).scale(t.k).translate(
+          return constrain(identity.translate(p0[0], p0[1]).scale(t.k).translate(
             typeof x === "function" ? -x.apply(this, arguments) : -x,
             typeof y === "function" ? -y.apply(this, arguments) : -y
           ), e, translateExtent);
@@ -19834,19 +19861,19 @@ var app = (function () {
       }
 
       zoom.wheelDelta = function(_) {
-        return arguments.length ? (wheelDelta = typeof _ === "function" ? _ : constant$1(+_), zoom) : wheelDelta;
+        return arguments.length ? (wheelDelta = typeof _ === "function" ? _ : constant(+_), zoom) : wheelDelta;
       };
 
       zoom.filter = function(_) {
-        return arguments.length ? (filter = typeof _ === "function" ? _ : constant$1(!!_), zoom) : filter;
+        return arguments.length ? (filter = typeof _ === "function" ? _ : constant(!!_), zoom) : filter;
       };
 
       zoom.touchable = function(_) {
-        return arguments.length ? (touchable = typeof _ === "function" ? _ : constant$1(!!_), zoom) : touchable;
+        return arguments.length ? (touchable = typeof _ === "function" ? _ : constant(!!_), zoom) : touchable;
       };
 
       zoom.extent = function(_) {
-        return arguments.length ? (extent = typeof _ === "function" ? _ : constant$1([[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]]), zoom) : extent;
+        return arguments.length ? (extent = typeof _ === "function" ? _ : constant([[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]]), zoom) : extent;
       };
 
       zoom.scaleExtent = function(_) {
@@ -19888,18 +19915,18 @@ var app = (function () {
     var d3 = /*#__PURE__*/Object.freeze({
         __proto__: null,
         version: version,
-        bisect: bisectRight$1,
-        bisectRight: bisectRight$1,
+        bisect: bisectRight,
+        bisectRight: bisectRight,
         bisectLeft: bisectLeft,
         bisectCenter: bisectCenter,
-        ascending: ascending$4,
-        bisector: bisector$1,
+        ascending: ascending$3,
+        bisector: bisector,
         count: count$1,
         cross: cross$2,
         cumsum: cumsum,
         descending: descending$2,
         deviation: deviation,
-        extent: extent$2,
+        extent: extent$1,
         Adder: Adder,
         fsum: fsum,
         fcumsum: fcumsum,
@@ -19915,14 +19942,14 @@ var app = (function () {
         thresholdFreedmanDiaconis: freedmanDiaconis,
         thresholdScott: scott,
         thresholdSturges: thresholdSturges,
-        max: max$4,
+        max: max$3,
         maxIndex: maxIndex,
         mean: mean,
         median: median,
         merge: merge,
         min: min$2,
         minIndex: minIndex,
-        nice: nice$2,
+        nice: nice$1,
         pairs: pairs,
         permute: permute,
         quantile: quantile$1,
@@ -19937,16 +19964,16 @@ var app = (function () {
         shuffle: shuffle$1,
         shuffler: shuffler,
         sum: sum$1,
-        ticks: ticks$1,
-        tickIncrement: tickIncrement$1,
-        tickStep: tickStep$1,
+        ticks: ticks,
+        tickIncrement: tickIncrement,
+        tickStep: tickStep,
         transpose: transpose,
         variance: variance,
         zip: zip,
         every: every,
         some: some,
         filter: filter$1,
-        map: map$2,
+        map: map$1,
         reduce: reduce,
         reverse: reverse$1,
         sort: sort,
@@ -19971,9 +19998,9 @@ var app = (function () {
         chordDirected: chordDirected,
         ribbon: ribbon$1,
         ribbonArrow: ribbonArrow,
-        color: color$1,
-        rgb: rgb$2,
-        hsl: hsl$3,
+        color: color,
+        rgb: rgb,
+        hsl: hsl$2,
         lab: lab$1,
         hcl: hcl$2,
         lch: lch,
@@ -19988,7 +20015,7 @@ var app = (function () {
         dragDisable: dragDisable,
         dragEnable: yesdrag,
         dsvFormat: dsvFormat,
-        csvParse: csvParse$1,
+        csvParse: csvParse,
         csvParseRows: csvParseRows,
         csvFormat: csvFormat,
         csvFormatBody: csvFormatBody,
@@ -20002,8 +20029,8 @@ var app = (function () {
         tsvFormatRows: tsvFormatRows,
         tsvFormatRow: tsvFormatRow,
         tsvFormatValue: tsvFormatValue,
-        autoType: autoType$1,
-        easeLinear: linear$3,
+        autoType: autoType,
+        easeLinear: linear$1,
         easeQuad: quadInOut,
         easeQuadIn: quadIn,
         easeQuadOut: quadOut,
@@ -20042,8 +20069,8 @@ var app = (function () {
         easeElasticInOut: elasticInOut,
         blob: blob,
         buffer: buffer,
-        dsv: dsv$1,
-        csv: csv$1,
+        dsv: dsv,
+        csv: csv,
         tsv: tsv,
         image: image,
         json: json,
@@ -20059,28 +20086,28 @@ var app = (function () {
         forceSimulation: simulation,
         forceX: x$1,
         forceY: y$1,
-        formatDefaultLocale: defaultLocale$3,
-        get format () { return format$1; },
-        get formatPrefix () { return formatPrefix$1; },
-        formatLocale: formatLocale$3,
-        formatSpecifier: formatSpecifier$1,
-        FormatSpecifier: FormatSpecifier$1,
-        precisionFixed: precisionFixed$1,
-        precisionPrefix: precisionPrefix$1,
-        precisionRound: precisionRound$1,
+        formatDefaultLocale: defaultLocale$1,
+        get format () { return format; },
+        get formatPrefix () { return formatPrefix; },
+        formatLocale: formatLocale$1,
+        formatSpecifier: formatSpecifier,
+        FormatSpecifier: FormatSpecifier,
+        precisionFixed: precisionFixed,
+        precisionPrefix: precisionPrefix,
+        precisionRound: precisionRound,
         geoArea: area$2,
         geoBounds: bounds,
         geoCentroid: centroid$1,
         geoCircle: circle$2,
         geoClipAntimeridian: clipAntimeridian,
         geoClipCircle: clipCircle,
-        geoClipExtent: extent$1,
+        geoClipExtent: extent,
         geoClipRectangle: clipRectangle,
         geoContains: contains$1,
         geoDistance: distance,
         geoGraticule: graticule,
         geoGraticule10: graticule10,
-        geoInterpolate: interpolate$1,
+        geoInterpolate: interpolate,
         geoLength: length$1,
         geoPath: index$2,
         geoAlbers: albers,
@@ -20101,7 +20128,7 @@ var app = (function () {
         geoEquirectangularRaw: equirectangularRaw,
         geoGnomonic: gnomonic,
         geoGnomonicRaw: gnomonicRaw,
-        geoIdentity: identity$6,
+        geoIdentity: identity$4,
         geoProjection: projection,
         geoProjectionMutator: projectionMutator,
         geoMercator: mercator,
@@ -20132,17 +20159,17 @@ var app = (function () {
         treemapSliceDice: sliceDice,
         treemapSquarify: squarify,
         treemapResquarify: resquarify,
-        interpolate: interpolate$3,
+        interpolate: interpolate$2,
         interpolateArray: array$3,
         interpolateBasis: basis$2,
         interpolateBasisClosed: basisClosed$1,
         interpolateDate: date$9,
         interpolateDiscrete: discrete,
         interpolateHue: hue,
-        interpolateNumber: interpolateNumber$1,
-        interpolateNumberArray: numberArray$1,
-        interpolateObject: object$2,
-        interpolateRound: interpolateRound$1,
+        interpolateNumber: interpolateNumber,
+        interpolateNumberArray: numberArray,
+        interpolateObject: object$1,
+        interpolateRound: interpolateRound,
         interpolateString: interpolateString,
         interpolateTransformCss: interpolateTransformCss,
         interpolateTransformSvg: interpolateTransformSvg,
@@ -20150,7 +20177,7 @@ var app = (function () {
         interpolateRgb: interpolateRgb,
         interpolateRgbBasis: rgbBasis,
         interpolateRgbBasisClosed: rgbBasisClosed,
-        interpolateHsl: hsl$2,
+        interpolateHsl: hsl$1,
         interpolateHslLong: hslLong,
         interpolateLab: lab,
         interpolateHcl: hcl$1,
@@ -20172,12 +20199,12 @@ var app = (function () {
         randomLogNormal: logNormal,
         randomBates: bates,
         randomIrwinHall: irwinHall,
-        randomExponential: exponential$1,
+        randomExponential: exponential,
         randomPareto: pareto,
         randomBernoulli: bernoulli,
         randomGeometric: geometric,
         randomBinomial: binomial,
-        randomGamma: gamma$1,
+        randomGamma: gamma,
         randomBeta: beta,
         randomWeibull: weibull,
         randomCauchy: cauchy,
@@ -20186,8 +20213,8 @@ var app = (function () {
         randomLcg: lcg,
         scaleBand: band,
         scalePoint: point$4,
-        scaleIdentity: identity$4,
-        scaleLinear: linear$2,
+        scaleIdentity: identity$2,
+        scaleLinear: linear,
         scaleLog: log,
         scaleSymlog: symlog,
         scaleOrdinal: ordinal,
@@ -20211,7 +20238,7 @@ var app = (function () {
         scaleDivergingPow: divergingPow,
         scaleDivergingSqrt: divergingSqrt,
         scaleDivergingSymlog: divergingSymlog,
-        tickFormat: tickFormat$1,
+        tickFormat: tickFormat,
         schemeCategory10: category10,
         schemeAccent: Accent,
         schemeDark2: Dark2,
@@ -20350,63 +20377,63 @@ var app = (function () {
         stackOffsetSilhouette: silhouette,
         stackOffsetWiggle: wiggle,
         stackOrderAppearance: appearance,
-        stackOrderAscending: ascending$1,
+        stackOrderAscending: ascending,
         stackOrderDescending: descending,
         stackOrderInsideOut: insideOut,
         stackOrderNone: none,
         stackOrderReverse: reverse,
-        timeInterval: newInterval$1,
-        timeMillisecond: millisecond$1,
+        timeInterval: newInterval,
+        timeMillisecond: millisecond,
         timeMilliseconds: milliseconds,
-        utcMillisecond: millisecond$1,
+        utcMillisecond: millisecond,
         utcMilliseconds: milliseconds,
-        timeSecond: second$1,
+        timeSecond: second,
         timeSeconds: seconds,
-        utcSecond: second$1,
+        utcSecond: second,
         utcSeconds: seconds,
-        timeMinute: minute$1,
+        timeMinute: minute,
         timeMinutes: minutes,
-        timeHour: hour$1,
+        timeHour: hour,
         timeHours: hours,
-        timeDay: day$1,
+        timeDay: day,
         timeDays: days$8,
-        timeWeek: sunday$1,
+        timeWeek: sunday,
         timeWeeks: sundays,
-        timeSunday: sunday$1,
+        timeSunday: sunday,
         timeSundays: sundays,
-        timeMonday: monday$1,
+        timeMonday: monday,
         timeMondays: mondays,
         timeTuesday: tuesday,
         timeTuesdays: tuesdays,
         timeWednesday: wednesday,
         timeWednesdays: wednesdays,
-        timeThursday: thursday$1,
+        timeThursday: thursday,
         timeThursdays: thursdays,
         timeFriday: friday,
         timeFridays: fridays,
         timeSaturday: saturday,
         timeSaturdays: saturdays,
-        timeMonth: month$1,
+        timeMonth: month,
         timeMonths: months$8,
-        timeYear: year$1,
+        timeYear: year,
         timeYears: years,
         utcMinute: utcMinute,
         utcMinutes: utcMinutes,
         utcHour: utcHour,
         utcHours: utcHours,
-        utcDay: utcDay$1,
+        utcDay: utcDay,
         utcDays: utcDays,
-        utcWeek: utcSunday$1,
+        utcWeek: utcSunday,
         utcWeeks: utcSundays,
-        utcSunday: utcSunday$1,
+        utcSunday: utcSunday,
         utcSundays: utcSundays,
-        utcMonday: utcMonday$1,
+        utcMonday: utcMonday,
         utcMondays: utcMondays,
         utcTuesday: utcTuesday,
         utcTuesdays: utcTuesdays,
         utcWednesday: utcWednesday,
         utcWednesdays: utcWednesdays,
-        utcThursday: utcThursday$1,
+        utcThursday: utcThursday,
         utcThursdays: utcThursdays,
         utcFriday: utcFriday,
         utcFridays: utcFridays,
@@ -20414,16 +20441,16 @@ var app = (function () {
         utcSaturdays: utcSaturdays,
         utcMonth: utcMonth,
         utcMonths: utcMonths,
-        utcYear: utcYear$1,
+        utcYear: utcYear,
         utcYears: utcYears,
-        timeFormatDefaultLocale: defaultLocale$2,
-        get timeFormat () { return timeFormat$1; },
-        get timeParse () { return timeParse$1; },
-        get utcFormat () { return utcFormat$1; },
-        get utcParse () { return utcParse$1; },
-        timeFormatLocale: formatLocale$2,
-        isoFormat: formatIso$1,
-        isoParse: parseIso$1,
+        timeFormatDefaultLocale: defaultLocale,
+        get timeFormat () { return timeFormat; },
+        get timeParse () { return timeParse; },
+        get utcFormat () { return utcFormat; },
+        get utcParse () { return utcParse; },
+        timeFormatLocale: formatLocale,
+        isoFormat: formatIso,
+        isoParse: parseIso,
         now: now,
         timer: timer,
         timerFlush: timerFlush,
@@ -20434,7 +20461,7 @@ var app = (function () {
         interrupt: interrupt,
         zoom: zoom,
         zoomTransform: transform,
-        zoomIdentity: identity$2
+        zoomIdentity: identity
     });
 
     /* node_modules/carbon-components-svelte/src/Checkbox/CheckboxSkeleton.svelte generated by Svelte v3.36.0 */
@@ -26648,196 +26675,6 @@ var app = (function () {
     	}
     }
 
-    var EOL = {},
-        EOF = {},
-        QUOTE = 34,
-        NEWLINE = 10,
-        RETURN = 13;
-
-    function objectConverter(columns) {
-      return new Function("d", "return {" + columns.map(function(name, i) {
-        return JSON.stringify(name) + ": d[" + i + "] || \"\"";
-      }).join(",") + "}");
-    }
-
-    function customConverter(columns, f) {
-      var object = objectConverter(columns);
-      return function(row, i) {
-        return f(object(row), i, columns);
-      };
-    }
-
-    // Compute unique columns in order of discovery.
-    function inferColumns(rows) {
-      var columnSet = Object.create(null),
-          columns = [];
-
-      rows.forEach(function(row) {
-        for (var column in row) {
-          if (!(column in columnSet)) {
-            columns.push(columnSet[column] = column);
-          }
-        }
-      });
-
-      return columns;
-    }
-
-    function pad$1(value, width) {
-      var s = value + "", length = s.length;
-      return length < width ? new Array(width - length + 1).join(0) + s : s;
-    }
-
-    function formatYear$1(year) {
-      return year < 0 ? "-" + pad$1(-year, 6)
-        : year > 9999 ? "+" + pad$1(year, 6)
-        : pad$1(year, 4);
-    }
-
-    function formatDate(date) {
-      var hours = date.getUTCHours(),
-          minutes = date.getUTCMinutes(),
-          seconds = date.getUTCSeconds(),
-          milliseconds = date.getUTCMilliseconds();
-      return isNaN(date) ? "Invalid Date"
-          : formatYear$1(date.getUTCFullYear()) + "-" + pad$1(date.getUTCMonth() + 1, 2) + "-" + pad$1(date.getUTCDate(), 2)
-          + (milliseconds ? "T" + pad$1(hours, 2) + ":" + pad$1(minutes, 2) + ":" + pad$1(seconds, 2) + "." + pad$1(milliseconds, 3) + "Z"
-          : seconds ? "T" + pad$1(hours, 2) + ":" + pad$1(minutes, 2) + ":" + pad$1(seconds, 2) + "Z"
-          : minutes || hours ? "T" + pad$1(hours, 2) + ":" + pad$1(minutes, 2) + "Z"
-          : "");
-    }
-
-    function dsv(delimiter) {
-      var reFormat = new RegExp("[\"" + delimiter + "\n\r]"),
-          DELIMITER = delimiter.charCodeAt(0);
-
-      function parse(text, f) {
-        var convert, columns, rows = parseRows(text, function(row, i) {
-          if (convert) return convert(row, i - 1);
-          columns = row, convert = f ? customConverter(row, f) : objectConverter(row);
-        });
-        rows.columns = columns || [];
-        return rows;
-      }
-
-      function parseRows(text, f) {
-        var rows = [], // output rows
-            N = text.length,
-            I = 0, // current character index
-            n = 0, // current line number
-            t, // current token
-            eof = N <= 0, // current token followed by EOF?
-            eol = false; // current token followed by EOL?
-
-        // Strip the trailing newline.
-        if (text.charCodeAt(N - 1) === NEWLINE) --N;
-        if (text.charCodeAt(N - 1) === RETURN) --N;
-
-        function token() {
-          if (eof) return EOF;
-          if (eol) return eol = false, EOL;
-
-          // Unescape quotes.
-          var i, j = I, c;
-          if (text.charCodeAt(j) === QUOTE) {
-            while (I++ < N && text.charCodeAt(I) !== QUOTE || text.charCodeAt(++I) === QUOTE);
-            if ((i = I) >= N) eof = true;
-            else if ((c = text.charCodeAt(I++)) === NEWLINE) eol = true;
-            else if (c === RETURN) { eol = true; if (text.charCodeAt(I) === NEWLINE) ++I; }
-            return text.slice(j + 1, i - 1).replace(/""/g, "\"");
-          }
-
-          // Find next delimiter or newline.
-          while (I < N) {
-            if ((c = text.charCodeAt(i = I++)) === NEWLINE) eol = true;
-            else if (c === RETURN) { eol = true; if (text.charCodeAt(I) === NEWLINE) ++I; }
-            else if (c !== DELIMITER) continue;
-            return text.slice(j, i);
-          }
-
-          // Return last token before EOF.
-          return eof = true, text.slice(j, N);
-        }
-
-        while ((t = token()) !== EOF) {
-          var row = [];
-          while (t !== EOL && t !== EOF) row.push(t), t = token();
-          if (f && (row = f(row, n++)) == null) continue;
-          rows.push(row);
-        }
-
-        return rows;
-      }
-
-      function preformatBody(rows, columns) {
-        return rows.map(function(row) {
-          return columns.map(function(column) {
-            return formatValue(row[column]);
-          }).join(delimiter);
-        });
-      }
-
-      function format(rows, columns) {
-        if (columns == null) columns = inferColumns(rows);
-        return [columns.map(formatValue).join(delimiter)].concat(preformatBody(rows, columns)).join("\n");
-      }
-
-      function formatBody(rows, columns) {
-        if (columns == null) columns = inferColumns(rows);
-        return preformatBody(rows, columns).join("\n");
-      }
-
-      function formatRows(rows) {
-        return rows.map(formatRow).join("\n");
-      }
-
-      function formatRow(row) {
-        return row.map(formatValue).join(delimiter);
-      }
-
-      function formatValue(value) {
-        return value == null ? ""
-            : value instanceof Date ? formatDate(value)
-            : reFormat.test(value += "") ? "\"" + value.replace(/"/g, "\"\"") + "\""
-            : value;
-      }
-
-      return {
-        parse: parse,
-        parseRows: parseRows,
-        format: format,
-        formatBody: formatBody,
-        formatRows: formatRows,
-        formatRow: formatRow,
-        formatValue: formatValue
-      };
-    }
-
-    var csv = dsv(",");
-
-    var csvParse = csv.parse;
-
-    function autoType(object) {
-      for (var key in object) {
-        var value = object[key].trim(), number, m;
-        if (!value) value = null;
-        else if (value === "true") value = true;
-        else if (value === "false") value = false;
-        else if (value === "NaN") value = NaN;
-        else if (!isNaN(number = +value)) value = number;
-        else if (m = value.match(/^([-+]\d{2})?\d{4}(-\d{2}(-\d{2})?)?(T\d{2}:\d{2}(:\d{2}(\.\d{3})?)?(Z|[-+]\d{2}:\d{2})?)?$/)) {
-          if (fixtz && !!m[4] && !m[7]) value = value.replace(/-/g, "/").replace(/T/, " ");
-          value = new Date(value);
-        }
-        else continue;
-        object[key] = value;
-      }
-      return object;
-    }
-
-    // https://github.com/d3/d3-dsv/issues/45
-    const fixtz = new Date("2019-01-01T00:00").getHours() || new Date("2019-07-01T00:00").getHours();
-
     function setColors(themes, theme) {
       for (let color in themes[theme]) {
         document.documentElement.style.setProperty('--' + color, themes[theme][color]);
@@ -26945,1327 +26782,6 @@ var app = (function () {
     	
     }; */
 
-    function formatDecimal(x) {
-      return Math.abs(x = Math.round(x)) >= 1e21
-          ? x.toLocaleString("en").replace(/,/g, "")
-          : x.toString(10);
-    }
-
-    // Computes the decimal coefficient and exponent of the specified number x with
-    // significant digits p, where x is positive and p is in [1, 21] or undefined.
-    // For example, formatDecimalParts(1.23) returns ["123", 0].
-    function formatDecimalParts(x, p) {
-      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-      var i, coefficient = x.slice(0, i);
-
-      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-      return [
-        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
-        +x.slice(i + 1)
-      ];
-    }
-
-    function exponent(x) {
-      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
-    }
-
-    function formatGroup(grouping, thousands) {
-      return function(value, width) {
-        var i = value.length,
-            t = [],
-            j = 0,
-            g = grouping[0],
-            length = 0;
-
-        while (i > 0 && g > 0) {
-          if (length + g + 1 > width) g = Math.max(1, width - length);
-          t.push(value.substring(i -= g, i + g));
-          if ((length += g + 1) > width) break;
-          g = grouping[j = (j + 1) % grouping.length];
-        }
-
-        return t.reverse().join(thousands);
-      };
-    }
-
-    function formatNumerals(numerals) {
-      return function(value) {
-        return value.replace(/[0-9]/g, function(i) {
-          return numerals[+i];
-        });
-      };
-    }
-
-    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-
-    function formatSpecifier(specifier) {
-      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-      var match;
-      return new FormatSpecifier({
-        fill: match[1],
-        align: match[2],
-        sign: match[3],
-        symbol: match[4],
-        zero: match[5],
-        width: match[6],
-        comma: match[7],
-        precision: match[8] && match[8].slice(1),
-        trim: match[9],
-        type: match[10]
-      });
-    }
-
-    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
-    function FormatSpecifier(specifier) {
-      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-      this.align = specifier.align === undefined ? ">" : specifier.align + "";
-      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
-      this.zero = !!specifier.zero;
-      this.width = specifier.width === undefined ? undefined : +specifier.width;
-      this.comma = !!specifier.comma;
-      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
-      this.trim = !!specifier.trim;
-      this.type = specifier.type === undefined ? "" : specifier.type + "";
-    }
-
-    FormatSpecifier.prototype.toString = function() {
-      return this.fill
-          + this.align
-          + this.sign
-          + this.symbol
-          + (this.zero ? "0" : "")
-          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
-          + (this.comma ? "," : "")
-          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
-          + (this.trim ? "~" : "")
-          + this.type;
-    };
-
-    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-    function formatTrim(s) {
-      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
-        switch (s[i]) {
-          case ".": i0 = i1 = i; break;
-          case "0": if (i0 === 0) i0 = i; i1 = i; break;
-          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
-        }
-      }
-      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
-    }
-
-    var prefixExponent;
-
-    function formatPrefixAuto(x, p) {
-      var d = formatDecimalParts(x, p);
-      if (!d) return x + "";
-      var coefficient = d[0],
-          exponent = d[1],
-          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-          n = coefficient.length;
-      return i === n ? coefficient
-          : i > n ? coefficient + new Array(i - n + 1).join("0")
-          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-    }
-
-    function formatRounded(x, p) {
-      var d = formatDecimalParts(x, p);
-      if (!d) return x + "";
-      var coefficient = d[0],
-          exponent = d[1];
-      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
-          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
-          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-    }
-
-    var formatTypes = {
-      "%": (x, p) => (x * 100).toFixed(p),
-      "b": (x) => Math.round(x).toString(2),
-      "c": (x) => x + "",
-      "d": formatDecimal,
-      "e": (x, p) => x.toExponential(p),
-      "f": (x, p) => x.toFixed(p),
-      "g": (x, p) => x.toPrecision(p),
-      "o": (x) => Math.round(x).toString(8),
-      "p": (x, p) => formatRounded(x * 100, p),
-      "r": formatRounded,
-      "s": formatPrefixAuto,
-      "X": (x) => Math.round(x).toString(16).toUpperCase(),
-      "x": (x) => Math.round(x).toString(16)
-    };
-
-    function identity$1(x) {
-      return x;
-    }
-
-    var map = Array.prototype.map,
-        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
-
-    function formatLocale$1(locale) {
-      var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
-          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
-          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
-          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-          numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map.call(locale.numerals, String)),
-          percent = locale.percent === undefined ? "%" : locale.percent + "",
-          minus = locale.minus === undefined ? "−" : locale.minus + "",
-          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
-
-      function newFormat(specifier) {
-        specifier = formatSpecifier(specifier);
-
-        var fill = specifier.fill,
-            align = specifier.align,
-            sign = specifier.sign,
-            symbol = specifier.symbol,
-            zero = specifier.zero,
-            width = specifier.width,
-            comma = specifier.comma,
-            precision = specifier.precision,
-            trim = specifier.trim,
-            type = specifier.type;
-
-        // The "n" type is an alias for ",g".
-        if (type === "n") comma = true, type = "g";
-
-        // The "" type, and any invalid type, is an alias for ".12~g".
-        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
-
-        // If zero fill is specified, padding goes after sign and before digits.
-        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
-
-        // Compute the prefix and suffix.
-        // For SI-prefix, the suffix is lazily computed.
-        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
-
-        // What format function should we use?
-        // Is this an integer type?
-        // Can this type generate exponential notation?
-        var formatType = formatTypes[type],
-            maybeSuffix = /[defgprs%]/.test(type);
-
-        // Set the default precision if not specified,
-        // or clamp the specified precision to the supported range.
-        // For significant precision, it must be in [1, 21].
-        // For fixed precision, it must be in [0, 20].
-        precision = precision === undefined ? 6
-            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
-            : Math.max(0, Math.min(20, precision));
-
-        function format(value) {
-          var valuePrefix = prefix,
-              valueSuffix = suffix,
-              i, n, c;
-
-          if (type === "c") {
-            valueSuffix = formatType(value) + valueSuffix;
-            value = "";
-          } else {
-            value = +value;
-
-            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
-            var valueNegative = value < 0 || 1 / value < 0;
-
-            // Perform the initial formatting.
-            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
-
-            // Trim insignificant zeros.
-            if (trim) value = formatTrim(value);
-
-            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
-            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
-
-            // Compute the prefix and suffix.
-            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
-
-            // Break the formatted value into the integer “value” part that can be
-            // grouped, and fractional or exponential “suffix” part that is not.
-            if (maybeSuffix) {
-              i = -1, n = value.length;
-              while (++i < n) {
-                if (c = value.charCodeAt(i), 48 > c || c > 57) {
-                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
-                  value = value.slice(0, i);
-                  break;
-                }
-              }
-            }
-          }
-
-          // If the fill character is not "0", grouping is applied before padding.
-          if (comma && !zero) value = group(value, Infinity);
-
-          // Compute the padding.
-          var length = valuePrefix.length + value.length + valueSuffix.length,
-              padding = length < width ? new Array(width - length + 1).join(fill) : "";
-
-          // If the fill character is "0", grouping is applied after padding.
-          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
-
-          // Reconstruct the final output based on the desired alignment.
-          switch (align) {
-            case "<": value = valuePrefix + value + valueSuffix + padding; break;
-            case "=": value = valuePrefix + padding + value + valueSuffix; break;
-            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
-            default: value = padding + valuePrefix + value + valueSuffix; break;
-          }
-
-          return numerals(value);
-        }
-
-        format.toString = function() {
-          return specifier + "";
-        };
-
-        return format;
-      }
-
-      function formatPrefix(specifier, value) {
-        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
-            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
-            k = Math.pow(10, -e),
-            prefix = prefixes[8 + e / 3];
-        return function(value) {
-          return f(k * value) + prefix;
-        };
-      }
-
-      return {
-        format: newFormat,
-        formatPrefix: formatPrefix
-      };
-    }
-
-    var locale$1;
-    var format;
-    var formatPrefix;
-
-    defaultLocale$1({
-      thousands: ",",
-      grouping: [3],
-      currency: ["$", ""]
-    });
-
-    function defaultLocale$1(definition) {
-      locale$1 = formatLocale$1(definition);
-      format = locale$1.format;
-      formatPrefix = locale$1.formatPrefix;
-      return locale$1;
-    }
-
-    function precisionFixed(step) {
-      return Math.max(0, -exponent(Math.abs(step)));
-    }
-
-    function precisionPrefix(step, value) {
-      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
-    }
-
-    function precisionRound(step, max) {
-      step = Math.abs(step), max = Math.abs(max) - step;
-      return Math.max(0, exponent(max) - exponent(step)) + 1;
-    }
-
-    var src$1 = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        formatDefaultLocale: defaultLocale$1,
-        get format () { return format; },
-        get formatPrefix () { return formatPrefix; },
-        formatLocale: formatLocale$1,
-        formatSpecifier: formatSpecifier,
-        FormatSpecifier: FormatSpecifier,
-        precisionFixed: precisionFixed,
-        precisionPrefix: precisionPrefix,
-        precisionRound: precisionRound
-    });
-
-    var t0 = new Date,
-        t1 = new Date;
-
-    function newInterval(floori, offseti, count, field) {
-
-      function interval(date) {
-        return floori(date = arguments.length === 0 ? new Date : new Date(+date)), date;
-      }
-
-      interval.floor = function(date) {
-        return floori(date = new Date(+date)), date;
-      };
-
-      interval.ceil = function(date) {
-        return floori(date = new Date(date - 1)), offseti(date, 1), floori(date), date;
-      };
-
-      interval.round = function(date) {
-        var d0 = interval(date),
-            d1 = interval.ceil(date);
-        return date - d0 < d1 - date ? d0 : d1;
-      };
-
-      interval.offset = function(date, step) {
-        return offseti(date = new Date(+date), step == null ? 1 : Math.floor(step)), date;
-      };
-
-      interval.range = function(start, stop, step) {
-        var range = [], previous;
-        start = interval.ceil(start);
-        step = step == null ? 1 : Math.floor(step);
-        if (!(start < stop) || !(step > 0)) return range; // also handles Invalid Date
-        do range.push(previous = new Date(+start)), offseti(start, step), floori(start);
-        while (previous < start && start < stop);
-        return range;
-      };
-
-      interval.filter = function(test) {
-        return newInterval(function(date) {
-          if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
-        }, function(date, step) {
-          if (date >= date) {
-            if (step < 0) while (++step <= 0) {
-              while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
-            } else while (--step >= 0) {
-              while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
-            }
-          }
-        });
-      };
-
-      if (count) {
-        interval.count = function(start, end) {
-          t0.setTime(+start), t1.setTime(+end);
-          floori(t0), floori(t1);
-          return Math.floor(count(t0, t1));
-        };
-
-        interval.every = function(step) {
-          step = Math.floor(step);
-          return !isFinite(step) || !(step > 0) ? null
-              : !(step > 1) ? interval
-              : interval.filter(field
-                  ? function(d) { return field(d) % step === 0; }
-                  : function(d) { return interval.count(0, d) % step === 0; });
-        };
-      }
-
-      return interval;
-    }
-
-    var millisecond = newInterval(function() {
-      // noop
-    }, function(date, step) {
-      date.setTime(+date + step);
-    }, function(start, end) {
-      return end - start;
-    });
-
-    // An optimized implementation for this simple case.
-    millisecond.every = function(k) {
-      k = Math.floor(k);
-      if (!isFinite(k) || !(k > 0)) return null;
-      if (!(k > 1)) return millisecond;
-      return newInterval(function(date) {
-        date.setTime(Math.floor(date / k) * k);
-      }, function(date, step) {
-        date.setTime(+date + step * k);
-      }, function(start, end) {
-        return (end - start) / k;
-      });
-    };
-
-    var durationSecond$1 = 1e3;
-    var durationMinute$1 = 6e4;
-    var durationHour$1 = 36e5;
-    var durationDay$1 = 864e5;
-    var durationWeek$1 = 6048e5;
-
-    var second = newInterval(function(date) {
-      date.setTime(date - date.getMilliseconds());
-    }, function(date, step) {
-      date.setTime(+date + step * durationSecond$1);
-    }, function(start, end) {
-      return (end - start) / durationSecond$1;
-    }, function(date) {
-      return date.getUTCSeconds();
-    });
-
-    var minute = newInterval(function(date) {
-      date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$1);
-    }, function(date, step) {
-      date.setTime(+date + step * durationMinute$1);
-    }, function(start, end) {
-      return (end - start) / durationMinute$1;
-    }, function(date) {
-      return date.getMinutes();
-    });
-
-    var hour = newInterval(function(date) {
-      date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$1 - date.getMinutes() * durationMinute$1);
-    }, function(date, step) {
-      date.setTime(+date + step * durationHour$1);
-    }, function(start, end) {
-      return (end - start) / durationHour$1;
-    }, function(date) {
-      return date.getHours();
-    });
-
-    var day = newInterval(
-      date => date.setHours(0, 0, 0, 0),
-      (date, step) => date.setDate(date.getDate() + step),
-      (start, end) => (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$1) / durationDay$1,
-      date => date.getDate() - 1
-    );
-
-    function weekday(i) {
-      return newInterval(function(date) {
-        date.setDate(date.getDate() - (date.getDay() + 7 - i) % 7);
-        date.setHours(0, 0, 0, 0);
-      }, function(date, step) {
-        date.setDate(date.getDate() + step * 7);
-      }, function(start, end) {
-        return (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$1) / durationWeek$1;
-      });
-    }
-
-    var sunday = weekday(0);
-    var monday = weekday(1);
-    weekday(2);
-    weekday(3);
-    var thursday = weekday(4);
-    weekday(5);
-    weekday(6);
-
-    var month = newInterval(function(date) {
-      date.setDate(1);
-      date.setHours(0, 0, 0, 0);
-    }, function(date, step) {
-      date.setMonth(date.getMonth() + step);
-    }, function(start, end) {
-      return end.getMonth() - start.getMonth() + (end.getFullYear() - start.getFullYear()) * 12;
-    }, function(date) {
-      return date.getMonth();
-    });
-
-    var year = newInterval(function(date) {
-      date.setMonth(0, 1);
-      date.setHours(0, 0, 0, 0);
-    }, function(date, step) {
-      date.setFullYear(date.getFullYear() + step);
-    }, function(start, end) {
-      return end.getFullYear() - start.getFullYear();
-    }, function(date) {
-      return date.getFullYear();
-    });
-
-    // An optimized implementation for this simple case.
-    year.every = function(k) {
-      return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval(function(date) {
-        date.setFullYear(Math.floor(date.getFullYear() / k) * k);
-        date.setMonth(0, 1);
-        date.setHours(0, 0, 0, 0);
-      }, function(date, step) {
-        date.setFullYear(date.getFullYear() + step * k);
-      });
-    };
-
-    var utcDay = newInterval(function(date) {
-      date.setUTCHours(0, 0, 0, 0);
-    }, function(date, step) {
-      date.setUTCDate(date.getUTCDate() + step);
-    }, function(start, end) {
-      return (end - start) / durationDay$1;
-    }, function(date) {
-      return date.getUTCDate() - 1;
-    });
-
-    function utcWeekday(i) {
-      return newInterval(function(date) {
-        date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 7 - i) % 7);
-        date.setUTCHours(0, 0, 0, 0);
-      }, function(date, step) {
-        date.setUTCDate(date.getUTCDate() + step * 7);
-      }, function(start, end) {
-        return (end - start) / durationWeek$1;
-      });
-    }
-
-    var utcSunday = utcWeekday(0);
-    var utcMonday = utcWeekday(1);
-    utcWeekday(2);
-    utcWeekday(3);
-    var utcThursday = utcWeekday(4);
-    utcWeekday(5);
-    utcWeekday(6);
-
-    var utcYear = newInterval(function(date) {
-      date.setUTCMonth(0, 1);
-      date.setUTCHours(0, 0, 0, 0);
-    }, function(date, step) {
-      date.setUTCFullYear(date.getUTCFullYear() + step);
-    }, function(start, end) {
-      return end.getUTCFullYear() - start.getUTCFullYear();
-    }, function(date) {
-      return date.getUTCFullYear();
-    });
-
-    // An optimized implementation for this simple case.
-    utcYear.every = function(k) {
-      return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval(function(date) {
-        date.setUTCFullYear(Math.floor(date.getUTCFullYear() / k) * k);
-        date.setUTCMonth(0, 1);
-        date.setUTCHours(0, 0, 0, 0);
-      }, function(date, step) {
-        date.setUTCFullYear(date.getUTCFullYear() + step * k);
-      });
-    };
-
-    function localDate(d) {
-      if (0 <= d.y && d.y < 100) {
-        var date = new Date(-1, d.m, d.d, d.H, d.M, d.S, d.L);
-        date.setFullYear(d.y);
-        return date;
-      }
-      return new Date(d.y, d.m, d.d, d.H, d.M, d.S, d.L);
-    }
-
-    function utcDate(d) {
-      if (0 <= d.y && d.y < 100) {
-        var date = new Date(Date.UTC(-1, d.m, d.d, d.H, d.M, d.S, d.L));
-        date.setUTCFullYear(d.y);
-        return date;
-      }
-      return new Date(Date.UTC(d.y, d.m, d.d, d.H, d.M, d.S, d.L));
-    }
-
-    function newDate(y, m, d) {
-      return {y: y, m: m, d: d, H: 0, M: 0, S: 0, L: 0};
-    }
-
-    function formatLocale(locale) {
-      var locale_dateTime = locale.dateTime,
-          locale_date = locale.date,
-          locale_time = locale.time,
-          locale_periods = locale.periods,
-          locale_weekdays = locale.days,
-          locale_shortWeekdays = locale.shortDays,
-          locale_months = locale.months,
-          locale_shortMonths = locale.shortMonths;
-
-      var periodRe = formatRe(locale_periods),
-          periodLookup = formatLookup(locale_periods),
-          weekdayRe = formatRe(locale_weekdays),
-          weekdayLookup = formatLookup(locale_weekdays),
-          shortWeekdayRe = formatRe(locale_shortWeekdays),
-          shortWeekdayLookup = formatLookup(locale_shortWeekdays),
-          monthRe = formatRe(locale_months),
-          monthLookup = formatLookup(locale_months),
-          shortMonthRe = formatRe(locale_shortMonths),
-          shortMonthLookup = formatLookup(locale_shortMonths);
-
-      var formats = {
-        "a": formatShortWeekday,
-        "A": formatWeekday,
-        "b": formatShortMonth,
-        "B": formatMonth,
-        "c": null,
-        "d": formatDayOfMonth,
-        "e": formatDayOfMonth,
-        "f": formatMicroseconds,
-        "g": formatYearISO,
-        "G": formatFullYearISO,
-        "H": formatHour24,
-        "I": formatHour12,
-        "j": formatDayOfYear,
-        "L": formatMilliseconds,
-        "m": formatMonthNumber,
-        "M": formatMinutes,
-        "p": formatPeriod,
-        "q": formatQuarter,
-        "Q": formatUnixTimestamp,
-        "s": formatUnixTimestampSeconds,
-        "S": formatSeconds,
-        "u": formatWeekdayNumberMonday,
-        "U": formatWeekNumberSunday,
-        "V": formatWeekNumberISO,
-        "w": formatWeekdayNumberSunday,
-        "W": formatWeekNumberMonday,
-        "x": null,
-        "X": null,
-        "y": formatYear,
-        "Y": formatFullYear,
-        "Z": formatZone,
-        "%": formatLiteralPercent
-      };
-
-      var utcFormats = {
-        "a": formatUTCShortWeekday,
-        "A": formatUTCWeekday,
-        "b": formatUTCShortMonth,
-        "B": formatUTCMonth,
-        "c": null,
-        "d": formatUTCDayOfMonth,
-        "e": formatUTCDayOfMonth,
-        "f": formatUTCMicroseconds,
-        "g": formatUTCYearISO,
-        "G": formatUTCFullYearISO,
-        "H": formatUTCHour24,
-        "I": formatUTCHour12,
-        "j": formatUTCDayOfYear,
-        "L": formatUTCMilliseconds,
-        "m": formatUTCMonthNumber,
-        "M": formatUTCMinutes,
-        "p": formatUTCPeriod,
-        "q": formatUTCQuarter,
-        "Q": formatUnixTimestamp,
-        "s": formatUnixTimestampSeconds,
-        "S": formatUTCSeconds,
-        "u": formatUTCWeekdayNumberMonday,
-        "U": formatUTCWeekNumberSunday,
-        "V": formatUTCWeekNumberISO,
-        "w": formatUTCWeekdayNumberSunday,
-        "W": formatUTCWeekNumberMonday,
-        "x": null,
-        "X": null,
-        "y": formatUTCYear,
-        "Y": formatUTCFullYear,
-        "Z": formatUTCZone,
-        "%": formatLiteralPercent
-      };
-
-      var parses = {
-        "a": parseShortWeekday,
-        "A": parseWeekday,
-        "b": parseShortMonth,
-        "B": parseMonth,
-        "c": parseLocaleDateTime,
-        "d": parseDayOfMonth,
-        "e": parseDayOfMonth,
-        "f": parseMicroseconds,
-        "g": parseYear,
-        "G": parseFullYear,
-        "H": parseHour24,
-        "I": parseHour24,
-        "j": parseDayOfYear,
-        "L": parseMilliseconds,
-        "m": parseMonthNumber,
-        "M": parseMinutes,
-        "p": parsePeriod,
-        "q": parseQuarter,
-        "Q": parseUnixTimestamp,
-        "s": parseUnixTimestampSeconds,
-        "S": parseSeconds,
-        "u": parseWeekdayNumberMonday,
-        "U": parseWeekNumberSunday,
-        "V": parseWeekNumberISO,
-        "w": parseWeekdayNumberSunday,
-        "W": parseWeekNumberMonday,
-        "x": parseLocaleDate,
-        "X": parseLocaleTime,
-        "y": parseYear,
-        "Y": parseFullYear,
-        "Z": parseZone,
-        "%": parseLiteralPercent
-      };
-
-      // These recursive directive definitions must be deferred.
-      formats.x = newFormat(locale_date, formats);
-      formats.X = newFormat(locale_time, formats);
-      formats.c = newFormat(locale_dateTime, formats);
-      utcFormats.x = newFormat(locale_date, utcFormats);
-      utcFormats.X = newFormat(locale_time, utcFormats);
-      utcFormats.c = newFormat(locale_dateTime, utcFormats);
-
-      function newFormat(specifier, formats) {
-        return function(date) {
-          var string = [],
-              i = -1,
-              j = 0,
-              n = specifier.length,
-              c,
-              pad,
-              format;
-
-          if (!(date instanceof Date)) date = new Date(+date);
-
-          while (++i < n) {
-            if (specifier.charCodeAt(i) === 37) {
-              string.push(specifier.slice(j, i));
-              if ((pad = pads[c = specifier.charAt(++i)]) != null) c = specifier.charAt(++i);
-              else pad = c === "e" ? " " : "0";
-              if (format = formats[c]) c = format(date, pad);
-              string.push(c);
-              j = i + 1;
-            }
-          }
-
-          string.push(specifier.slice(j, i));
-          return string.join("");
-        };
-      }
-
-      function newParse(specifier, Z) {
-        return function(string) {
-          var d = newDate(1900, undefined, 1),
-              i = parseSpecifier(d, specifier, string += "", 0),
-              week, day$1;
-          if (i != string.length) return null;
-
-          // If a UNIX timestamp is specified, return it.
-          if ("Q" in d) return new Date(d.Q);
-          if ("s" in d) return new Date(d.s * 1000 + ("L" in d ? d.L : 0));
-
-          // If this is utcParse, never use the local timezone.
-          if (Z && !("Z" in d)) d.Z = 0;
-
-          // The am-pm flag is 0 for AM, and 1 for PM.
-          if ("p" in d) d.H = d.H % 12 + d.p * 12;
-
-          // If the month was not specified, inherit from the quarter.
-          if (d.m === undefined) d.m = "q" in d ? d.q : 0;
-
-          // Convert day-of-week and week-of-year to day-of-year.
-          if ("V" in d) {
-            if (d.V < 1 || d.V > 53) return null;
-            if (!("w" in d)) d.w = 1;
-            if ("Z" in d) {
-              week = utcDate(newDate(d.y, 0, 1)), day$1 = week.getUTCDay();
-              week = day$1 > 4 || day$1 === 0 ? utcMonday.ceil(week) : utcMonday(week);
-              week = utcDay.offset(week, (d.V - 1) * 7);
-              d.y = week.getUTCFullYear();
-              d.m = week.getUTCMonth();
-              d.d = week.getUTCDate() + (d.w + 6) % 7;
-            } else {
-              week = localDate(newDate(d.y, 0, 1)), day$1 = week.getDay();
-              week = day$1 > 4 || day$1 === 0 ? monday.ceil(week) : monday(week);
-              week = day.offset(week, (d.V - 1) * 7);
-              d.y = week.getFullYear();
-              d.m = week.getMonth();
-              d.d = week.getDate() + (d.w + 6) % 7;
-            }
-          } else if ("W" in d || "U" in d) {
-            if (!("w" in d)) d.w = "u" in d ? d.u % 7 : "W" in d ? 1 : 0;
-            day$1 = "Z" in d ? utcDate(newDate(d.y, 0, 1)).getUTCDay() : localDate(newDate(d.y, 0, 1)).getDay();
-            d.m = 0;
-            d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day$1 + 5) % 7 : d.w + d.U * 7 - (day$1 + 6) % 7;
-          }
-
-          // If a time zone is specified, all fields are interpreted as UTC and then
-          // offset according to the specified time zone.
-          if ("Z" in d) {
-            d.H += d.Z / 100 | 0;
-            d.M += d.Z % 100;
-            return utcDate(d);
-          }
-
-          // Otherwise, all fields are in local time.
-          return localDate(d);
-        };
-      }
-
-      function parseSpecifier(d, specifier, string, j) {
-        var i = 0,
-            n = specifier.length,
-            m = string.length,
-            c,
-            parse;
-
-        while (i < n) {
-          if (j >= m) return -1;
-          c = specifier.charCodeAt(i++);
-          if (c === 37) {
-            c = specifier.charAt(i++);
-            parse = parses[c in pads ? specifier.charAt(i++) : c];
-            if (!parse || ((j = parse(d, string, j)) < 0)) return -1;
-          } else if (c != string.charCodeAt(j++)) {
-            return -1;
-          }
-        }
-
-        return j;
-      }
-
-      function parsePeriod(d, string, i) {
-        var n = periodRe.exec(string.slice(i));
-        return n ? (d.p = periodLookup.get(n[0].toLowerCase()), i + n[0].length) : -1;
-      }
-
-      function parseShortWeekday(d, string, i) {
-        var n = shortWeekdayRe.exec(string.slice(i));
-        return n ? (d.w = shortWeekdayLookup.get(n[0].toLowerCase()), i + n[0].length) : -1;
-      }
-
-      function parseWeekday(d, string, i) {
-        var n = weekdayRe.exec(string.slice(i));
-        return n ? (d.w = weekdayLookup.get(n[0].toLowerCase()), i + n[0].length) : -1;
-      }
-
-      function parseShortMonth(d, string, i) {
-        var n = shortMonthRe.exec(string.slice(i));
-        return n ? (d.m = shortMonthLookup.get(n[0].toLowerCase()), i + n[0].length) : -1;
-      }
-
-      function parseMonth(d, string, i) {
-        var n = monthRe.exec(string.slice(i));
-        return n ? (d.m = monthLookup.get(n[0].toLowerCase()), i + n[0].length) : -1;
-      }
-
-      function parseLocaleDateTime(d, string, i) {
-        return parseSpecifier(d, locale_dateTime, string, i);
-      }
-
-      function parseLocaleDate(d, string, i) {
-        return parseSpecifier(d, locale_date, string, i);
-      }
-
-      function parseLocaleTime(d, string, i) {
-        return parseSpecifier(d, locale_time, string, i);
-      }
-
-      function formatShortWeekday(d) {
-        return locale_shortWeekdays[d.getDay()];
-      }
-
-      function formatWeekday(d) {
-        return locale_weekdays[d.getDay()];
-      }
-
-      function formatShortMonth(d) {
-        return locale_shortMonths[d.getMonth()];
-      }
-
-      function formatMonth(d) {
-        return locale_months[d.getMonth()];
-      }
-
-      function formatPeriod(d) {
-        return locale_periods[+(d.getHours() >= 12)];
-      }
-
-      function formatQuarter(d) {
-        return 1 + ~~(d.getMonth() / 3);
-      }
-
-      function formatUTCShortWeekday(d) {
-        return locale_shortWeekdays[d.getUTCDay()];
-      }
-
-      function formatUTCWeekday(d) {
-        return locale_weekdays[d.getUTCDay()];
-      }
-
-      function formatUTCShortMonth(d) {
-        return locale_shortMonths[d.getUTCMonth()];
-      }
-
-      function formatUTCMonth(d) {
-        return locale_months[d.getUTCMonth()];
-      }
-
-      function formatUTCPeriod(d) {
-        return locale_periods[+(d.getUTCHours() >= 12)];
-      }
-
-      function formatUTCQuarter(d) {
-        return 1 + ~~(d.getUTCMonth() / 3);
-      }
-
-      return {
-        format: function(specifier) {
-          var f = newFormat(specifier += "", formats);
-          f.toString = function() { return specifier; };
-          return f;
-        },
-        parse: function(specifier) {
-          var p = newParse(specifier += "", false);
-          p.toString = function() { return specifier; };
-          return p;
-        },
-        utcFormat: function(specifier) {
-          var f = newFormat(specifier += "", utcFormats);
-          f.toString = function() { return specifier; };
-          return f;
-        },
-        utcParse: function(specifier) {
-          var p = newParse(specifier += "", true);
-          p.toString = function() { return specifier; };
-          return p;
-        }
-      };
-    }
-
-    var pads = {"-": "", "_": " ", "0": "0"},
-        numberRe = /^\s*\d+/, // note: ignores next directive
-        percentRe = /^%/,
-        requoteRe = /[\\^$*+?|[\]().{}]/g;
-
-    function pad(value, fill, width) {
-      var sign = value < 0 ? "-" : "",
-          string = (sign ? -value : value) + "",
-          length = string.length;
-      return sign + (length < width ? new Array(width - length + 1).join(fill) + string : string);
-    }
-
-    function requote(s) {
-      return s.replace(requoteRe, "\\$&");
-    }
-
-    function formatRe(names) {
-      return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
-    }
-
-    function formatLookup(names) {
-      return new Map(names.map((name, i) => [name.toLowerCase(), i]));
-    }
-
-    function parseWeekdayNumberSunday(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 1));
-      return n ? (d.w = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseWeekdayNumberMonday(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 1));
-      return n ? (d.u = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseWeekNumberSunday(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.U = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseWeekNumberISO(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.V = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseWeekNumberMonday(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.W = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseFullYear(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 4));
-      return n ? (d.y = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseYear(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.y = +n[0] + (+n[0] > 68 ? 1900 : 2000), i + n[0].length) : -1;
-    }
-
-    function parseZone(d, string, i) {
-      var n = /^(Z)|([+-]\d\d)(?::?(\d\d))?/.exec(string.slice(i, i + 6));
-      return n ? (d.Z = n[1] ? 0 : -(n[2] + (n[3] || "00")), i + n[0].length) : -1;
-    }
-
-    function parseQuarter(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 1));
-      return n ? (d.q = n[0] * 3 - 3, i + n[0].length) : -1;
-    }
-
-    function parseMonthNumber(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.m = n[0] - 1, i + n[0].length) : -1;
-    }
-
-    function parseDayOfMonth(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.d = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseDayOfYear(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 3));
-      return n ? (d.m = 0, d.d = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseHour24(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.H = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseMinutes(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.M = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseSeconds(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 2));
-      return n ? (d.S = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseMilliseconds(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 3));
-      return n ? (d.L = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseMicroseconds(d, string, i) {
-      var n = numberRe.exec(string.slice(i, i + 6));
-      return n ? (d.L = Math.floor(n[0] / 1000), i + n[0].length) : -1;
-    }
-
-    function parseLiteralPercent(d, string, i) {
-      var n = percentRe.exec(string.slice(i, i + 1));
-      return n ? i + n[0].length : -1;
-    }
-
-    function parseUnixTimestamp(d, string, i) {
-      var n = numberRe.exec(string.slice(i));
-      return n ? (d.Q = +n[0], i + n[0].length) : -1;
-    }
-
-    function parseUnixTimestampSeconds(d, string, i) {
-      var n = numberRe.exec(string.slice(i));
-      return n ? (d.s = +n[0], i + n[0].length) : -1;
-    }
-
-    function formatDayOfMonth(d, p) {
-      return pad(d.getDate(), p, 2);
-    }
-
-    function formatHour24(d, p) {
-      return pad(d.getHours(), p, 2);
-    }
-
-    function formatHour12(d, p) {
-      return pad(d.getHours() % 12 || 12, p, 2);
-    }
-
-    function formatDayOfYear(d, p) {
-      return pad(1 + day.count(year(d), d), p, 3);
-    }
-
-    function formatMilliseconds(d, p) {
-      return pad(d.getMilliseconds(), p, 3);
-    }
-
-    function formatMicroseconds(d, p) {
-      return formatMilliseconds(d, p) + "000";
-    }
-
-    function formatMonthNumber(d, p) {
-      return pad(d.getMonth() + 1, p, 2);
-    }
-
-    function formatMinutes(d, p) {
-      return pad(d.getMinutes(), p, 2);
-    }
-
-    function formatSeconds(d, p) {
-      return pad(d.getSeconds(), p, 2);
-    }
-
-    function formatWeekdayNumberMonday(d) {
-      var day = d.getDay();
-      return day === 0 ? 7 : day;
-    }
-
-    function formatWeekNumberSunday(d, p) {
-      return pad(sunday.count(year(d) - 1, d), p, 2);
-    }
-
-    function dISO(d) {
-      var day = d.getDay();
-      return (day >= 4 || day === 0) ? thursday(d) : thursday.ceil(d);
-    }
-
-    function formatWeekNumberISO(d, p) {
-      d = dISO(d);
-      return pad(thursday.count(year(d), d) + (year(d).getDay() === 4), p, 2);
-    }
-
-    function formatWeekdayNumberSunday(d) {
-      return d.getDay();
-    }
-
-    function formatWeekNumberMonday(d, p) {
-      return pad(monday.count(year(d) - 1, d), p, 2);
-    }
-
-    function formatYear(d, p) {
-      return pad(d.getFullYear() % 100, p, 2);
-    }
-
-    function formatYearISO(d, p) {
-      d = dISO(d);
-      return pad(d.getFullYear() % 100, p, 2);
-    }
-
-    function formatFullYear(d, p) {
-      return pad(d.getFullYear() % 10000, p, 4);
-    }
-
-    function formatFullYearISO(d, p) {
-      var day = d.getDay();
-      d = (day >= 4 || day === 0) ? thursday(d) : thursday.ceil(d);
-      return pad(d.getFullYear() % 10000, p, 4);
-    }
-
-    function formatZone(d) {
-      var z = d.getTimezoneOffset();
-      return (z > 0 ? "-" : (z *= -1, "+"))
-          + pad(z / 60 | 0, "0", 2)
-          + pad(z % 60, "0", 2);
-    }
-
-    function formatUTCDayOfMonth(d, p) {
-      return pad(d.getUTCDate(), p, 2);
-    }
-
-    function formatUTCHour24(d, p) {
-      return pad(d.getUTCHours(), p, 2);
-    }
-
-    function formatUTCHour12(d, p) {
-      return pad(d.getUTCHours() % 12 || 12, p, 2);
-    }
-
-    function formatUTCDayOfYear(d, p) {
-      return pad(1 + utcDay.count(utcYear(d), d), p, 3);
-    }
-
-    function formatUTCMilliseconds(d, p) {
-      return pad(d.getUTCMilliseconds(), p, 3);
-    }
-
-    function formatUTCMicroseconds(d, p) {
-      return formatUTCMilliseconds(d, p) + "000";
-    }
-
-    function formatUTCMonthNumber(d, p) {
-      return pad(d.getUTCMonth() + 1, p, 2);
-    }
-
-    function formatUTCMinutes(d, p) {
-      return pad(d.getUTCMinutes(), p, 2);
-    }
-
-    function formatUTCSeconds(d, p) {
-      return pad(d.getUTCSeconds(), p, 2);
-    }
-
-    function formatUTCWeekdayNumberMonday(d) {
-      var dow = d.getUTCDay();
-      return dow === 0 ? 7 : dow;
-    }
-
-    function formatUTCWeekNumberSunday(d, p) {
-      return pad(utcSunday.count(utcYear(d) - 1, d), p, 2);
-    }
-
-    function UTCdISO(d) {
-      var day = d.getUTCDay();
-      return (day >= 4 || day === 0) ? utcThursday(d) : utcThursday.ceil(d);
-    }
-
-    function formatUTCWeekNumberISO(d, p) {
-      d = UTCdISO(d);
-      return pad(utcThursday.count(utcYear(d), d) + (utcYear(d).getUTCDay() === 4), p, 2);
-    }
-
-    function formatUTCWeekdayNumberSunday(d) {
-      return d.getUTCDay();
-    }
-
-    function formatUTCWeekNumberMonday(d, p) {
-      return pad(utcMonday.count(utcYear(d) - 1, d), p, 2);
-    }
-
-    function formatUTCYear(d, p) {
-      return pad(d.getUTCFullYear() % 100, p, 2);
-    }
-
-    function formatUTCYearISO(d, p) {
-      d = UTCdISO(d);
-      return pad(d.getUTCFullYear() % 100, p, 2);
-    }
-
-    function formatUTCFullYear(d, p) {
-      return pad(d.getUTCFullYear() % 10000, p, 4);
-    }
-
-    function formatUTCFullYearISO(d, p) {
-      var day = d.getUTCDay();
-      d = (day >= 4 || day === 0) ? utcThursday(d) : utcThursday.ceil(d);
-      return pad(d.getUTCFullYear() % 10000, p, 4);
-    }
-
-    function formatUTCZone() {
-      return "+0000";
-    }
-
-    function formatLiteralPercent() {
-      return "%";
-    }
-
-    function formatUnixTimestamp(d) {
-      return +d;
-    }
-
-    function formatUnixTimestampSeconds(d) {
-      return Math.floor(+d / 1000);
-    }
-
-    var locale;
-    var timeFormat;
-    var timeParse;
-    var utcFormat;
-    var utcParse;
-
-    defaultLocale({
-      dateTime: "%x, %X",
-      date: "%-m/%-d/%Y",
-      time: "%-I:%M:%S %p",
-      periods: ["AM", "PM"],
-      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    });
-
-    function defaultLocale(definition) {
-      locale = formatLocale(definition);
-      timeFormat = locale.format;
-      timeParse = locale.parse;
-      utcFormat = locale.utcFormat;
-      utcParse = locale.utcParse;
-      return locale;
-    }
-
-    var isoSpecifier = "%Y-%m-%dT%H:%M:%S.%LZ";
-
-    function formatIsoNative(date) {
-      return date.toISOString();
-    }
-
-    var formatIso = Date.prototype.toISOString
-        ? formatIsoNative
-        : utcFormat(isoSpecifier);
-
-    function parseIsoNative(string) {
-      var date = new Date(string);
-      return isNaN(date) ? null : date;
-    }
-
-    var parseIso = +new Date("2000-01-01T00:00:00.000Z")
-        ? parseIsoNative
-        : utcParse(isoSpecifier);
-
-    var src = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        timeFormatDefaultLocale: defaultLocale,
-        get timeFormat () { return timeFormat; },
-        get timeParse () { return timeParse; },
-        get utcFormat () { return utcFormat; },
-        get utcParse () { return utcParse; },
-        timeFormatLocale: formatLocale,
-        isoFormat: formatIso,
-        isoParse: parseIso
-    });
-
     var decimal = ",";
     var thousands = ".";
     var grouping = [
@@ -28283,8 +26799,8 @@ var app = (function () {
     };
 
     var dateTime = "%A, der %e. %B %Y, %X";
-    var date$2 = "%d.%m.%Y";
-    var time$1 = "%H:%M:%S";
+    var date = "%d.%m.%Y";
+    var time = "%H:%M:%S";
     var periods = [
     	"AM",
     	"PM"
@@ -28337,8 +26853,8 @@ var app = (function () {
     ];
     var deTimeFormat = {
     	dateTime: dateTime,
-    	date: date$2,
-    	time: time$1,
+    	date: date,
+    	time: time,
     	periods: periods,
     	days: days,
     	shortDays: shortDays,
@@ -28363,8 +26879,8 @@ var app = (function () {
     };
 
     var dateTime$1 = "%x, %X";
-    var date$1$1 = "%-m/%-d/%Y";
-    var time$1$1 = "%-I:%M:%S %p";
+    var date$1 = "%-m/%-d/%Y";
+    var time$1 = "%-I:%M:%S %p";
     var periods$1 = [
     	"AM",
     	"PM"
@@ -28417,8 +26933,8 @@ var app = (function () {
     ];
     var enTimeFormat = {
     	dateTime: dateTime$1,
-    	date: date$1$1,
-    	time: time$1$1,
+    	date: date$1,
+    	time: time$1,
     	periods: periods$1,
     	days: days$1,
     	shortDays: shortDays$1,
@@ -28443,7 +26959,7 @@ var app = (function () {
     };
 
     var dateTime$2 = "%A, %e de %B de %Y, %X";
-    var date$2$1 = "%d/%m/%Y";
+    var date$2 = "%d/%m/%Y";
     var time$2 = "%H:%M:%S";
     var periods$2 = [
     	"AM",
@@ -28497,7 +27013,7 @@ var app = (function () {
     ];
     var esTimeFormat = {
     	dateTime: dateTime$2,
-    	date: date$2$1,
+    	date: date$2,
     	time: time$2,
     	periods: periods$2,
     	days: days$2,
@@ -30507,1127 +29023,6 @@ var app = (function () {
     	}
     }
 
-    function ascending(a, b) {
-      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-    }
-
-    function bisector(f) {
-      let delta = f;
-      let compare = f;
-
-      if (f.length === 1) {
-        delta = (d, x) => f(d) - x;
-        compare = ascendingComparator(f);
-      }
-
-      function left(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while (lo < hi) {
-          const mid = (lo + hi) >>> 1;
-          if (compare(a[mid], x) < 0) lo = mid + 1;
-          else hi = mid;
-        }
-        return lo;
-      }
-
-      function right(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while (lo < hi) {
-          const mid = (lo + hi) >>> 1;
-          if (compare(a[mid], x) > 0) hi = mid;
-          else lo = mid + 1;
-        }
-        return lo;
-      }
-
-      function center(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        const i = left(a, x, lo, hi - 1);
-        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
-      }
-
-      return {left, center, right};
-    }
-
-    function ascendingComparator(f) {
-      return (d, x) => ascending(f(d), x);
-    }
-
-    function number$2(x) {
-      return x === null ? NaN : +x;
-    }
-
-    const ascendingBisect = bisector(ascending);
-    const bisectRight = ascendingBisect.right;
-    bisector(number$2).center;
-
-    function extent(values, valueof) {
-      let min;
-      let max;
-      if (valueof === undefined) {
-        for (const value of values) {
-          if (value != null) {
-            if (min === undefined) {
-              if (value >= value) min = max = value;
-            } else {
-              if (min > value) min = value;
-              if (max < value) max = value;
-            }
-          }
-        }
-      } else {
-        let index = -1;
-        for (let value of values) {
-          if ((value = valueof(value, ++index, values)) != null) {
-            if (min === undefined) {
-              if (value >= value) min = max = value;
-            } else {
-              if (min > value) min = value;
-              if (max < value) max = value;
-            }
-          }
-        }
-      }
-      return [min, max];
-    }
-
-    var e10 = Math.sqrt(50),
-        e5 = Math.sqrt(10),
-        e2 = Math.sqrt(2);
-
-    function ticks(start, stop, count) {
-      var reverse,
-          i = -1,
-          n,
-          ticks,
-          step;
-
-      stop = +stop, start = +start, count = +count;
-      if (start === stop && count > 0) return [start];
-      if (reverse = stop < start) n = start, start = stop, stop = n;
-      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
-
-      if (step > 0) {
-        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
-        if (r0 * step < start) ++r0;
-        if (r1 * step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while (++i < n) ticks[i] = (r0 + i) * step;
-      } else {
-        step = -step;
-        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
-        if (r0 / step < start) ++r0;
-        if (r1 / step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while (++i < n) ticks[i] = (r0 + i) / step;
-      }
-
-      if (reverse) ticks.reverse();
-
-      return ticks;
-    }
-
-    function tickIncrement(start, stop, count) {
-      var step = (stop - start) / Math.max(0, count),
-          power = Math.floor(Math.log(step) / Math.LN10),
-          error = step / Math.pow(10, power);
-      return power >= 0
-          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
-          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
-    }
-
-    function tickStep(start, stop, count) {
-      var step0 = Math.abs(stop - start) / Math.max(0, count),
-          step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
-          error = step0 / step1;
-      if (error >= e10) step1 *= 10;
-      else if (error >= e5) step1 *= 5;
-      else if (error >= e2) step1 *= 2;
-      return stop < start ? -step1 : step1;
-    }
-
-    function max(values, valueof) {
-      let max;
-      if (valueof === undefined) {
-        for (const value of values) {
-          if (value != null
-              && (max < value || (max === undefined && value >= value))) {
-            max = value;
-          }
-        }
-      } else {
-        let index = -1;
-        for (let value of values) {
-          if ((value = valueof(value, ++index, values)) != null
-              && (max < value || (max === undefined && value >= value))) {
-            max = value;
-          }
-        }
-      }
-      return max;
-    }
-
-    function initRange(domain, range) {
-      switch (arguments.length) {
-        case 0: break;
-        case 1: this.range(domain); break;
-        default: this.range(range).domain(domain); break;
-      }
-      return this;
-    }
-
-    function define(constructor, factory, prototype) {
-      constructor.prototype = factory.prototype = prototype;
-      prototype.constructor = constructor;
-    }
-
-    function extend(parent, definition) {
-      var prototype = Object.create(parent.prototype);
-      for (var key in definition) prototype[key] = definition[key];
-      return prototype;
-    }
-
-    function Color() {}
-
-    var darker = 0.7;
-    var brighter = 1 / darker;
-
-    var reI = "\\s*([+-]?\\d+)\\s*",
-        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
-
-    var named = {
-      aliceblue: 0xf0f8ff,
-      antiquewhite: 0xfaebd7,
-      aqua: 0x00ffff,
-      aquamarine: 0x7fffd4,
-      azure: 0xf0ffff,
-      beige: 0xf5f5dc,
-      bisque: 0xffe4c4,
-      black: 0x000000,
-      blanchedalmond: 0xffebcd,
-      blue: 0x0000ff,
-      blueviolet: 0x8a2be2,
-      brown: 0xa52a2a,
-      burlywood: 0xdeb887,
-      cadetblue: 0x5f9ea0,
-      chartreuse: 0x7fff00,
-      chocolate: 0xd2691e,
-      coral: 0xff7f50,
-      cornflowerblue: 0x6495ed,
-      cornsilk: 0xfff8dc,
-      crimson: 0xdc143c,
-      cyan: 0x00ffff,
-      darkblue: 0x00008b,
-      darkcyan: 0x008b8b,
-      darkgoldenrod: 0xb8860b,
-      darkgray: 0xa9a9a9,
-      darkgreen: 0x006400,
-      darkgrey: 0xa9a9a9,
-      darkkhaki: 0xbdb76b,
-      darkmagenta: 0x8b008b,
-      darkolivegreen: 0x556b2f,
-      darkorange: 0xff8c00,
-      darkorchid: 0x9932cc,
-      darkred: 0x8b0000,
-      darksalmon: 0xe9967a,
-      darkseagreen: 0x8fbc8f,
-      darkslateblue: 0x483d8b,
-      darkslategray: 0x2f4f4f,
-      darkslategrey: 0x2f4f4f,
-      darkturquoise: 0x00ced1,
-      darkviolet: 0x9400d3,
-      deeppink: 0xff1493,
-      deepskyblue: 0x00bfff,
-      dimgray: 0x696969,
-      dimgrey: 0x696969,
-      dodgerblue: 0x1e90ff,
-      firebrick: 0xb22222,
-      floralwhite: 0xfffaf0,
-      forestgreen: 0x228b22,
-      fuchsia: 0xff00ff,
-      gainsboro: 0xdcdcdc,
-      ghostwhite: 0xf8f8ff,
-      gold: 0xffd700,
-      goldenrod: 0xdaa520,
-      gray: 0x808080,
-      green: 0x008000,
-      greenyellow: 0xadff2f,
-      grey: 0x808080,
-      honeydew: 0xf0fff0,
-      hotpink: 0xff69b4,
-      indianred: 0xcd5c5c,
-      indigo: 0x4b0082,
-      ivory: 0xfffff0,
-      khaki: 0xf0e68c,
-      lavender: 0xe6e6fa,
-      lavenderblush: 0xfff0f5,
-      lawngreen: 0x7cfc00,
-      lemonchiffon: 0xfffacd,
-      lightblue: 0xadd8e6,
-      lightcoral: 0xf08080,
-      lightcyan: 0xe0ffff,
-      lightgoldenrodyellow: 0xfafad2,
-      lightgray: 0xd3d3d3,
-      lightgreen: 0x90ee90,
-      lightgrey: 0xd3d3d3,
-      lightpink: 0xffb6c1,
-      lightsalmon: 0xffa07a,
-      lightseagreen: 0x20b2aa,
-      lightskyblue: 0x87cefa,
-      lightslategray: 0x778899,
-      lightslategrey: 0x778899,
-      lightsteelblue: 0xb0c4de,
-      lightyellow: 0xffffe0,
-      lime: 0x00ff00,
-      limegreen: 0x32cd32,
-      linen: 0xfaf0e6,
-      magenta: 0xff00ff,
-      maroon: 0x800000,
-      mediumaquamarine: 0x66cdaa,
-      mediumblue: 0x0000cd,
-      mediumorchid: 0xba55d3,
-      mediumpurple: 0x9370db,
-      mediumseagreen: 0x3cb371,
-      mediumslateblue: 0x7b68ee,
-      mediumspringgreen: 0x00fa9a,
-      mediumturquoise: 0x48d1cc,
-      mediumvioletred: 0xc71585,
-      midnightblue: 0x191970,
-      mintcream: 0xf5fffa,
-      mistyrose: 0xffe4e1,
-      moccasin: 0xffe4b5,
-      navajowhite: 0xffdead,
-      navy: 0x000080,
-      oldlace: 0xfdf5e6,
-      olive: 0x808000,
-      olivedrab: 0x6b8e23,
-      orange: 0xffa500,
-      orangered: 0xff4500,
-      orchid: 0xda70d6,
-      palegoldenrod: 0xeee8aa,
-      palegreen: 0x98fb98,
-      paleturquoise: 0xafeeee,
-      palevioletred: 0xdb7093,
-      papayawhip: 0xffefd5,
-      peachpuff: 0xffdab9,
-      peru: 0xcd853f,
-      pink: 0xffc0cb,
-      plum: 0xdda0dd,
-      powderblue: 0xb0e0e6,
-      purple: 0x800080,
-      rebeccapurple: 0x663399,
-      red: 0xff0000,
-      rosybrown: 0xbc8f8f,
-      royalblue: 0x4169e1,
-      saddlebrown: 0x8b4513,
-      salmon: 0xfa8072,
-      sandybrown: 0xf4a460,
-      seagreen: 0x2e8b57,
-      seashell: 0xfff5ee,
-      sienna: 0xa0522d,
-      silver: 0xc0c0c0,
-      skyblue: 0x87ceeb,
-      slateblue: 0x6a5acd,
-      slategray: 0x708090,
-      slategrey: 0x708090,
-      snow: 0xfffafa,
-      springgreen: 0x00ff7f,
-      steelblue: 0x4682b4,
-      tan: 0xd2b48c,
-      teal: 0x008080,
-      thistle: 0xd8bfd8,
-      tomato: 0xff6347,
-      turquoise: 0x40e0d0,
-      violet: 0xee82ee,
-      wheat: 0xf5deb3,
-      white: 0xffffff,
-      whitesmoke: 0xf5f5f5,
-      yellow: 0xffff00,
-      yellowgreen: 0x9acd32
-    };
-
-    define(Color, color, {
-      copy: function(channels) {
-        return Object.assign(new this.constructor, this, channels);
-      },
-      displayable: function() {
-        return this.rgb().displayable();
-      },
-      hex: color_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex,
-      formatHsl: color_formatHsl,
-      formatRgb: color_formatRgb,
-      toString: color_formatRgb
-    });
-
-    function color_formatHex() {
-      return this.rgb().formatHex();
-    }
-
-    function color_formatHsl() {
-      return hslConvert(this).formatHsl();
-    }
-
-    function color_formatRgb() {
-      return this.rgb().formatRgb();
-    }
-
-    function color(format) {
-      var m, l;
-      format = (format + "").trim().toLowerCase();
-      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
-          : null) // invalid hex
-          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
-          : null;
-    }
-
-    function rgbn(n) {
-      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
-    }
-
-    function rgba(r, g, b, a) {
-      if (a <= 0) r = g = b = NaN;
-      return new Rgb(r, g, b, a);
-    }
-
-    function rgbConvert(o) {
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Rgb;
-      o = o.rgb();
-      return new Rgb(o.r, o.g, o.b, o.opacity);
-    }
-
-    function rgb$1(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
-    }
-
-    function Rgb(r, g, b, opacity) {
-      this.r = +r;
-      this.g = +g;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define(Rgb, rgb$1, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      rgb: function() {
-        return this;
-      },
-      displayable: function() {
-        return (-0.5 <= this.r && this.r < 255.5)
-            && (-0.5 <= this.g && this.g < 255.5)
-            && (-0.5 <= this.b && this.b < 255.5)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex,
-      formatRgb: rgb_formatRgb,
-      toString: rgb_formatRgb
-    }));
-
-    function rgb_formatHex() {
-      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
-    }
-
-    function rgb_formatRgb() {
-      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-      return (a === 1 ? "rgb(" : "rgba(")
-          + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.b) || 0))
-          + (a === 1 ? ")" : ", " + a + ")");
-    }
-
-    function hex(value) {
-      value = Math.max(0, Math.min(255, Math.round(value) || 0));
-      return (value < 16 ? "0" : "") + value.toString(16);
-    }
-
-    function hsla(h, s, l, a) {
-      if (a <= 0) h = s = l = NaN;
-      else if (l <= 0 || l >= 1) h = s = NaN;
-      else if (s <= 0) h = NaN;
-      return new Hsl(h, s, l, a);
-    }
-
-    function hslConvert(o) {
-      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Hsl;
-      if (o instanceof Hsl) return o;
-      o = o.rgb();
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          min = Math.min(r, g, b),
-          max = Math.max(r, g, b),
-          h = NaN,
-          s = max - min,
-          l = (max + min) / 2;
-      if (s) {
-        if (r === max) h = (g - b) / s + (g < b) * 6;
-        else if (g === max) h = (b - r) / s + 2;
-        else h = (r - g) / s + 4;
-        s /= l < 0.5 ? max + min : 2 - max - min;
-        h *= 60;
-      } else {
-        s = l > 0 && l < 1 ? 0 : h;
-      }
-      return new Hsl(h, s, l, o.opacity);
-    }
-
-    function hsl(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hsl(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define(Hsl, hsl, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = this.h % 360 + (this.h < 0) * 360,
-            s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-            l = this.l,
-            m2 = l + (l < 0.5 ? l : 1 - l) * s,
-            m1 = 2 * l - m2;
-        return new Rgb(
-          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb(h, m1, m2),
-          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
-          this.opacity
-        );
-      },
-      displayable: function() {
-        return (0 <= this.s && this.s <= 1 || isNaN(this.s))
-            && (0 <= this.l && this.l <= 1)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      formatHsl: function() {
-        var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(")
-            + (this.h || 0) + ", "
-            + (this.s || 0) * 100 + "%, "
-            + (this.l || 0) * 100 + "%"
-            + (a === 1 ? ")" : ", " + a + ")");
-      }
-    }));
-
-    /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb(h, m1, m2) {
-      return (h < 60 ? m1 + (m2 - m1) * h / 60
-          : h < 180 ? m2
-          : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
-          : m1) * 255;
-    }
-
-    var constant = x => () => x;
-
-    function linear$1(a, d) {
-      return function(t) {
-        return a + t * d;
-      };
-    }
-
-    function exponential(a, b, y) {
-      return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
-        return Math.pow(a + t * b, y);
-      };
-    }
-
-    function gamma(y) {
-      return (y = +y) === 1 ? nogamma : function(a, b) {
-        return b - a ? exponential(a, b, y) : constant(isNaN(a) ? b : a);
-      };
-    }
-
-    function nogamma(a, b) {
-      var d = b - a;
-      return d ? linear$1(a, d) : constant(isNaN(a) ? b : a);
-    }
-
-    var rgb = (function rgbGamma(y) {
-      var color = gamma(y);
-
-      function rgb(start, end) {
-        var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
-            g = color(start.g, end.g),
-            b = color(start.b, end.b),
-            opacity = nogamma(start.opacity, end.opacity);
-        return function(t) {
-          start.r = r(t);
-          start.g = g(t);
-          start.b = b(t);
-          start.opacity = opacity(t);
-          return start + "";
-        };
-      }
-
-      rgb.gamma = rgbGamma;
-
-      return rgb;
-    })(1);
-
-    function numberArray(a, b) {
-      if (!b) b = [];
-      var n = a ? Math.min(b.length, a.length) : 0,
-          c = b.slice(),
-          i;
-      return function(t) {
-        for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
-        return c;
-      };
-    }
-
-    function isNumberArray(x) {
-      return ArrayBuffer.isView(x) && !(x instanceof DataView);
-    }
-
-    function genericArray(a, b) {
-      var nb = b ? b.length : 0,
-          na = a ? Math.min(nb, a.length) : 0,
-          x = new Array(na),
-          c = new Array(nb),
-          i;
-
-      for (i = 0; i < na; ++i) x[i] = interpolate(a[i], b[i]);
-      for (; i < nb; ++i) c[i] = b[i];
-
-      return function(t) {
-        for (i = 0; i < na; ++i) c[i] = x[i](t);
-        return c;
-      };
-    }
-
-    function date$1(a, b) {
-      var d = new Date;
-      return a = +a, b = +b, function(t) {
-        return d.setTime(a * (1 - t) + b * t), d;
-      };
-    }
-
-    function interpolateNumber(a, b) {
-      return a = +a, b = +b, function(t) {
-        return a * (1 - t) + b * t;
-      };
-    }
-
-    function object(a, b) {
-      var i = {},
-          c = {},
-          k;
-
-      if (a === null || typeof a !== "object") a = {};
-      if (b === null || typeof b !== "object") b = {};
-
-      for (k in b) {
-        if (k in a) {
-          i[k] = interpolate(a[k], b[k]);
-        } else {
-          c[k] = b[k];
-        }
-      }
-
-      return function(t) {
-        for (k in i) c[k] = i[k](t);
-        return c;
-      };
-    }
-
-    var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-        reB = new RegExp(reA.source, "g");
-
-    function zero(b) {
-      return function() {
-        return b;
-      };
-    }
-
-    function one(b) {
-      return function(t) {
-        return b(t) + "";
-      };
-    }
-
-    function string(a, b) {
-      var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
-          am, // current match in a
-          bm, // current match in b
-          bs, // string preceding current number in b, if any
-          i = -1, // index in s
-          s = [], // string constants and placeholders
-          q = []; // number interpolators
-
-      // Coerce inputs to strings.
-      a = a + "", b = b + "";
-
-      // Interpolate pairs of numbers in a & b.
-      while ((am = reA.exec(a))
-          && (bm = reB.exec(b))) {
-        if ((bs = bm.index) > bi) { // a string precedes the next number in b
-          bs = b.slice(bi, bs);
-          if (s[i]) s[i] += bs; // coalesce with previous string
-          else s[++i] = bs;
-        }
-        if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
-          if (s[i]) s[i] += bm; // coalesce with previous string
-          else s[++i] = bm;
-        } else { // interpolate non-matching numbers
-          s[++i] = null;
-          q.push({i: i, x: interpolateNumber(am, bm)});
-        }
-        bi = reB.lastIndex;
-      }
-
-      // Add remains of b.
-      if (bi < b.length) {
-        bs = b.slice(bi);
-        if (s[i]) s[i] += bs; // coalesce with previous string
-        else s[++i] = bs;
-      }
-
-      // Special optimization for only a single match.
-      // Otherwise, interpolate each of the numbers and rejoin the string.
-      return s.length < 2 ? (q[0]
-          ? one(q[0].x)
-          : zero(b))
-          : (b = q.length, function(t) {
-              for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
-              return s.join("");
-            });
-    }
-
-    function interpolate(a, b) {
-      var t = typeof b, c;
-      return b == null || t === "boolean" ? constant(b)
-          : (t === "number" ? interpolateNumber
-          : t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
-          : b instanceof color ? rgb
-          : b instanceof Date ? date$1
-          : isNumberArray(b) ? numberArray
-          : Array.isArray(b) ? genericArray
-          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
-          : interpolateNumber)(a, b);
-    }
-
-    function interpolateRound(a, b) {
-      return a = +a, b = +b, function(t) {
-        return Math.round(a * (1 - t) + b * t);
-      };
-    }
-
-    function constants(x) {
-      return function() {
-        return x;
-      };
-    }
-
-    function number$1(x) {
-      return +x;
-    }
-
-    var unit = [0, 1];
-
-    function identity(x) {
-      return x;
-    }
-
-    function normalize(a, b) {
-      return (b -= (a = +a))
-          ? function(x) { return (x - a) / b; }
-          : constants(isNaN(b) ? NaN : 0.5);
-    }
-
-    function clamper(a, b) {
-      var t;
-      if (a > b) t = a, a = b, b = t;
-      return function(x) { return Math.max(a, Math.min(b, x)); };
-    }
-
-    // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
-    // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
-    function bimap(domain, range, interpolate) {
-      var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
-      if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
-      else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
-      return function(x) { return r0(d0(x)); };
-    }
-
-    function polymap(domain, range, interpolate) {
-      var j = Math.min(domain.length, range.length) - 1,
-          d = new Array(j),
-          r = new Array(j),
-          i = -1;
-
-      // Reverse descending domains.
-      if (domain[j] < domain[0]) {
-        domain = domain.slice().reverse();
-        range = range.slice().reverse();
-      }
-
-      while (++i < j) {
-        d[i] = normalize(domain[i], domain[i + 1]);
-        r[i] = interpolate(range[i], range[i + 1]);
-      }
-
-      return function(x) {
-        var i = bisectRight(domain, x, 1, j) - 1;
-        return r[i](d[i](x));
-      };
-    }
-
-    function copy(source, target) {
-      return target
-          .domain(source.domain())
-          .range(source.range())
-          .interpolate(source.interpolate())
-          .clamp(source.clamp())
-          .unknown(source.unknown());
-    }
-
-    function transformer() {
-      var domain = unit,
-          range = unit,
-          interpolate$1 = interpolate,
-          transform,
-          untransform,
-          unknown,
-          clamp = identity,
-          piecewise,
-          output,
-          input;
-
-      function rescale() {
-        var n = Math.min(domain.length, range.length);
-        if (clamp !== identity) clamp = clamper(domain[0], domain[n - 1]);
-        piecewise = n > 2 ? polymap : bimap;
-        output = input = null;
-        return scale;
-      }
-
-      function scale(x) {
-        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
-      }
-
-      scale.invert = function(y) {
-        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
-      };
-
-      scale.domain = function(_) {
-        return arguments.length ? (domain = Array.from(_, number$1), rescale()) : domain.slice();
-      };
-
-      scale.range = function(_) {
-        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
-      };
-
-      scale.rangeRound = function(_) {
-        return range = Array.from(_), interpolate$1 = interpolateRound, rescale();
-      };
-
-      scale.clamp = function(_) {
-        return arguments.length ? (clamp = _ ? true : identity, rescale()) : clamp !== identity;
-      };
-
-      scale.interpolate = function(_) {
-        return arguments.length ? (interpolate$1 = _, rescale()) : interpolate$1;
-      };
-
-      scale.unknown = function(_) {
-        return arguments.length ? (unknown = _, scale) : unknown;
-      };
-
-      return function(t, u) {
-        transform = t, untransform = u;
-        return rescale();
-      };
-    }
-
-    function continuous() {
-      return transformer()(identity, identity);
-    }
-
-    function tickFormat(start, stop, count, specifier) {
-      var step = tickStep(start, stop, count),
-          precision;
-      specifier = formatSpecifier(specifier == null ? ",f" : specifier);
-      switch (specifier.type) {
-        case "s": {
-          var value = Math.max(Math.abs(start), Math.abs(stop));
-          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
-          return formatPrefix(specifier, value);
-        }
-        case "":
-        case "e":
-        case "g":
-        case "p":
-        case "r": {
-          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
-          break;
-        }
-        case "f":
-        case "%": {
-          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
-          break;
-        }
-      }
-      return format(specifier);
-    }
-
-    function linearish(scale) {
-      var domain = scale.domain;
-
-      scale.ticks = function(count) {
-        var d = domain();
-        return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
-      };
-
-      scale.tickFormat = function(count, specifier) {
-        var d = domain();
-        return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
-      };
-
-      scale.nice = function(count) {
-        if (count == null) count = 10;
-
-        var d = domain();
-        var i0 = 0;
-        var i1 = d.length - 1;
-        var start = d[i0];
-        var stop = d[i1];
-        var prestep;
-        var step;
-        var maxIter = 10;
-
-        if (stop < start) {
-          step = start, start = stop, stop = step;
-          step = i0, i0 = i1, i1 = step;
-        }
-        
-        while (maxIter-- > 0) {
-          step = tickIncrement(start, stop, count);
-          if (step === prestep) {
-            d[i0] = start;
-            d[i1] = stop;
-            return domain(d);
-          } else if (step > 0) {
-            start = Math.floor(start / step) * step;
-            stop = Math.ceil(stop / step) * step;
-          } else if (step < 0) {
-            start = Math.ceil(start * step) / step;
-            stop = Math.floor(stop * step) / step;
-          } else {
-            break;
-          }
-          prestep = step;
-        }
-
-        return scale;
-      };
-
-      return scale;
-    }
-
-    function linear() {
-      var scale = continuous();
-
-      scale.copy = function() {
-        return copy(scale, linear());
-      };
-
-      initRange.apply(scale, arguments);
-
-      return linearish(scale);
-    }
-
-    function nice(domain, interval) {
-      domain = domain.slice();
-
-      var i0 = 0,
-          i1 = domain.length - 1,
-          x0 = domain[i0],
-          x1 = domain[i1],
-          t;
-
-      if (x1 < x0) {
-        t = i0, i0 = i1, i1 = t;
-        t = x0, x0 = x1, x1 = t;
-      }
-
-      domain[i0] = interval.floor(x0);
-      domain[i1] = interval.ceil(x1);
-      return domain;
-    }
-
-    var durationSecond = 1000,
-        durationMinute = durationSecond * 60,
-        durationHour = durationMinute * 60,
-        durationDay = durationHour * 24,
-        durationWeek = durationDay * 7,
-        durationMonth = durationDay * 30,
-        durationYear = durationDay * 365;
-
-    function date(t) {
-      return new Date(t);
-    }
-
-    function number(t) {
-      return t instanceof Date ? +t : +new Date(+t);
-    }
-
-    function calendar(year, month, week, day, hour, minute, second, millisecond, format) {
-      var scale = continuous(),
-          invert = scale.invert,
-          domain = scale.domain;
-
-      var formatMillisecond = format(".%L"),
-          formatSecond = format(":%S"),
-          formatMinute = format("%I:%M"),
-          formatHour = format("%I %p"),
-          formatDay = format("%a %d"),
-          formatWeek = format("%b %d"),
-          formatMonth = format("%B"),
-          formatYear = format("%Y");
-
-      var tickIntervals = [
-        [second,  1,      durationSecond],
-        [second,  5,  5 * durationSecond],
-        [second, 15, 15 * durationSecond],
-        [second, 30, 30 * durationSecond],
-        [minute,  1,      durationMinute],
-        [minute,  5,  5 * durationMinute],
-        [minute, 15, 15 * durationMinute],
-        [minute, 30, 30 * durationMinute],
-        [  hour,  1,      durationHour  ],
-        [  hour,  3,  3 * durationHour  ],
-        [  hour,  6,  6 * durationHour  ],
-        [  hour, 12, 12 * durationHour  ],
-        [   day,  1,      durationDay   ],
-        [   day,  2,  2 * durationDay   ],
-        [  week,  1,      durationWeek  ],
-        [ month,  1,      durationMonth ],
-        [ month,  3,  3 * durationMonth ],
-        [  year,  1,      durationYear  ]
-      ];
-
-      function tickFormat(date) {
-        return (second(date) < date ? formatMillisecond
-            : minute(date) < date ? formatSecond
-            : hour(date) < date ? formatMinute
-            : day(date) < date ? formatHour
-            : month(date) < date ? (week(date) < date ? formatDay : formatWeek)
-            : year(date) < date ? formatMonth
-            : formatYear)(date);
-      }
-
-      function tickInterval(interval, start, stop) {
-        if (interval == null) interval = 10;
-
-        // If a desired tick count is specified, pick a reasonable tick interval
-        // based on the extent of the domain and a rough estimate of tick size.
-        // Otherwise, assume interval is already a time interval and use it.
-        if (typeof interval === "number") {
-          var target = Math.abs(stop - start) / interval,
-              i = bisector(function(i) { return i[2]; }).right(tickIntervals, target),
-              step;
-          if (i === tickIntervals.length) {
-            step = tickStep(start / durationYear, stop / durationYear, interval);
-            interval = year;
-          } else if (i) {
-            i = tickIntervals[target / tickIntervals[i - 1][2] < tickIntervals[i][2] / target ? i - 1 : i];
-            step = i[1];
-            interval = i[0];
-          } else {
-            step = Math.max(tickStep(start, stop, interval), 1);
-            interval = millisecond;
-          }
-          return interval.every(step);
-        }
-
-        return interval;
-      }
-
-      scale.invert = function(y) {
-        return new Date(invert(y));
-      };
-
-      scale.domain = function(_) {
-        return arguments.length ? domain(Array.from(_, number)) : domain().map(date);
-      };
-
-      scale.ticks = function(interval) {
-        var d = domain(),
-            t0 = d[0],
-            t1 = d[d.length - 1],
-            r = t1 < t0,
-            t;
-        if (r) t = t0, t0 = t1, t1 = t;
-        t = tickInterval(interval, t0, t1);
-        t = t ? t.range(t0, t1 + 1) : []; // inclusive stop
-        return r ? t.reverse() : t;
-      };
-
-      scale.tickFormat = function(count, specifier) {
-        return specifier == null ? tickFormat : format(specifier);
-      };
-
-      scale.nice = function(interval) {
-        var d = domain();
-        return (interval = tickInterval(interval, d[0], d[d.length - 1]))
-            ? domain(nice(d, interval))
-            : scale;
-      };
-
-      scale.copy = function() {
-        return copy(scale, calendar(year, month, week, day, hour, minute, second, millisecond, format));
-      };
-
-      return scale;
-    }
-
-    function time() {
-      return initRange.apply(calendar(year, month, sunday, day, hour, minute, second, millisecond, timeFormat).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
-    }
-
     /* src/charts/Multiline.svelte generated by Svelte v3.36.0 */
     const file$6 = "src/charts/Multiline.svelte";
 
@@ -32044,10 +29439,10 @@ var app = (function () {
     		PointInteractive,
     		line,
     		curveStep,
-    		scaleTime: time,
+    		scaleTime: time$8,
     		scaleLinear: linear,
-    		max,
-    		extent,
+    		max: max$3,
+    		extent: extent$1,
     		Delaunay,
     		data,
     		margin,
@@ -32095,11 +29490,11 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*margin, width*/ 65) {
-    			$$invalidate(8, x = time().domain(extent(_data.flat(), d => d.x)).range([margin.left, width - margin.right]));
+    			$$invalidate(8, x = time$8().domain(extent$1(_data.flat(), d => d.x)).range([margin.left, width - margin.right]));
     		}
 
     		if ($$self.$$.dirty & /*height, margin*/ 129) {
-    			$$invalidate(9, y = linear().domain([0, max(_data.flat(), d => d.y)]).range([height - margin.bottom - margin.top, margin.top]));
+    			$$invalidate(9, y = linear().domain([0, max$3(_data.flat(), d => d.y)]).range([height - margin.bottom - margin.top, margin.top]));
     		}
 
     		if ($$self.$$.dirty & /*x, y*/ 768) {
@@ -33681,7 +31076,7 @@ var app = (function () {
     				title: "Title",
     				desc: "Description",
     				key: { x: "year", y: ["val"] },
-    				format: { x: utcFormat$1("%y"), y: func },
+    				format: { x: utcFormat("%y"), y: func },
     				color: ["#fc0", "#036", "#f0c"],
     				layout: "col"
     			},
