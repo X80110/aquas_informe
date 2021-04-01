@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -570,7 +570,7 @@ var app = (function () {
             on_disconnect: [],
             before_update: [],
             after_update: [],
-            context: new Map(parent_component ? parent_component.$$.context : []),
+            context: new Map(parent_component ? parent_component.$$.context : options.context || []),
             // everything else
             callbacks: blank_object(),
             dirty,
@@ -639,7 +639,7 @@ var app = (function () {
     }
 
     function dispatch_dev(type, detail) {
-        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.36.0' }, detail)));
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.37.0' }, detail)));
     }
     function append_dev(target, node) {
         dispatch_dev('SvelteDOMInsert', { target, node });
@@ -29861,12 +29861,17 @@ var app = (function () {
     	let a1;
     	let t3;
     	let t4;
-    	let hr;
-    	let t5;
-    	let div0;
-    	let t6;
+    	let li2;
     	let a2;
+    	let t5;
+    	let a2_stnyle_value;
+    	let t6;
+    	let hr;
     	let t7;
+    	let div0;
+    	let t8;
+    	let a3;
+    	let t9;
 
     	function select_block_type(ctx, dirty) {
     		if (/*theme*/ ctx[0] == "dark") return create_if_block$3;
@@ -29891,12 +29896,16 @@ var app = (function () {
     			a1 = element("a");
     			t3 = text$1("Privacitat i cookies");
     			t4 = space();
-    			hr = element("hr");
-    			t5 = space();
-    			div0 = element("div");
-    			t6 = text$1("Tot el contingut disponible al portal web Govern Obert de la Generalitat de Catalunya \n\t\t\t");
+    			li2 = element("li");
     			a2 = element("a");
-    			t7 = text$1("AQuAS");
+    			t5 = text$1("Declaració d'accessibilitat");
+    			t6 = space();
+    			hr = element("hr");
+    			t7 = space();
+    			div0 = element("div");
+    			t8 = text$1("Tot el contingut disponible al portal web Govern Obert de la Generalitat de Catalunya \n\t\t\t");
+    			a3 = element("a");
+    			t9 = text$1("AQuAS");
     			attr_dev(a0, "href", "https://aquas.gencat.cat/ca/contacte/");
     			attr_dev(a0, "class", "list__link svelte-1aur6tw");
     			attr_dev(a0, "stnyle", a0_stnyle_value = "color: " + themes[/*theme*/ ctx[0]]["muted"]);
@@ -29909,19 +29918,25 @@ var app = (function () {
     			add_location(a1, file$4, 22, 7, 721);
     			attr_dev(li1, "class", "svelte-1aur6tw");
     			add_location(li1, file$4, 22, 3, 717);
+    			attr_dev(a2, "href", "http://web.gencat.cat/ca/menu-ajuda/ajuda/avis_legal/");
+    			attr_dev(a2, "class", "list__link svelte-1aur6tw");
+    			attr_dev(a2, "stnyle", a2_stnyle_value = "color: " + themes[/*theme*/ ctx[0]]["muted"]);
+    			add_location(a2, file$4, 23, 7, 881);
+    			attr_dev(li2, "class", "svelte-1aur6tw");
+    			add_location(li2, file$4, 23, 3, 877);
     			attr_dev(ul, "class", "svelte-1aur6tw");
     			add_location(ul, file$4, 20, 2, 573);
     			set_style(hr, "border-top-color", themes[/*theme*/ ctx[0]]["muted"]);
     			attr_dev(hr, "class", "svelte-1aur6tw");
-    			add_location(hr, file$4, 24, 2, 884);
-    			attr_dev(a2, "href", "http://governobert.gencat.cat/ca/dades_obertes/");
-    			attr_dev(a2, "class", "external-link svelte-1aur6tw");
-    			attr_dev(a2, "target", "_blank");
-    			attr_dev(a2, "rel", "noopener");
-    			set_style(a2, "color", themes[/*theme*/ ctx[0]]["muted"]);
-    			add_location(a2, file$4, 27, 3, 1059);
+    			add_location(hr, file$4, 25, 2, 1052);
+    			attr_dev(a3, "href", "http://governobert.gencat.cat/ca/dades_obertes/");
+    			attr_dev(a3, "class", "external-link svelte-1aur6tw");
+    			attr_dev(a3, "target", "_blank");
+    			attr_dev(a3, "rel", "noopener");
+    			set_style(a3, "color", themes[/*theme*/ ctx[0]]["muted"]);
+    			add_location(a3, file$4, 28, 3, 1227);
     			attr_dev(div0, "class", "license svelte-1aur6tw");
-    			add_location(div0, file$4, 25, 2, 944);
+    			add_location(div0, file$4, 26, 2, 1112);
     			attr_dev(div1, "class", "col-wide");
     			attr_dev(div1, "data-analytics", "footer");
     			add_location(div1, file$4, 8, 1, 240);
@@ -29946,13 +29961,17 @@ var app = (function () {
     			append_dev(ul, li1);
     			append_dev(li1, a1);
     			append_dev(a1, t3);
-    			append_dev(div1, t4);
+    			append_dev(ul, t4);
+    			append_dev(ul, li2);
+    			append_dev(li2, a2);
+    			append_dev(a2, t5);
+    			append_dev(div1, t6);
     			append_dev(div1, hr);
-    			append_dev(div1, t5);
+    			append_dev(div1, t7);
     			append_dev(div1, div0);
-    			append_dev(div0, t6);
-    			append_dev(div0, a2);
-    			append_dev(a2, t7);
+    			append_dev(div0, t8);
+    			append_dev(div0, a3);
+    			append_dev(a3, t9);
     		},
     		p: function update(ctx, [dirty]) {
     			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
@@ -29973,12 +29992,16 @@ var app = (function () {
     				set_style(a1, "color", themes[/*theme*/ ctx[0]]["muted"]);
     			}
 
+    			if (dirty & /*theme*/ 1 && a2_stnyle_value !== (a2_stnyle_value = "color: " + themes[/*theme*/ ctx[0]]["muted"])) {
+    				attr_dev(a2, "stnyle", a2_stnyle_value);
+    			}
+
     			if (dirty & /*theme*/ 1) {
     				set_style(hr, "border-top-color", themes[/*theme*/ ctx[0]]["muted"]);
     			}
 
     			if (dirty & /*theme*/ 1) {
-    				set_style(a2, "color", themes[/*theme*/ ctx[0]]["muted"]);
+    				set_style(a3, "color", themes[/*theme*/ ctx[0]]["muted"]);
     			}
 
     			if (dirty & /*theme*/ 1) {

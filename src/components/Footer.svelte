@@ -21,6 +21,7 @@
 		<ul>
 			<li><a href="https://aquas.gencat.cat/ca/contacte/" class="list__link" stnyle="color: {themes[theme]['muted']}">Contacta'ns</a></li>
 			<li><a href="http://web.gencat.cat/ca/menu-ajuda/ajuda/avis_legal/" class="list__link" style="color: {themes[theme]['muted']}">Privacitat i cookies</a></li>
+			<li><a href="http://web.gencat.cat/ca/menu-ajuda/ajuda/avis_legal/" class="list__link" stnyle="color: {themes[theme]['muted']}">Declaració d'accessibilitat</a></li>
 		</ul>
 		<hr style="border-top-color: {themes[theme]['muted']}" />
 		<div class="license">
