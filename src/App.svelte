@@ -89,6 +89,13 @@
 </Section>
 
 
+<div class="embed">
+	<iframe width="60%" height="864" frameborder="0"
+src="https://observablehq.com/embed/@x80110/aquas-plot?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
+</div>
+
+
+
 <Divider />
 
 <Section>
@@ -98,6 +105,10 @@
 		Desplaça per veure'n més.
 	</p>
 </Section>
+
+<div class="embed">
+	<iframe width="70%" height="1184" frameborder="0" src="https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart"></iframe>
+</div>
 <Divider />
 
 <Section>
@@ -163,6 +174,12 @@ caption="Fes click per descarregar.">
 <Footer />
 
 <style>
+	.embed {
+		margin-top:2em;
+		display: flex;
+        align-items: center;
+		justify-content: center;
+	}
 	.svg-icon {
 		width: 48px;
 		height: 48px;
