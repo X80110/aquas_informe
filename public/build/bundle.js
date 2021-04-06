@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35736/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35737/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -3467,7 +3467,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			h4 = element("h4");
-    			h4.textContent = "2019 · Pacients ateses als centres de salut mental infantojuvenils";
+    			h4.textContent = "2019 · Pacients atesos als centres de salut mental infantojuvenils";
     			t1 = space();
     			iframe = element("iframe");
     			add_location(h4, file$b, 15, 6, 279);
@@ -3515,7 +3515,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			h4 = element("h4");
-    			h4.textContent = "2018 · Pacients ateses als centres de salut mental infantojuvenils";
+    			h4.textContent = "2018 · Pacients atesos als centres de salut mental infantojuvenils";
     			t1 = space();
     			iframe = element("iframe");
     			add_location(h4, file$b, 20, 6, 636);
@@ -3563,7 +3563,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			h4 = element("h4");
-    			h4.textContent = "2017 · Pacients ateses als centres de salut mental infantojuvenils";
+    			h4.textContent = "2017 · Pacients atesos als centres de salut mental infantojuvenils";
     			t1 = space();
     			iframe = element("iframe");
     			add_location(h4, file$b, 25, 6, 995);
@@ -3611,7 +3611,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			h4 = element("h4");
-    			h4.textContent = "2016 · Pacients ateses als centres de salut mental infantojuvenils";
+    			h4.textContent = "2016 · Pacients atesos als centres de salut mental infantojuvenils";
     			t1 = space();
     			iframe = element("iframe");
     			add_location(h4, file$b, 30, 6, 1351);
@@ -6716,7 +6716,7 @@ var app = (function () {
     const file$i = "src/App.svelte";
 
     // (100:0) <Header bgimage="./img/bg-dark.jpg" bgfixed={true} theme="light">
-    function create_default_slot_9$1(ctx) {
+    function create_default_slot_7$1(ctx) {
     	let h1;
     	let t1;
     	let br0;
@@ -6795,7 +6795,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_9$1.name,
+    		id: create_default_slot_7$1.name,
     		type: "slot",
     		source: "(100:0) <Header bgimage=\\\"./img/bg-dark.jpg\\\" bgfixed={true} theme=\\\"light\\\">",
     		ctx
@@ -6804,110 +6804,101 @@ var app = (function () {
     	return block;
     }
 
-    // (115:0) <Filler theme="light">
-    function create_default_slot_8$1(ctx) {
-    	let p;
-
-    	const block = {
-    		c: function create() {
-    			p = element("p");
-    			p.textContent = "Informe 2020";
-    			attr_dev(p, "class", "text-big");
-    			add_location(p, file$i, 115, 1, 2765);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_default_slot_8$1.name,
-    		type: "slot",
-    		source: "(115:0) <Filler theme=\\\"light\\\">",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (121:0) <Section>
-    function create_default_slot_7$1(ctx) {
-    	let h2;
-    	let t1;
-    	let h3;
-    	let t3;
+    // (118:0) <Section>
+    function create_default_slot_6$1(ctx) {
     	let p0;
+    	let t1;
+    	let h2;
+    	let t3;
+    	let h3;
     	let t5;
     	let p1;
     	let t7;
-    	let blockquote;
-    	let t9;
     	let p2;
+    	let t9;
+    	let blockquote;
+    	let t11;
+    	let p3;
+    	let t13;
+    	let p4;
 
     	const block = {
     		c: function create() {
+    			p0 = element("p");
+    			p0.textContent = "Informe 2020";
+    			t1 = space();
     			h2 = element("h2");
     			h2.textContent = "La xarxa d'atenció a la salut mental de Catalunya";
-    			t1 = space();
+    			t3 = space();
     			h3 = element("h3");
     			h3.textContent = "La meitat dels pacients atesos pels CSMA són pacients crònics (51,1%) i un de cada tres pacient crònic complex (32,3%)";
-    			t3 = space();
-    			p0 = element("p");
-    			p0.textContent = "Els 76 centres de salut mental d’adults (CSMA) que donen servei a la xarxa pública de salut de Catalunya tenen assignada una població de 5.969.735 persones de 18 anys o més (51,3% dones i 48,7% homes), el que suposa una mitjana d’un CSMA per cada 78.550 persones.";
     			t5 = space();
     			p1 = element("p");
-    			p1.textContent = "L’import de la contractació del conjunt de CSMA va ser de 51.363.489 €, que suposa una mitjana de 675.835€ per centre i de gairebé 304,5 € per persona atesa. El pressupost ha crescut un 9,3% respecte el 2016.";
+    			p1.textContent = "La salut mental i les addiccions conformen un dels serveis del sistema d’atenció sanitària pública de Catalunya. El trastorns mentals tenen un impacte important en la qualitat de vida de les persones i afecten tots els àmbits de relació interpersonal (familiar, laboral i social), motiu pel qual demanen una atenció concreta.";
     			t7 = space();
-    			blockquote = element("blockquote");
-    			blockquote.textContent = "\"Una de cada 7 persones ateses per un CSMA\n\t\tté un nivell socioeconòmic molt baix.\"";
-    			t9 = space();
     			p2 = element("p");
-    			p2.textContent = "L’any 2017, un total de 168.688 persones van ésser ateses en algun CSMA (59,6% dones i 40,4% homes), concretament el 2,7% de la població adulta (3,1% de les dones i 2,2% dels homes).";
-    			add_location(h2, file$i, 121, 1, 2829);
-    			add_location(h3, file$i, 122, 1, 2889);
-    			add_location(p0, file$i, 123, 1, 3018);
-    			add_location(p1, file$i, 126, 1, 3296);
+    			p2.textContent = "A Catalunya, els centres d’atenció primària (CAP) són la peça clau per a la detecció precoç i el seguiment dels trastorns mentals lleus. Un equip de professionals especialistes en salut mental dona suport als equips d’atenció primària i s’integra als centres d’atenció primària. Quan la patologia és més complexa, l’assistència es presta en serveis especialitzats, fora dels CAP.";
+    			t9 = space();
+    			blockquote = element("blockquote");
+    			blockquote.textContent = "Als CAP, equips multidisciplinaris integrats per psiquiatres, psicòlegs, treballadors socials i personal d’infermeria ofereixen assistència especialitzada en règim ambulatori (sense ingrés).";
+    			t11 = space();
+    			p3 = element("p");
+    			p3.textContent = "La xarxa de centres d’atenció a la salut mental es divideix en dos tipus, en funció de l’edat del pacient: Centres de salut mental d’adults (CSMA), per a majors de 18 anys, i Centres de salut mental infantil juvenil (CSMIJ), per a infants i adolescents fins a la majoria d’edat.";
+    			t13 = space();
+    			p4 = element("p");
+    			p4.textContent = "Per millorar la qualitat del sistema de salut de Catalunya, el Departament de Salut recull les dades assistencials. En aquest apartat hi trobareu representades les xifres referents a l’atenció prestada als centres de salut mental entre 2016 i 2019 mitjançant diversos gràfics.";
+    			attr_dev(p0, "class", "text-big");
+    			add_location(p0, file$i, 118, 1, 2755);
+    			add_location(h2, file$i, 121, 1, 2798);
+    			add_location(h3, file$i, 122, 1, 2858);
+    			add_location(p1, file$i, 124, 1, 2989);
+    			add_location(p2, file$i, 127, 1, 3328);
     			attr_dev(blockquote, "class", "text-indent");
-    			add_location(blockquote, file$i, 129, 1, 3519);
-    			add_location(p2, file$i, 133, 1, 3654);
+    			add_location(blockquote, file$i, 131, 1, 3722);
+    			add_location(p3, file$i, 136, 1, 3968);
+    			add_location(p4, file$i, 139, 1, 4260);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h2, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, h3, anchor);
-    			insert_dev(target, t3, anchor);
     			insert_dev(target, p0, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, h2, anchor);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, h3, anchor);
     			insert_dev(target, t5, anchor);
     			insert_dev(target, p1, anchor);
     			insert_dev(target, t7, anchor);
-    			insert_dev(target, blockquote, anchor);
-    			insert_dev(target, t9, anchor);
     			insert_dev(target, p2, anchor);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, blockquote, anchor);
+    			insert_dev(target, t11, anchor);
+    			insert_dev(target, p3, anchor);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, p4, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h2);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(h3);
-    			if (detaching) detach_dev(t3);
     			if (detaching) detach_dev(p0);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(h2);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(h3);
     			if (detaching) detach_dev(t5);
     			if (detaching) detach_dev(p1);
     			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(blockquote);
-    			if (detaching) detach_dev(t9);
     			if (detaching) detach_dev(p2);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(blockquote);
+    			if (detaching) detach_dev(t11);
+    			if (detaching) detach_dev(p3);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(p4);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_7$1.name,
+    		id: create_default_slot_6$1.name,
     		type: "slot",
-    		source: "(121:0) <Section>",
+    		source: "(118:0) <Section>",
     		ctx
     	});
 
@@ -6915,36 +6906,45 @@ var app = (function () {
     }
 
     // (148:0) <Section>
-    function create_default_slot_6$1(ctx) {
+    function create_default_slot_5$1(ctx) {
     	let h2;
     	let t1;
-    	let p;
+    	let div;
+    	let iframe;
+    	let iframe_src_value;
 
     	const block = {
     		c: function create() {
     			h2 = element("h2");
-    			h2.textContent = "Gràfic dinàmic";
+    			h2.textContent = "Pacients per Centres de Salut Mental de Catalunya";
     			t1 = space();
-    			p = element("p");
-    			p.textContent = "La visualització a continuació recull dades territorials de visites realitzades als Centres de Salut Mental de Catalunya. \n\t\tDesplaça per veure'n més.";
-    			add_location(h2, file$i, 148, 1, 4055);
-    			add_location(p, file$i, 149, 1, 4080);
+    			div = element("div");
+    			iframe = element("iframe");
+    			add_location(h2, file$i, 148, 0, 4576);
+    			attr_dev(iframe, "width", "70%");
+    			attr_dev(iframe, "height", "1184");
+    			attr_dev(iframe, "frameborder", "0");
+    			if (iframe.src !== (iframe_src_value = "https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart")) attr_dev(iframe, "src", iframe_src_value);
+    			add_location(iframe, file$i, 150, 1, 4656);
+    			attr_dev(div, "class", "embed svelte-1l5ip68");
+    			add_location(div, file$i, 149, 0, 4635);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, iframe);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
     			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(div);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_6$1.name,
+    		id: create_default_slot_5$1.name,
     		type: "slot",
     		source: "(148:0) <Section>",
     		ctx
@@ -6954,26 +6954,44 @@ var app = (function () {
     }
 
     // (160:0) <Section>
-    function create_default_slot_5$1(ctx) {
+    function create_default_slot_4$1(ctx) {
     	let h2;
     	let t1;
     	let p0;
     	let t3;
     	let p1;
+    	let t5;
+    	let p2;
+    	let t7;
+    	let p3;
+    	let t9;
+    	let p4;
 
     	const block = {
     		c: function create() {
     			h2 = element("h2");
-    			h2.textContent = "La depressió és el diagnòstic més freqüent i l’esquizofrènia és el que genera més visites";
+    			h2.textContent = "Les dades";
     			t1 = space();
     			p0 = element("p");
-    			p0.textContent = "En una anàlisi en detall dels diagnòstics, s’observa que en el 2017 la\n\t\tdepressió va continuar essent el més freqüent, present en una ter-\n\t\tcera part de la població atesa (39,4% de les dones i 23,7% dels ho-\n\t\tmes).";
+    			p0.textContent = "Actualment, amb les últimes dades disponibles (2019), la xarxa de centres d’atenció a la salut mental atén 236.366 persones, el 47% homes i el 53% dones (i el 13%, menors d’edat). Entre els quatre anys analitzats, 2017 és el que acumula més pacients, concretament 237.863.";
     			t3 = space();
     			p1 = element("p");
-    			p1.textContent = "A l’altre extrem, la demència estava present únicament en un\n\t\t1,1% dels pacients (1,0% en dones i 1,2% en homes). El diagnòstic\n\t\tque va suposar un major nombre de visites és l’esquizofrènia, amb\n\t\tuna mitjana de 13,4 visites a l’any (12,7 en dones i 13,8 en homes).\n\t\tA continuació, si bé amb un volum menor, trobem les altres psicosis\n\t\t(10,3) i el trastorn bipolar (9,5).";
-    			add_location(h2, file$i, 160, 1, 4281);
-    			add_location(p0, file$i, 161, 1, 4381);
-    			add_location(p1, file$i, 167, 1, 4614);
+    			p1.textContent = "Durant aquests quatre anys, els homes que han fet més ús dels centres de salut mental han estat els infants d’entre 6 i 12 anys (86.762 en total). A la banda contrària, els menors de sis anys han estat els que menys els han visitat (4.538 en conjunt).";
+    			t5 = space();
+    			p2 = element("p");
+    			p2.textContent = "Pel que fa a les dones, el grup d’edat amb més pacients és el de 45-54 anys (95.030), mentre que les menors de sis anys també és el que acumula menys persones ateses (1.726).";
+    			t7 = space();
+    			p3 = element("p");
+    			p3.textContent = "Els centres de salut mental que han atès més persones varia any rere any, tant pel que fa als adults com als menors d’edat. Així, es passa del CSM Adults Tortosa el 2016 (64 pacients per cada mil habitants per àrea de gestió assistencial) al mateix recurs el 2019 (60,6 pacients/mil habitants) entre els adults. I del CSMIJ Gironès-Pla de l'Estany de 2016 (41,5 pacients/mil habitants) al CSM Infantil i Juvenil Alta Ribagorça el 2019 (78 pacients/mil habitants).";
+    			t9 = space();
+    			p4 = element("p");
+    			p4.textContent = "A l’extrem oposat, els centres que han atès menys persones són el CSM Adults Segarra, tant al 2016 (1,76 pacients/mil habitants) com al 2019 (1,20 pacients/mil habitants) per als majors d’edat. Mentre que a la xarxa d’infants i adolescents han estat el CSMIJ Badalona 1 Est Joan Obiols el 2016 (10,5 pacients/mil habitants) i el CSM Infantil i Juvenil La Mina el 2019 (3,5 pacients/mil habitants).";
+    			add_location(h2, file$i, 160, 1, 4840);
+    			add_location(p0, file$i, 161, 1, 4860);
+    			add_location(p1, file$i, 164, 1, 5145);
+    			add_location(p2, file$i, 167, 0, 5407);
+    			add_location(p3, file$i, 170, 0, 5592);
+    			add_location(p4, file$i, 173, 0, 6065);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -6981,6 +6999,12 @@ var app = (function () {
     			insert_dev(target, p0, anchor);
     			insert_dev(target, t3, anchor);
     			insert_dev(target, p1, anchor);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, p2, anchor);
+    			insert_dev(target, t7, anchor);
+    			insert_dev(target, p3, anchor);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, p4, anchor);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
@@ -6988,12 +7012,18 @@ var app = (function () {
     			if (detaching) detach_dev(p0);
     			if (detaching) detach_dev(t3);
     			if (detaching) detach_dev(p1);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(p2);
+    			if (detaching) detach_dev(t7);
+    			if (detaching) detach_dev(p3);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(p4);
     		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_5$1.name,
+    		id: create_default_slot_4$1.name,
     		type: "slot",
     		source: "(160:0) <Section>",
     		ctx
@@ -7002,62 +7032,40 @@ var app = (function () {
     	return block;
     }
 
-    // (178:0) <Media col="full" height={600} caption="L'explicació del contingut previ">
-    function create_default_slot_4$1(ctx) {
-    	let div;
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			div.textContent = "Gràfic o mèdia en ample complert";
-    			attr_dev(div, "class", "media svelte-1l5ip68");
-    			add_location(div, file$i, 178, 1, 5090);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_default_slot_4$1.name,
-    		type: "slot",
-    		source: "(178:0) <Media col=\\\"full\\\" height={600} caption=\\\"L'explicació del contingut previ\\\">",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (184:0) <Section>
+    // (180:0) <Section>
     function create_default_slot_3$1(ctx) {
     	let h2;
     	let t1;
-    	let p;
+    	let div;
+    	let iframe;
+    	let iframe_src_value;
 
     	const block = {
     		c: function create() {
     			h2 = element("h2");
-    			h2.textContent = "L'estat dels Centres de Salut Mental a Catalunya";
+    			h2.textContent = "Exploreu les dades";
     			t1 = space();
-    			p = element("p");
-    			p.textContent = "Els serveis d’atenció ambulatòria d’adults compten amb 76 centres\n\t\tde salut mental d’adults (CSMA) que durant l’any 2017 van atendre\n\t\ta 168.688 persones.";
-    			add_location(h2, file$i, 184, 1, 5182);
-    			attr_dev(p, "class", "mb");
-    			add_location(p, file$i, 185, 1, 5242);
+    			div = element("div");
+    			iframe = element("iframe");
+    			add_location(h2, file$i, 180, 0, 6495);
+    			attr_dev(iframe, "width", "70%");
+    			attr_dev(iframe, "height", "864");
+    			attr_dev(iframe, "frameborder", "0");
+    			if (iframe.src !== (iframe_src_value = "https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart")) attr_dev(iframe, "src", iframe_src_value);
+    			add_location(iframe, file$i, 182, 1, 6544);
+    			attr_dev(div, "class", "embed svelte-1l5ip68");
+    			add_location(div, file$i, 181, 0, 6523);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, iframe);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
     			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(div);
     		}
     	};
 
@@ -7065,15 +7073,73 @@ var app = (function () {
     		block,
     		id: create_default_slot_3$1.name,
     		type: "slot",
-    		source: "(184:0) <Section>",
+    		source: "(180:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (205:0) <Section>
+    // (188:0) <Section>
     function create_default_slot_2$1(ctx) {
+    	let h2;
+    	let t1;
+    	let br;
+    	let t2;
+    	let mapes;
+    	let current;
+    	mapes = new Tabs_1({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			h2 = element("h2");
+    			h2.textContent = "Exploreu les dades";
+    			t1 = space();
+    			br = element("br");
+    			t2 = space();
+    			create_component(mapes.$$.fragment);
+    			add_location(h2, file$i, 188, 0, 6806);
+    			add_location(br, file$i, 189, 0, 6834);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, h2, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, br, anchor);
+    			insert_dev(target, t2, anchor);
+    			mount_component(mapes, target, anchor);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(mapes.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(mapes.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(h2);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(br);
+    			if (detaching) detach_dev(t2);
+    			destroy_component(mapes, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_2$1.name,
+    		type: "slot",
+    		source: "(188:0) <Section>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (195:0) <Section>
+    function create_default_slot_1$1(ctx) {
     	let h2;
     	let t1;
     	let p;
@@ -7085,8 +7151,8 @@ var app = (function () {
     			t1 = space();
     			p = element("p");
     			p.textContent = "A continuació trobaras els informes dels darrers anys elaborats per l'Observatori del sistema de salut de Catalunya.";
-    			add_location(h2, file$i, 205, 1, 5736);
-    			add_location(p, file$i, 206, 1, 5820);
+    			add_location(h2, file$i, 195, 1, 6885);
+    			add_location(p, file$i, 196, 1, 6969);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -7102,79 +7168,16 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_default_slot_2$1.name,
-    		type: "slot",
-    		source: "(205:0) <Section>",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (212:0) <Media col="wide" grid="narrow" caption="Fes click per descarregar.">
-    function create_default_slot_1$1(ctx) {
-    	let div0;
-    	let t1;
-    	let div1;
-    	let t3;
-    	let div2;
-    	let t5;
-    	let div3;
-
-    	const block = {
-    		c: function create() {
-    			div0 = element("div");
-    			div0.textContent = "2020";
-    			t1 = space();
-    			div1 = element("div");
-    			div1.textContent = "2019";
-    			t3 = space();
-    			div2 = element("div");
-    			div2.textContent = "2018";
-    			t5 = space();
-    			div3 = element("div");
-    			div3.textContent = "2017";
-    			attr_dev(div0, "class", "media svelte-1l5ip68");
-    			add_location(div0, file$i, 215, 0, 6032);
-    			attr_dev(div1, "class", "media svelte-1l5ip68");
-    			add_location(div1, file$i, 216, 0, 6062);
-    			attr_dev(div2, "class", "media svelte-1l5ip68");
-    			add_location(div2, file$i, 217, 0, 6092);
-    			attr_dev(div3, "class", "media svelte-1l5ip68");
-    			add_location(div3, file$i, 218, 0, 6122);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div0, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, div1, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, div2, anchor);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, div3, anchor);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(div2);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(div3);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
     		id: create_default_slot_1$1.name,
     		type: "slot",
-    		source: "(212:0) <Media col=\\\"wide\\\" grid=\\\"narrow\\\" caption=\\\"Fes click per descarregar.\\\">",
+    		source: "(195:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (222:0) <Section>
+    // (212:0) <Section>
     function create_default_slot$1(ctx) {
     	let p;
 
@@ -7182,7 +7185,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Descarrega la totalitat de les dades al portal de Transparència i Dades Obertes de la Generalitat.";
-    			add_location(p, file$i, 222, 1, 6173);
+    			add_location(p, file$i, 212, 1, 7331);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -7196,7 +7199,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(222:0) <Section>",
+    		source: "(212:0) <Section>",
     		ctx
     	});
 
@@ -7208,44 +7211,26 @@ var app = (function () {
     	let t0;
     	let header;
     	let t1;
-    	let filler;
-    	let t2;
     	let section0;
-    	let t3;
-    	let div0;
-    	let iframe0;
-    	let iframe0_src_value;
-    	let t4;
-    	let divider0;
-    	let t5;
+    	let t2;
     	let section1;
-    	let t6;
-    	let divider1;
-    	let t7;
+    	let t3;
+    	let divider0;
+    	let t4;
     	let section2;
-    	let t8;
-    	let media0;
-    	let t9;
-    	let divider2;
-    	let t10;
+    	let t5;
     	let section3;
-    	let t11;
-    	let div1;
-    	let iframe1;
-    	let iframe1_src_value;
-    	let t12;
+    	let t6;
     	let br;
-    	let t13;
-    	let mapes;
-    	let t14;
-    	let divider3;
-    	let t15;
+    	let t7;
     	let section4;
-    	let t16;
-    	let media1;
-    	let t17;
+    	let t8;
+    	let divider1;
+    	let t9;
     	let section5;
-    	let t18;
+    	let t10;
+    	let section6;
+    	let t11;
     	let footer;
     	let current;
     	uxresearch = new UXResearch({ $$inline: true });
@@ -7255,16 +7240,7 @@ var app = (function () {
     				bgimage: "./img/bg-dark.jpg",
     				bgfixed: true,
     				theme: "light",
-    				$$slots: { default: [create_default_slot_9$1] },
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	filler = new Filler({
-    			props: {
-    				theme: "light",
-    				$$slots: { default: [create_default_slot_8$1] },
+    				$$slots: { default: [create_default_slot_7$1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
@@ -7272,25 +7248,13 @@ var app = (function () {
 
     	section0 = new Section({
     			props: {
-    				$$slots: { default: [create_default_slot_7$1] },
-    				$$scope: { ctx }
-    			},
-    			$$inline: true
-    		});
-
-    	divider0 = new Divider({ $$inline: true });
-
-    	section1 = new Section({
-    			props: {
     				$$slots: { default: [create_default_slot_6$1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	divider1 = new Divider({ $$inline: true });
-
-    	section2 = new Section({
+    	section1 = new Section({
     			props: {
     				$$slots: { default: [create_default_slot_5$1] },
     				$$scope: { ctx }
@@ -7298,18 +7262,15 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	media0 = new Media({
+    	divider0 = new Divider({ $$inline: true });
+
+    	section2 = new Section({
     			props: {
-    				col: "full",
-    				height: 600,
-    				caption: "L'explicació del contingut previ",
     				$$slots: { default: [create_default_slot_4$1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
-
-    	divider2 = new Divider({ $$inline: true });
 
     	section3 = new Section({
     			props: {
@@ -7319,9 +7280,6 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	mapes = new Tabs_1({ $$inline: true });
-    	divider3 = new Divider({ $$inline: true });
-
     	section4 = new Section({
     			props: {
     				$$slots: { default: [create_default_slot_2$1] },
@@ -7330,18 +7288,17 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	media1 = new Media({
+    	divider1 = new Divider({ $$inline: true });
+
+    	section5 = new Section({
     			props: {
-    				col: "wide",
-    				grid: "narrow",
-    				caption: "Fes click per descarregar.",
     				$$slots: { default: [create_default_slot_1$1] },
     				$$scope: { ctx }
     			},
     			$$inline: true
     		});
 
-    	section5 = new Section({
+    	section6 = new Section({
     			props: {
     				$$slots: { default: [create_default_slot$1] },
     				$$scope: { ctx }
@@ -7357,58 +7314,28 @@ var app = (function () {
     			t0 = space();
     			create_component(header.$$.fragment);
     			t1 = space();
-    			create_component(filler.$$.fragment);
-    			t2 = space();
     			create_component(section0.$$.fragment);
-    			t3 = space();
-    			div0 = element("div");
-    			iframe0 = element("iframe");
-    			t4 = space();
-    			create_component(divider0.$$.fragment);
-    			t5 = space();
+    			t2 = space();
     			create_component(section1.$$.fragment);
-    			t6 = space();
-    			create_component(divider1.$$.fragment);
-    			t7 = space();
+    			t3 = space();
+    			create_component(divider0.$$.fragment);
+    			t4 = space();
     			create_component(section2.$$.fragment);
-    			t8 = space();
-    			create_component(media0.$$.fragment);
-    			t9 = space();
-    			create_component(divider2.$$.fragment);
-    			t10 = space();
+    			t5 = space();
     			create_component(section3.$$.fragment);
-    			t11 = space();
-    			div1 = element("div");
-    			iframe1 = element("iframe");
-    			t12 = space();
+    			t6 = space();
     			br = element("br");
-    			t13 = space();
-    			create_component(mapes.$$.fragment);
-    			t14 = space();
-    			create_component(divider3.$$.fragment);
-    			t15 = space();
+    			t7 = space();
     			create_component(section4.$$.fragment);
-    			t16 = space();
-    			create_component(media1.$$.fragment);
-    			t17 = space();
+    			t8 = space();
+    			create_component(divider1.$$.fragment);
+    			t9 = space();
     			create_component(section5.$$.fragment);
-    			t18 = space();
+    			t10 = space();
+    			create_component(section6.$$.fragment);
+    			t11 = space();
     			create_component(footer.$$.fragment);
-    			attr_dev(iframe0, "width", "70%");
-    			attr_dev(iframe0, "height", "1184");
-    			attr_dev(iframe0, "frameborder", "0");
-    			if (iframe0.src !== (iframe0_src_value = "https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart")) attr_dev(iframe0, "src", iframe0_src_value);
-    			add_location(iframe0, file$i, 141, 1, 3884);
-    			attr_dev(div0, "class", "embed svelte-1l5ip68");
-    			add_location(div0, file$i, 140, 0, 3863);
-    			attr_dev(iframe1, "width", "70%");
-    			attr_dev(iframe1, "height", "864");
-    			attr_dev(iframe1, "frameborder", "0");
-    			if (iframe1.src !== (iframe1_src_value = "https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart")) attr_dev(iframe1, "src", iframe1_src_value);
-    			add_location(iframe1, file$i, 196, 1, 5460);
-    			attr_dev(div1, "class", "embed svelte-1l5ip68");
-    			add_location(div1, file$i, 195, 0, 5439);
-    			add_location(br, file$i, 199, 0, 5696);
+    			add_location(br, file$i, 186, 0, 6791);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7418,42 +7345,26 @@ var app = (function () {
     			insert_dev(target, t0, anchor);
     			mount_component(header, target, anchor);
     			insert_dev(target, t1, anchor);
-    			mount_component(filler, target, anchor);
-    			insert_dev(target, t2, anchor);
     			mount_component(section0, target, anchor);
-    			insert_dev(target, t3, anchor);
-    			insert_dev(target, div0, anchor);
-    			append_dev(div0, iframe0);
-    			insert_dev(target, t4, anchor);
-    			mount_component(divider0, target, anchor);
-    			insert_dev(target, t5, anchor);
+    			insert_dev(target, t2, anchor);
     			mount_component(section1, target, anchor);
-    			insert_dev(target, t6, anchor);
-    			mount_component(divider1, target, anchor);
-    			insert_dev(target, t7, anchor);
+    			insert_dev(target, t3, anchor);
+    			mount_component(divider0, target, anchor);
+    			insert_dev(target, t4, anchor);
     			mount_component(section2, target, anchor);
-    			insert_dev(target, t8, anchor);
-    			mount_component(media0, target, anchor);
-    			insert_dev(target, t9, anchor);
-    			mount_component(divider2, target, anchor);
-    			insert_dev(target, t10, anchor);
+    			insert_dev(target, t5, anchor);
     			mount_component(section3, target, anchor);
-    			insert_dev(target, t11, anchor);
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, iframe1);
-    			insert_dev(target, t12, anchor);
+    			insert_dev(target, t6, anchor);
     			insert_dev(target, br, anchor);
-    			insert_dev(target, t13, anchor);
-    			mount_component(mapes, target, anchor);
-    			insert_dev(target, t14, anchor);
-    			mount_component(divider3, target, anchor);
-    			insert_dev(target, t15, anchor);
+    			insert_dev(target, t7, anchor);
     			mount_component(section4, target, anchor);
-    			insert_dev(target, t16, anchor);
-    			mount_component(media1, target, anchor);
-    			insert_dev(target, t17, anchor);
+    			insert_dev(target, t8, anchor);
+    			mount_component(divider1, target, anchor);
+    			insert_dev(target, t9, anchor);
     			mount_component(section5, target, anchor);
-    			insert_dev(target, t18, anchor);
+    			insert_dev(target, t10, anchor);
+    			mount_component(section6, target, anchor);
+    			insert_dev(target, t11, anchor);
     			mount_component(footer, target, anchor);
     			current = true;
     		},
@@ -7465,13 +7376,6 @@ var app = (function () {
     			}
 
     			header.$set(header_changes);
-    			const filler_changes = {};
-
-    			if (dirty & /*$$scope*/ 2) {
-    				filler_changes.$$scope = { dirty, ctx };
-    			}
-
-    			filler.$set(filler_changes);
     			const section0_changes = {};
 
     			if (dirty & /*$$scope*/ 2) {
@@ -7493,13 +7397,6 @@ var app = (function () {
     			}
 
     			section2.$set(section2_changes);
-    			const media0_changes = {};
-
-    			if (dirty & /*$$scope*/ 2) {
-    				media0_changes.$$scope = { dirty, ctx };
-    			}
-
-    			media0.$set(media0_changes);
     			const section3_changes = {};
 
     			if (dirty & /*$$scope*/ 2) {
@@ -7514,13 +7411,6 @@ var app = (function () {
     			}
 
     			section4.$set(section4_changes);
-    			const media1_changes = {};
-
-    			if (dirty & /*$$scope*/ 2) {
-    				media1_changes.$$scope = { dirty, ctx };
-    			}
-
-    			media1.$set(media1_changes);
     			const section5_changes = {};
 
     			if (dirty & /*$$scope*/ 2) {
@@ -7528,45 +7418,42 @@ var app = (function () {
     			}
 
     			section5.$set(section5_changes);
+    			const section6_changes = {};
+
+    			if (dirty & /*$$scope*/ 2) {
+    				section6_changes.$$scope = { dirty, ctx };
+    			}
+
+    			section6.$set(section6_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(uxresearch.$$.fragment, local);
     			transition_in(header.$$.fragment, local);
-    			transition_in(filler.$$.fragment, local);
     			transition_in(section0.$$.fragment, local);
-    			transition_in(divider0.$$.fragment, local);
     			transition_in(section1.$$.fragment, local);
-    			transition_in(divider1.$$.fragment, local);
+    			transition_in(divider0.$$.fragment, local);
     			transition_in(section2.$$.fragment, local);
-    			transition_in(media0.$$.fragment, local);
-    			transition_in(divider2.$$.fragment, local);
     			transition_in(section3.$$.fragment, local);
-    			transition_in(mapes.$$.fragment, local);
-    			transition_in(divider3.$$.fragment, local);
     			transition_in(section4.$$.fragment, local);
-    			transition_in(media1.$$.fragment, local);
+    			transition_in(divider1.$$.fragment, local);
     			transition_in(section5.$$.fragment, local);
+    			transition_in(section6.$$.fragment, local);
     			transition_in(footer.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(uxresearch.$$.fragment, local);
     			transition_out(header.$$.fragment, local);
-    			transition_out(filler.$$.fragment, local);
     			transition_out(section0.$$.fragment, local);
-    			transition_out(divider0.$$.fragment, local);
     			transition_out(section1.$$.fragment, local);
-    			transition_out(divider1.$$.fragment, local);
+    			transition_out(divider0.$$.fragment, local);
     			transition_out(section2.$$.fragment, local);
-    			transition_out(media0.$$.fragment, local);
-    			transition_out(divider2.$$.fragment, local);
     			transition_out(section3.$$.fragment, local);
-    			transition_out(mapes.$$.fragment, local);
-    			transition_out(divider3.$$.fragment, local);
     			transition_out(section4.$$.fragment, local);
-    			transition_out(media1.$$.fragment, local);
+    			transition_out(divider1.$$.fragment, local);
     			transition_out(section5.$$.fragment, local);
+    			transition_out(section6.$$.fragment, local);
     			transition_out(footer.$$.fragment, local);
     			current = false;
     		},
@@ -7575,40 +7462,26 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			destroy_component(header, detaching);
     			if (detaching) detach_dev(t1);
-    			destroy_component(filler, detaching);
-    			if (detaching) detach_dev(t2);
     			destroy_component(section0, detaching);
-    			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t4);
-    			destroy_component(divider0, detaching);
-    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(t2);
     			destroy_component(section1, detaching);
-    			if (detaching) detach_dev(t6);
-    			destroy_component(divider1, detaching);
-    			if (detaching) detach_dev(t7);
+    			if (detaching) detach_dev(t3);
+    			destroy_component(divider0, detaching);
+    			if (detaching) detach_dev(t4);
     			destroy_component(section2, detaching);
-    			if (detaching) detach_dev(t8);
-    			destroy_component(media0, detaching);
-    			if (detaching) detach_dev(t9);
-    			destroy_component(divider2, detaching);
-    			if (detaching) detach_dev(t10);
+    			if (detaching) detach_dev(t5);
     			destroy_component(section3, detaching);
-    			if (detaching) detach_dev(t11);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t12);
+    			if (detaching) detach_dev(t6);
     			if (detaching) detach_dev(br);
-    			if (detaching) detach_dev(t13);
-    			destroy_component(mapes, detaching);
-    			if (detaching) detach_dev(t14);
-    			destroy_component(divider3, detaching);
-    			if (detaching) detach_dev(t15);
+    			if (detaching) detach_dev(t7);
     			destroy_component(section4, detaching);
-    			if (detaching) detach_dev(t16);
-    			destroy_component(media1, detaching);
-    			if (detaching) detach_dev(t17);
+    			if (detaching) detach_dev(t8);
+    			destroy_component(divider1, detaching);
+    			if (detaching) detach_dev(t9);
     			destroy_component(section5, detaching);
-    			if (detaching) detach_dev(t18);
+    			if (detaching) detach_dev(t10);
+    			destroy_component(section6, detaching);
+    			if (detaching) detach_dev(t11);
     			destroy_component(footer, detaching);
     		}
     	};

@@ -112,94 +112,84 @@
 	</div>
 </Header>
 
-<Filler theme="light">
+
+
+
+<Section>
 	<p class="text-big">
 		Informe 2020
 	</p>
-</Filler>
-
-<Section>
 	<h2>La xarxa d'atenció a la salut mental de Catalunya</h2>
 	<h3>La meitat dels pacients atesos pels CSMA són pacients crònics (51,1%) i un de cada tres pacient crònic complex (32,3%)</h3>
+	
 	<p>
-		Els 76 centres de salut mental d’adults (CSMA) que donen servei a la xarxa pública de salut de Catalunya tenen assignada una població de 5.969.735 persones de 18 anys o més (51,3% dones i 48,7% homes), el que suposa una mitjana d’un CSMA per cada 78.550 persones. 
+		La salut mental i les addiccions conformen un dels serveis del sistema d’atenció sanitària pública de Catalunya. El trastorns mentals tenen un impacte important en la qualitat de vida de les persones i afecten tots els àmbits de relació interpersonal (familiar, laboral i social), motiu pel qual demanen una atenció concreta.
 	</p>
 	<p>
-		L’import de la contractació del conjunt de CSMA va ser de 51.363.489 €, que suposa una mitjana de 675.835€ per centre i de gairebé 304,5 € per persona atesa. El pressupost ha crescut un 9,3% respecte el 2016. 
+		A Catalunya, els centres d’atenció primària (CAP) són la peça clau per a la detecció precoç i el seguiment dels trastorns mentals lleus. Un equip de professionals especialistes en salut mental dona suport als equips d’atenció primària i s’integra als centres d’atenció primària. Quan la patologia és més complexa, l’assistència es presta en serveis especialitzats, fora dels CAP.
 	</p>
+
 	<blockquote class="text-indent">
-		"Una de cada 7 persones ateses per un CSMA
-		té un nivell socioeconòmic molt baix."
+		Als CAP, equips multidisciplinaris integrats per psiquiatres, psicòlegs, treballadors socials i personal d’infermeria ofereixen assistència especialitzada en règim ambulatori (sense ingrés).
 	</blockquote>
+		
+
 	<p>
-		L’any 2017, un total de 168.688 persones van ésser ateses en algun CSMA (59,6% dones i 40,4% homes), concretament el 2,7% de la població adulta (3,1% de les dones i 2,2% dels homes).
+		La xarxa de centres d’atenció a la salut mental es divideix en dos tipus, en funció de l’edat del pacient: Centres de salut mental d’adults (CSMA), per a majors de 18 anys, i Centres de salut mental infantil juvenil (CSMIJ), per a infants i adolescents fins a la majoria d’edat.
 	</p>
+	<p>	
+		Per millorar la qualitat del sistema de salut de Catalunya, el Departament de Salut recull les dades assistencials. En aquest apartat hi trobareu representades les xifres referents a l’atenció prestada als centres de salut mental entre 2016 i 2019 mitjançant diversos gràfics.
+	</p>
+
+
+	
 </Section>
 
-
-
+<Section>
+<h2>Pacients per Centres de Salut Mental de Catalunya</h2>
 <div class="embed">
 	<iframe width="70%" height="1184" frameborder="0" src="https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart"></iframe>
 </div>
-
-
-<Divider />
-
-<Section>
-	<h2>Gràfic dinàmic</h2>
-	<p>
-		La visualització a continuació recull dades territorials de visites realitzades als Centres de Salut Mental de Catalunya. 
-		Desplaça per veure'n més.
-	</p>
 </Section>
 
 
 
 <Divider />
 
-<Section>
-	<h2>La depressió és el diagnòstic més freqüent i l’esquizofrènia és el que genera més visites</h2>
-	<p>
-		En una anàlisi en detall dels diagnòstics, s’observa que en el 2017 la
-		depressió va continuar essent el més freqüent, present en una ter-
-		cera part de la població atesa (39,4% de les dones i 23,7% dels ho-
-		mes). 
-	</p>	
-	<p>
-		A l’altre extrem, la demència estava present únicament en un
-		1,1% dels pacients (1,0% en dones i 1,2% en homes). El diagnòstic
-		que va suposar un major nombre de visites és l’esquizofrènia, amb
-		una mitjana de 13,4 visites a l’any (12,7 en dones i 13,8 en homes).
-		A continuació, si bé amb un volum menor, trobem les altres psicosis
-		(10,3) i el trastorn bipolar (9,5).
-	</p>
-</Section>
-
-<Media col="full" height={600} caption="L'explicació del contingut previ">
-	<div class="media">Gràfic o mèdia en ample complert</div>
-</Media>
-
-<Divider />
 
 <Section>
-	<h2>L'estat dels Centres de Salut Mental a Catalunya </h2>
-	<p class="mb">
-		
-		Els serveis d’atenció ambulatòria d’adults compten amb 76 centres
-		de salut mental d’adults (CSMA) que durant l’any 2017 van atendre
-		a 168.688 persones. 
+	<h2>Les dades</h2>
+	<p>
+	Actualment, amb les últimes dades disponibles (2019), la xarxa de centres d’atenció a la salut mental atén 236.366 persones, el 47% homes i el 53% dones (i el 13%, menors d’edat). Entre els quatre anys analitzats, 2017 és el que acumula més pacients, concretament 237.863.
 	</p>
+	<p>
+	Durant aquests quatre anys, els homes que han fet més ús dels centres de salut mental han estat els infants d’entre 6 i 12 anys (86.762 en total). A la banda contrària, els menors de sis anys han estat els que menys els han visitat (4.538 en conjunt).
+</p>
+<p>
+	Pel que fa a les dones, el grup d’edat amb més pacients és el de 45-54 anys (95.030), mentre que les menors de sis anys també és el que acumula menys persones ateses (1.726).
+</p>
+<p>
+Els centres de salut mental que han atès més persones varia any rere any, tant pel que fa als adults com als menors d’edat. Així, es passa del CSM Adults Tortosa el 2016 (64 pacients per cada mil habitants per àrea de gestió assistencial) al mateix recurs el 2019 (60,6 pacients/mil habitants) entre els adults. I del CSMIJ Gironès-Pla de l'Estany de 2016 (41,5 pacients/mil habitants) al CSM Infantil i Juvenil Alta Ribagorça el 2019 (78 pacients/mil habitants).
+</p>
+<p>
+A l’extrem oposat, els centres que han atès menys persones són el CSM Adults Segarra, tant al 2016 (1,76 pacients/mil habitants) com al 2019 (1,20 pacients/mil habitants) per als majors d’edat. Mentre que a la xarxa d’infants i adolescents han estat el CSMIJ Badalona 1 Est Joan Obiols el 2016 (10,5 pacients/mil habitants) i el CSM Infantil i Juvenil La Mina el 2019 (3,5 pacients/mil habitants).
+</p>
+
 </Section>
 
-
-
+<Section>
+<h2>Exploreu les dades</h2>
 <div class="embed">
 	<iframe width="70%" height="864" frameborder="0"
 	src="https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
 </div>
+</Section>
 <br>
-
-<Mapes />
+<Section>
+<h2>Exploreu les dades</h2>
+<br>
+	<Mapes />
+</Section>
 <Divider />
 
 <Section>
@@ -208,7 +198,7 @@
 		A continuació trobaras els informes dels darrers anys elaborats per l'Observatori del sistema de salut de Catalunya. 
 	</p>
 </Section>
-
+<!-- 
 <Media
 col="wide"
 grid="narrow"
@@ -218,7 +208,7 @@ caption="Fes click per descarregar.">
 <div class="media">2018</div>
 <div class="media">2017</div>
 </Media>
-
+ -->
 <Section>
 	<p>
 		Descarrega la totalitat de les dades al portal de Transparència i Dades Obertes de la Generalitat. 
