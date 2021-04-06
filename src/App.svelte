@@ -180,13 +180,13 @@ A l’extrem oposat, els centres que han atès menys persones són el CSM Adults
 <Section>
 <h2>Exploreu les dades</h2>
 <div class="embed">
-	<iframe width="70%" height="864" frameborder="0"
+	<iframe width="80%" height="864" frameborder="0"
 	src="https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
 </div>
 </Section>
 <br>
 <Section>
-<h2>Exploreu les dades</h2>
+<h3>Àrees de gestió assistencial</h3>
 <br>
 	<Mapes />
 </Section>
