@@ -1,15 +1,21 @@
 <script>
-  import { themes } from '../config.js';
+	import { themes } from '../config.js';
 	import { getContext } from 'svelte';
+	
 	export let theme = getContext('theme');
 	export let filled = true;
+	
+
+
 </script>
 
 <nav style="border-bottom-color: {themes[theme]['muted']}; {filled ? 'background-color: ' +  themes[theme]['background'] + ';' : ''}">
   <div class="col-wide middle center">
-		<p class='banner'> Col·labora a millorar l'experiència d'usuari, <a href="#">participa en la nostra recerca</a>  › </p>
+		<p class='banner'> Col·labora a millorar l'experiència d'usuari. <a href="#"> Participa ›</a> </p>
         
   </div>
+    
+
 </nav>
 
 <style>

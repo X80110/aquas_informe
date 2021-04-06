@@ -50,6 +50,9 @@
   "@types/d3": "^6.3.0",
   
     
+  "carbon-components-svelte": "^0.32.1",
+  
+    
   "core-js": "3",
   
     
@@ -87,7 +90,16 @@
   "dependencies": {
   
     
-  "sirv-cli": "^1.0.0"
+  "@carto/carto-vl": "^1.4.6",
+  
+    
+  "sirv-cli": "^1.0.0",
+  
+    
+  "svelte-simple-modal": "^0.10.0",
+  
+    
+  "svelte-tabs": "^1.1.0"
   
   }
 }

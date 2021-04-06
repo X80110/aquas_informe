@@ -1,4 +1,5 @@
 <script>
+	import { onMount } from 'svelte';
 	import { setContext } from "svelte";
 	import { getData, setColors } from "./utils.js";
 	import { themes } from './config.js';
@@ -9,6 +10,13 @@
 	import Filler from "./components/Filler.svelte";
 	import Media from "./components/Media.svelte"
 	import Divider from "./components/Divider.svelte";
+	import Mapes from "./components/Tabs.svelte"
+	/* import Map from "./components/Map.svelte";
+	import Scroller from "./components/Scroller.svelte"; */
+	import { Tabs, Tab, TabContent, Button } from "carbon-components-svelte";
+
+
+	
 	
 
 	// STYLE CONFIG
@@ -17,6 +25,45 @@
 	setContext("theme", theme);
 	setColors(themes, theme);
 
+
+	// SCROLLYTELLING CONFIG
+	// Config
+	/* const threshold = 0.65;
+	// State
+	let index = [];
+	let indexPrev = [];
+	onMount(() => {
+		indexPrev = [...index];
+	});
+
+
+	// MAP CODE
+	// Config
+	const mapstyle = 'https://geoserveis.icgc.cat/contextmaps/positron.json';
+	const mapbounds = {
+		barcelona: [[2.174689, 41.403806], [1.863, 55.872]],
+		bages: [[1.51, 41.99], [1.53, 43.1]],
+		lleida: [[0.682, 41.5448], [0.9170, 42.8]]
+	};
+	// State
+	let map = null;
+	// Actions for MAP scroller
+	const mapActions = [
+		() => { map.fitBounds(mapbounds.barcelona) },
+		() => { map.fitBounds(mapbounds.bages) },
+		() => { map.fitBounds(mapbounds.lleida) }
+	]; */
+	
+	// Reactive code to trigger MAP actions
+/* 	$: if (map && index[1] != indexPrev[1]) {
+		if (mapActions[+index[1]]) {
+			mapActions[+index[1]]();
+		}
+		indexPrev[1] = index[1];
+	};//console.log(data); */
+
+
+/* 
 	// DATA 
 	const rawdata = "./data/data.csv";
 	let data;
@@ -42,36 +89,37 @@
 				};
 				})
 			})
-	
+	 */
 	// Force circles 
 
 </script>
 
 <UXResearch	/>
 
-<Header bgimage="./img/bg-dark.jpg" bgfixed={true} theme="dark">
-	<h1 class="text-shadow">Àmbit de salut mental i addiccions </h1>
+
+<Header bgimage="./img/bg-dark.jpg" bgfixed={true} theme="light">
+	<h1 >Salut mental i adiccions</h1>
 	<br>
-	<p class="inset-medium text-big text-shadow">
+	<p class="inset-medium text-big">
 		Observatori del sistema de salut de Catalunya
 	</p>
-	<p class="inset-medium text-big text-shadow">
+	<p class="inset-medium text-big ">
 		Central de resultats
 	</p>
-	<div class="text-shadow" style="margin-top: 48px;">
+	<div class="" style="margin-top: 6em;">
 		Desplaça't per veure l'informe<br />
-		<img src="./img/scroll-down-white.svg" class="svg-icon bounce" alt="down arrow"/>
+		<img src="./img/scroll-down-black.svg" class="svg-icon bounce" alt="down arrow"/>
 	</div>
 </Header>
 
-<Filler theme="dark">
+<Filler theme="light">
 	<p class="text-big">
 		Informe 2020
 	</p>
 </Filler>
 
 <Section>
-	<h2>Salut mental comunitària d’adults: centres de salut mental d’adults (CSMA)</h2>
+	<h2>La xarxa d'atenció a la salut mental de Catalunya</h2>
 	<h3>La meitat dels pacients atesos pels CSMA són pacients crònics (51,1%) i un de cada tres pacient crònic complex (32,3%)</h3>
 	<p>
 		Els 76 centres de salut mental d’adults (CSMA) que donen servei a la xarxa pública de salut de Catalunya tenen assignada una població de 5.969.735 persones de 18 anys o més (51,3% dones i 48,7% homes), el que suposa una mitjana d’un CSMA per cada 78.550 persones. 
@@ -89,11 +137,10 @@
 </Section>
 
 
-<div class="embed">
-	<iframe width="60%" height="864" frameborder="0"
-src="https://observablehq.com/embed/@x80110/aquas-plot?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
-</div>
 
+<div class="embed">
+	<iframe width="70%" height="1184" frameborder="0" src="https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart"></iframe>
+</div>
 
 
 <Divider />
@@ -106,9 +153,8 @@ src="https://observablehq.com/embed/@x80110/aquas-plot?cells=viewof+scale%2Cview
 	</p>
 </Section>
 
-<div class="embed">
-	<iframe width="70%" height="1184" frameborder="0" src="https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart"></iframe>
-</div>
+
+
 <Divider />
 
 <Section>
@@ -146,6 +192,14 @@ src="https://observablehq.com/embed/@x80110/aquas-plot?cells=viewof+scale%2Cview
 </Section>
 
 
+
+<div class="embed">
+	<iframe width="70%" height="864" frameborder="0"
+	src="https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
+</div>
+<br>
+
+<Mapes />
 <Divider />
 
 <Section>
@@ -298,7 +352,7 @@ caption="Fes click per descarregar.">
 		</div>
 	</Scroller>
 	 -->
-<!-- 	 <Scroller {threshold} bind:index={index[1]}>
+	 <!-- <Scroller {threshold} bind:index={index[1]}>
 		<div slot="background">
 			<figure>
 				<div class="col-full height-full">
@@ -324,5 +378,4 @@ caption="Fes click per descarregar.">
 				</div>
 			</section>
 		</div>
-	</Scroller>
- -->	
+	</Scroller> -->
