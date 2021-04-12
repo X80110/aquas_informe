@@ -98,7 +98,7 @@
 
 
 <Header bgimage="./img/bg-dark.jpg" bgfixed={true} theme="light">
-	<h1 >Salut mental i adiccions</h1>
+	<h1 >Salut mental i addiccions</h1>
 	<p class="inset-medium text-big">
 		Observatori del sistema de salut de Catalunya
 		<br>
