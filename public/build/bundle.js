@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35736/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35737/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -5063,7 +5063,7 @@ var app = (function () {
     	return block;
     }
 
-    // (200:0) <Section>
+    // (201:0) <Section>
     function create_default_slot_3$1(ctx) {
     	let h3;
 
@@ -5071,7 +5071,7 @@ var app = (function () {
     		c: function create() {
     			h3 = element("h3");
     			h3.textContent = "Exemple scrollytelling";
-    			add_location(h3, file$e, 200, 1, 6897);
+    			add_location(h3, file$e, 201, 1, 6913);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h3, anchor);
@@ -5085,14 +5085,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_3$1.name,
     		type: "slot",
-    		source: "(200:0) <Section>",
+    		source: "(201:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (205:1) <div slot="background">
+    // (206:1) <div slot="background">
     function create_background_slot(ctx) {
     	let div0;
     	let figure;
@@ -5121,10 +5121,10 @@ var app = (function () {
     			div1 = element("div");
     			create_component(map_1.$$.fragment);
     			attr_dev(div1, "class", "col-full height-full");
-    			add_location(div1, file$e, 206, 3, 7029);
-    			add_location(figure, file$e, 205, 2, 7017);
+    			add_location(div1, file$e, 207, 3, 7045);
+    			add_location(figure, file$e, 206, 2, 7033);
     			attr_dev(div0, "slot", "background");
-    			add_location(div0, file$e, 204, 1, 6991);
+    			add_location(div0, file$e, 205, 1, 7007);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -5163,14 +5163,14 @@ var app = (function () {
     		block,
     		id: create_background_slot.name,
     		type: "slot",
-    		source: "(205:1) <div slot=\\\"background\\\">",
+    		source: "(206:1) <div slot=\\\"background\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (213:1) <div slot="foreground">
+    // (214:1) <div slot="foreground">
     function create_foreground_slot(ctx) {
     	let div0;
     	let section0;
@@ -5221,25 +5221,25 @@ var app = (function () {
     			span2.textContent = ", al CSM Infantil i Juvenil de Lleida";
     			t10 = text(" han aconseguit que un 53% més de pacients crònics que l'any anterior segueixin sent atesos enguany.");
     			attr_dev(span0, "class", "em em-muted");
-    			add_location(span0, file$e, 215, 81, 7285);
-    			add_location(p0, file$e, 215, 4, 7208);
+    			add_location(span0, file$e, 216, 81, 7301);
+    			add_location(p0, file$e, 216, 4, 7224);
     			attr_dev(div1, "class", "col-medium");
-    			add_location(div1, file$e, 214, 3, 7179);
-    			add_location(section0, file$e, 213, 2, 7166);
+    			add_location(div1, file$e, 215, 3, 7195);
+    			add_location(section0, file$e, 214, 2, 7182);
     			attr_dev(span1, "class", "em em-muted");
-    			add_location(span1, file$e, 220, 10, 7418);
-    			add_location(p1, file$e, 220, 4, 7412);
+    			add_location(span1, file$e, 221, 10, 7434);
+    			add_location(p1, file$e, 221, 4, 7428);
     			attr_dev(div2, "class", "col-medium");
-    			add_location(div2, file$e, 219, 3, 7383);
-    			add_location(section1, file$e, 218, 2, 7370);
+    			add_location(div2, file$e, 220, 3, 7399);
+    			add_location(section1, file$e, 219, 2, 7386);
     			attr_dev(span2, "class", "em em-muted");
-    			add_location(span2, file$e, 225, 48, 7636);
-    			add_location(p2, file$e, 225, 4, 7592);
+    			add_location(span2, file$e, 226, 48, 7652);
+    			add_location(p2, file$e, 226, 4, 7608);
     			attr_dev(div3, "class", "col-medium");
-    			add_location(div3, file$e, 224, 3, 7563);
-    			add_location(section2, file$e, 223, 2, 7550);
+    			add_location(div3, file$e, 225, 3, 7579);
+    			add_location(section2, file$e, 224, 2, 7566);
     			attr_dev(div0, "slot", "foreground");
-    			add_location(div0, file$e, 212, 1, 7140);
+    			add_location(div0, file$e, 213, 1, 7156);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -5273,14 +5273,14 @@ var app = (function () {
     		block,
     		id: create_foreground_slot.name,
     		type: "slot",
-    		source: "(213:1) <div slot=\\\"foreground\\\">",
+    		source: "(214:1) <div slot=\\\"foreground\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (204:0) <Scroller {threshold} bind:index={index[1]}>
+    // (205:0) <Scroller {threshold} bind:index={index[1]}>
     function create_default_slot_2$1(ctx) {
     	let t;
 
@@ -5303,14 +5303,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_2$1.name,
     		type: "slot",
-    		source: "(204:0) <Scroller {threshold} bind:index={index[1]}>",
+    		source: "(205:0) <Scroller {threshold} bind:index={index[1]}>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (233:0) <Section>
+    // (234:0) <Section>
     function create_default_slot_1$1(ctx) {
     	let h2;
     	let t1;
@@ -5323,8 +5323,8 @@ var app = (function () {
     			t1 = space();
     			p = element("p");
     			p.textContent = "A continuació trobaras els informes dels darrers anys elaborats per l'Observatori del sistema de salut de Catalunya.";
-    			add_location(h2, file$e, 233, 1, 7878);
-    			add_location(p, file$e, 234, 1, 7962);
+    			add_location(h2, file$e, 234, 1, 7894);
+    			add_location(p, file$e, 235, 1, 7978);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -5342,14 +5342,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1$1.name,
     		type: "slot",
-    		source: "(233:0) <Section>",
+    		source: "(234:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (240:0) <Media col="wide" grid="narrow" caption="Fes click per descarregar.">
+    // (241:0) <Media col="wide" grid="narrow" caption="Fes click per descarregar.">
     function create_default_slot$1(ctx) {
     	let div0;
     	let t1;
@@ -5373,13 +5373,13 @@ var app = (function () {
     			div3 = element("div");
     			div3.textContent = "Informe 2017";
     			attr_dev(div0, "class", "media svelte-xs0cal");
-    			add_location(div0, file$e, 243, 0, 8174);
+    			add_location(div0, file$e, 244, 0, 8190);
     			attr_dev(div1, "class", "media svelte-xs0cal");
-    			add_location(div1, file$e, 244, 0, 8212);
+    			add_location(div1, file$e, 245, 0, 8228);
     			attr_dev(div2, "class", "media svelte-xs0cal");
-    			add_location(div2, file$e, 245, 0, 8250);
+    			add_location(div2, file$e, 246, 0, 8266);
     			attr_dev(div3, "class", "media svelte-xs0cal");
-    			add_location(div3, file$e, 246, 0, 8288);
+    			add_location(div3, file$e, 247, 0, 8304);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -5405,7 +5405,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(240:0) <Media col=\\\"wide\\\" grid=\\\"narrow\\\" caption=\\\"Fes click per descarregar.\\\">",
+    		source: "(241:0) <Media col=\\\"wide\\\" grid=\\\"narrow\\\" caption=\\\"Fes click per descarregar.\\\">",
     		ctx
     	});
 
@@ -5435,9 +5435,9 @@ var app = (function () {
     	let iframe1;
     	let iframe1_src_value;
     	let t8;
-    	let br0;
-    	let t9;
     	let divider1;
+    	let t9;
+    	let br0;
     	let t10;
     	let section4;
     	let t11;
@@ -5445,19 +5445,23 @@ var app = (function () {
     	let t12;
     	let mapes;
     	let t13;
-    	let section5;
+    	let divider2;
     	let t14;
     	let br2;
     	let t15;
+    	let section5;
+    	let t16;
+    	let br3;
+    	let t17;
     	let scroller;
     	let updating_index;
-    	let t16;
-    	let divider2;
-    	let t17;
-    	let section6;
     	let t18;
-    	let media;
+    	let divider3;
     	let t19;
+    	let section6;
+    	let t20;
+    	let media;
+    	let t21;
     	let footer;
     	let current;
     	uxresearch = new UXResearch({ $$inline: true });
@@ -5518,6 +5522,7 @@ var app = (function () {
     		});
 
     	mapes = new Tabs_1({ $$inline: true });
+    	divider2 = new Divider({ $$inline: true });
 
     	section5 = new Section({
     			props: {
@@ -5547,7 +5552,7 @@ var app = (function () {
 
     	scroller = new Scroller({ props: scroller_props, $$inline: true });
     	binding_callbacks.push(() => bind(scroller, "index", scroller_index_binding));
-    	divider2 = new Divider({ $$inline: true });
+    	divider3 = new Divider({ $$inline: true });
 
     	section6 = new Section({
     			props: {
@@ -5592,9 +5597,9 @@ var app = (function () {
     			div1 = element("div");
     			iframe1 = element("iframe");
     			t8 = space();
-    			br0 = element("br");
-    			t9 = space();
     			create_component(divider1.$$.fragment);
+    			t9 = space();
+    			br0 = element("br");
     			t10 = space();
     			create_component(section4.$$.fragment);
     			t11 = space();
@@ -5602,18 +5607,22 @@ var app = (function () {
     			t12 = space();
     			create_component(mapes.$$.fragment);
     			t13 = space();
-    			create_component(section5.$$.fragment);
+    			create_component(divider2.$$.fragment);
     			t14 = space();
     			br2 = element("br");
     			t15 = space();
-    			create_component(scroller.$$.fragment);
+    			create_component(section5.$$.fragment);
     			t16 = space();
-    			create_component(divider2.$$.fragment);
+    			br3 = element("br");
     			t17 = space();
-    			create_component(section6.$$.fragment);
+    			create_component(scroller.$$.fragment);
     			t18 = space();
-    			create_component(media.$$.fragment);
+    			create_component(divider3.$$.fragment);
     			t19 = space();
+    			create_component(section6.$$.fragment);
+    			t20 = space();
+    			create_component(media.$$.fragment);
+    			t21 = space();
     			create_component(footer.$$.fragment);
     			attr_dev(iframe0, "width", "80%");
     			attr_dev(iframe0, "height", "1184");
@@ -5629,9 +5638,10 @@ var app = (function () {
     			add_location(iframe1, file$e, 187, 1, 6526);
     			attr_dev(div1, "class", "embed svelte-xs0cal");
     			add_location(div1, file$e, 186, 0, 6505);
-    			add_location(br0, file$e, 190, 0, 6762);
+    			add_location(br0, file$e, 191, 0, 6774);
     			add_location(br1, file$e, 195, 0, 6869);
-    			add_location(br2, file$e, 202, 0, 6940);
+    			add_location(br2, file$e, 199, 0, 6897);
+    			add_location(br3, file$e, 203, 0, 6956);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5657,9 +5667,9 @@ var app = (function () {
     			insert_dev(target, div1, anchor);
     			append_dev(div1, iframe1);
     			insert_dev(target, t8, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t9, anchor);
     			mount_component(divider1, target, anchor);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, br0, anchor);
     			insert_dev(target, t10, anchor);
     			mount_component(section4, target, anchor);
     			insert_dev(target, t11, anchor);
@@ -5667,18 +5677,22 @@ var app = (function () {
     			insert_dev(target, t12, anchor);
     			mount_component(mapes, target, anchor);
     			insert_dev(target, t13, anchor);
-    			mount_component(section5, target, anchor);
+    			mount_component(divider2, target, anchor);
     			insert_dev(target, t14, anchor);
     			insert_dev(target, br2, anchor);
     			insert_dev(target, t15, anchor);
-    			mount_component(scroller, target, anchor);
+    			mount_component(section5, target, anchor);
     			insert_dev(target, t16, anchor);
-    			mount_component(divider2, target, anchor);
+    			insert_dev(target, br3, anchor);
     			insert_dev(target, t17, anchor);
-    			mount_component(section6, target, anchor);
+    			mount_component(scroller, target, anchor);
     			insert_dev(target, t18, anchor);
-    			mount_component(media, target, anchor);
+    			mount_component(divider3, target, anchor);
     			insert_dev(target, t19, anchor);
+    			mount_component(section6, target, anchor);
+    			insert_dev(target, t20, anchor);
+    			mount_component(media, target, anchor);
+    			insert_dev(target, t21, anchor);
     			mount_component(footer, target, anchor);
     			current = true;
     		},
@@ -5772,9 +5786,10 @@ var app = (function () {
     			transition_in(divider1.$$.fragment, local);
     			transition_in(section4.$$.fragment, local);
     			transition_in(mapes.$$.fragment, local);
+    			transition_in(divider2.$$.fragment, local);
     			transition_in(section5.$$.fragment, local);
     			transition_in(scroller.$$.fragment, local);
-    			transition_in(divider2.$$.fragment, local);
+    			transition_in(divider3.$$.fragment, local);
     			transition_in(section6.$$.fragment, local);
     			transition_in(media.$$.fragment, local);
     			transition_in(footer.$$.fragment, local);
@@ -5791,9 +5806,10 @@ var app = (function () {
     			transition_out(divider1.$$.fragment, local);
     			transition_out(section4.$$.fragment, local);
     			transition_out(mapes.$$.fragment, local);
+    			transition_out(divider2.$$.fragment, local);
     			transition_out(section5.$$.fragment, local);
     			transition_out(scroller.$$.fragment, local);
-    			transition_out(divider2.$$.fragment, local);
+    			transition_out(divider3.$$.fragment, local);
     			transition_out(section6.$$.fragment, local);
     			transition_out(media.$$.fragment, local);
     			transition_out(footer.$$.fragment, local);
@@ -5818,9 +5834,9 @@ var app = (function () {
     			if (detaching) detach_dev(t7);
     			if (detaching) detach_dev(div1);
     			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t9);
     			destroy_component(divider1, detaching);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(br0);
     			if (detaching) detach_dev(t10);
     			destroy_component(section4, detaching);
     			if (detaching) detach_dev(t11);
@@ -5828,18 +5844,22 @@ var app = (function () {
     			if (detaching) detach_dev(t12);
     			destroy_component(mapes, detaching);
     			if (detaching) detach_dev(t13);
-    			destroy_component(section5, detaching);
+    			destroy_component(divider2, detaching);
     			if (detaching) detach_dev(t14);
     			if (detaching) detach_dev(br2);
     			if (detaching) detach_dev(t15);
-    			destroy_component(scroller, detaching);
+    			destroy_component(section5, detaching);
     			if (detaching) detach_dev(t16);
-    			destroy_component(divider2, detaching);
+    			if (detaching) detach_dev(br3);
     			if (detaching) detach_dev(t17);
-    			destroy_component(section6, detaching);
+    			destroy_component(scroller, detaching);
     			if (detaching) detach_dev(t18);
-    			destroy_component(media, detaching);
+    			destroy_component(divider3, detaching);
     			if (detaching) detach_dev(t19);
+    			destroy_component(section6, detaching);
+    			if (detaching) detach_dev(t20);
+    			destroy_component(media, detaching);
+    			if (detaching) detach_dev(t21);
     			destroy_component(footer, detaching);
     		}
     	};

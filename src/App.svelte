@@ -188,15 +188,16 @@ A l’extrem oposat, els centres que han atès menys persones són el CSM Adults
 	<iframe width="971" height="864" frameborder="0"
 	src="https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
 </div>
-<br>
 <Divider />
+<br>
 <Section>
 <h3>Pacients atesos als centres de salut mental infantojuvenils</h3>
 </Section>
 <br>
 
 <Mapes />
-
+<Divider />
+<br>
 <Section>
 	<h3>Exemple scrollytelling</h3>
 </Section>
