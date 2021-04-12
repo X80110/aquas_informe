@@ -11,7 +11,7 @@
 
 <nav style="border-bottom-color: {themes[theme]['muted']}; {filled ? 'background-color: ' +  themes[theme]['background'] + ';' : ''}">
   <div class="col-wide middle center">
-		<p class='banner'> Col·labora a millorar l'experiència d'usuari. <a href="#"> Participa ›</a> </p>
+		<p class='banner'> Aquesta web està en fase BETA. <a href="#">Col·labora a millorar l'experiència d'usuari ›</a> </p>
         
   </div>
     

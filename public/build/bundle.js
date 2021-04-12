@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35737/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35733/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -915,11 +915,11 @@ var app = (function () {
     			nav = element("nav");
     			div = element("div");
     			p = element("p");
-    			t0 = text("Col·labora a millorar l'experiència d'usuari. ");
+    			t0 = text("Aquesta web està en fase BETA. ");
     			a = element("a");
-    			a.textContent = "Participa ›";
+    			a.textContent = "Col·labora a millorar l'experiència d'usuari ›";
     			attr_dev(a, "href", "#");
-    			add_location(a, file, 13, 67, 413);
+    			add_location(a, file, 13, 52, 398);
     			attr_dev(p, "class", "banner svelte-vl8xrz");
     			add_location(p, file, 13, 2, 348);
     			attr_dev(div, "class", "col-wide middle center");
@@ -3459,18 +3459,12 @@ var app = (function () {
 
     // (15:4) <TabPanel>
     function create_default_slot_5(ctx) {
-    	let h4;
-    	let t1;
     	let iframe;
     	let iframe_src_value;
 
     	const block = {
     		c: function create() {
-    			h4 = element("h4");
-    			h4.textContent = "2019 · Pacients atesos als centres de salut mental infantojuvenils";
-    			t1 = space();
     			iframe = element("iframe");
-    			add_location(h4, file$b, 15, 6, 279);
     			attr_dev(iframe, "width", "100%");
     			attr_dev(iframe, "height", "520");
     			attr_dev(iframe, "frameborder", "0");
@@ -3480,16 +3474,12 @@ var app = (function () {
     			attr_dev(iframe, "mozallowfullscreen", "");
     			attr_dev(iframe, "oallowfullscreen", "");
     			attr_dev(iframe, "msallowfullscreen", "");
-    			add_location(iframe, file$b, 16, 6, 361);
+    			add_location(iframe, file$b, 15, 6, 279);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h4, anchor);
-    			insert_dev(target, t1, anchor);
     			insert_dev(target, iframe, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h4);
-    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(iframe);
     		}
     	};
@@ -3505,20 +3495,14 @@ var app = (function () {
     	return block;
     }
 
-    // (20:4) <TabPanel>
+    // (19:4) <TabPanel>
     function create_default_slot_4(ctx) {
-    	let h4;
-    	let t1;
     	let iframe;
     	let iframe_src_value;
 
     	const block = {
     		c: function create() {
-    			h4 = element("h4");
-    			h4.textContent = "2018 · Pacients atesos als centres de salut mental infantojuvenils";
-    			t1 = space();
     			iframe = element("iframe");
-    			add_location(h4, file$b, 20, 6, 636);
     			attr_dev(iframe, "width", "100%");
     			attr_dev(iframe, "height", "520");
     			attr_dev(iframe, "frameborder", "0");
@@ -3528,16 +3512,12 @@ var app = (function () {
     			attr_dev(iframe, "mozallowfullscreen", "");
     			attr_dev(iframe, "oallowfullscreen", "");
     			attr_dev(iframe, "msallowfullscreen", "");
-    			add_location(iframe, file$b, 21, 8, 720);
+    			add_location(iframe, file$b, 19, 6, 554);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h4, anchor);
-    			insert_dev(target, t1, anchor);
     			insert_dev(target, iframe, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h4);
-    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(iframe);
     		}
     	};
@@ -3546,27 +3526,21 @@ var app = (function () {
     		block,
     		id: create_default_slot_4.name,
     		type: "slot",
-    		source: "(20:4) <TabPanel>",
+    		source: "(19:4) <TabPanel>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (25:4) <TabPanel>
+    // (23:4) <TabPanel>
     function create_default_slot_3(ctx) {
-    	let h4;
-    	let t1;
     	let iframe;
     	let iframe_src_value;
 
     	const block = {
     		c: function create() {
-    			h4 = element("h4");
-    			h4.textContent = "2017 · Pacients atesos als centres de salut mental infantojuvenils";
-    			t1 = space();
     			iframe = element("iframe");
-    			add_location(h4, file$b, 25, 6, 995);
     			attr_dev(iframe, "width", "100%");
     			attr_dev(iframe, "height", "520");
     			attr_dev(iframe, "frameborder", "0");
@@ -3576,16 +3550,12 @@ var app = (function () {
     			attr_dev(iframe, "mozallowfullscreen", "");
     			attr_dev(iframe, "oallowfullscreen", "");
     			attr_dev(iframe, "msallowfullscreen", "");
-    			add_location(iframe, file$b, 26, 8, 1079);
+    			add_location(iframe, file$b, 23, 6, 829);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h4, anchor);
-    			insert_dev(target, t1, anchor);
     			insert_dev(target, iframe, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h4);
-    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(iframe);
     		}
     	};
@@ -3594,27 +3564,21 @@ var app = (function () {
     		block,
     		id: create_default_slot_3.name,
     		type: "slot",
-    		source: "(25:4) <TabPanel>",
+    		source: "(23:4) <TabPanel>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (30:4) <TabPanel>
+    // (27:4) <TabPanel>
     function create_default_slot_2(ctx) {
-    	let h4;
-    	let t1;
     	let iframe;
     	let iframe_src_value;
 
     	const block = {
     		c: function create() {
-    			h4 = element("h4");
-    			h4.textContent = "2016 · Pacients atesos als centres de salut mental infantojuvenils";
-    			t1 = space();
     			iframe = element("iframe");
-    			add_location(h4, file$b, 30, 6, 1351);
     			attr_dev(iframe, "width", "100%");
     			attr_dev(iframe, "height", "520");
     			attr_dev(iframe, "frameborder", "0");
@@ -3624,16 +3588,12 @@ var app = (function () {
     			attr_dev(iframe, "mozallowfullscreen", "");
     			attr_dev(iframe, "oallowfullscreen", "");
     			attr_dev(iframe, "msallowfullscreen", "");
-    			add_location(iframe, file$b, 31, 8, 1435);
+    			add_location(iframe, file$b, 27, 6, 1101);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h4, anchor);
-    			insert_dev(target, t1, anchor);
     			insert_dev(target, iframe, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h4);
-    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(iframe);
     		}
     	};
@@ -3642,7 +3602,7 @@ var app = (function () {
     		block,
     		id: create_default_slot_2.name,
     		type: "slot",
-    		source: "(30:4) <TabPanel>",
+    		source: "(27:4) <TabPanel>",
     		ctx
     	});
 
@@ -6719,76 +6679,96 @@ var app = (function () {
     function create_default_slot_7$1(ctx) {
     	let h1;
     	let t1;
-    	let br0;
+    	let p;
     	let t2;
-    	let p0;
+    	let br0;
+    	let t3;
     	let t4;
-    	let p1;
-    	let t6;
-    	let div;
-    	let t7;
     	let br1;
+    	let t5;
+    	let img0;
+    	let img0_src_value;
+    	let t6;
+    	let br2;
+    	let t7;
+    	let div;
     	let t8;
-    	let img;
-    	let img_src_value;
+    	let br3;
+    	let t9;
+    	let img1;
+    	let img1_src_value;
 
     	const block = {
     		c: function create() {
     			h1 = element("h1");
     			h1.textContent = "Salut mental i adiccions";
     			t1 = space();
+    			p = element("p");
+    			t2 = text("Observatori del sistema de salut de Catalunya\n\t\t");
     			br0 = element("br");
-    			t2 = space();
-    			p0 = element("p");
-    			p0.textContent = "Observatori del sistema de salut de Catalunya";
+    			t3 = text("\n\t\tCentral de resultats");
     			t4 = space();
-    			p1 = element("p");
-    			p1.textContent = "Central de resultats";
-    			t6 = space();
-    			div = element("div");
-    			t7 = text("Desplaça't per veure l'informe");
     			br1 = element("br");
-    			t8 = space();
-    			img = element("img");
+    			t5 = space();
+    			img0 = element("img");
+    			t6 = space();
+    			br2 = element("br");
+    			t7 = space();
+    			div = element("div");
+    			t8 = text("Desplaça't per veure l'informe");
+    			br3 = element("br");
+    			t9 = space();
+    			img1 = element("img");
     			add_location(h1, file$i, 100, 1, 2363);
-    			add_location(br0, file$i, 101, 1, 2399);
-    			attr_dev(p0, "class", "inset-medium text-big");
-    			add_location(p0, file$i, 102, 1, 2405);
-    			attr_dev(p1, "class", "inset-medium text-big ");
-    			add_location(p1, file$i, 105, 1, 2494);
-    			add_location(br1, file$i, 109, 32, 2631);
-    			if (img.src !== (img_src_value = "./img/scroll-down-black.svg")) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "class", "svg-icon bounce svelte-1l5ip68");
-    			attr_dev(img, "alt", "down arrow");
-    			add_location(img, file$i, 110, 2, 2640);
+    			add_location(br0, file$i, 103, 2, 2483);
+    			attr_dev(p, "class", "inset-medium text-big");
+    			add_location(p, file$i, 101, 1, 2399);
+    			add_location(br1, file$i, 107, 1, 2520);
+    			if (img0.src !== (img0_src_value = "./img/aquas-head.png")) attr_dev(img0, "src", img0_src_value);
+    			attr_dev(img0, "class", "logo svelte-bj8qo7");
+    			attr_dev(img0, "alt", "aquas catalunya");
+    			add_location(img0, file$i, 108, 1, 2526);
+    			add_location(br2, file$i, 109, 1, 2596);
+    			add_location(br3, file$i, 111, 32, 2674);
+    			if (img1.src !== (img1_src_value = "./img/scroll-down-black.svg")) attr_dev(img1, "src", img1_src_value);
+    			attr_dev(img1, "class", "svg-icon bounce svelte-bj8qo7");
+    			attr_dev(img1, "alt", "down arrow");
+    			add_location(img1, file$i, 112, 2, 2683);
     			attr_dev(div, "class", "");
     			set_style(div, "margin-top", "6em");
-    			add_location(div, file$i, 108, 1, 2559);
+    			add_location(div, file$i, 110, 1, 2602);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h1, anchor);
     			insert_dev(target, t1, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, p0, anchor);
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t2);
+    			append_dev(p, br0);
+    			append_dev(p, t3);
     			insert_dev(target, t4, anchor);
-    			insert_dev(target, p1, anchor);
+    			insert_dev(target, br1, anchor);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, img0, anchor);
     			insert_dev(target, t6, anchor);
+    			insert_dev(target, br2, anchor);
+    			insert_dev(target, t7, anchor);
     			insert_dev(target, div, anchor);
-    			append_dev(div, t7);
-    			append_dev(div, br1);
     			append_dev(div, t8);
-    			append_dev(div, img);
+    			append_dev(div, br3);
+    			append_dev(div, t9);
+    			append_dev(div, img1);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h1);
     			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(p0);
+    			if (detaching) detach_dev(p);
     			if (detaching) detach_dev(t4);
-    			if (detaching) detach_dev(p1);
+    			if (detaching) detach_dev(br1);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(img0);
     			if (detaching) detach_dev(t6);
+    			if (detaching) detach_dev(br2);
+    			if (detaching) detach_dev(t7);
     			if (detaching) detach_dev(div);
     		}
     	};
@@ -6804,7 +6784,7 @@ var app = (function () {
     	return block;
     }
 
-    // (118:0) <Section>
+    // (120:0) <Section>
     function create_default_slot_6$1(ctx) {
     	let p0;
     	let t1;
@@ -6848,15 +6828,15 @@ var app = (function () {
     			p4 = element("p");
     			p4.textContent = "Per millorar la qualitat del sistema de salut de Catalunya, el Departament de Salut recull les dades assistencials. En aquest apartat hi trobareu representades les xifres referents a l’atenció prestada als centres de salut mental entre 2016 i 2019 mitjançant diversos gràfics.";
     			attr_dev(p0, "class", "text-big");
-    			add_location(p0, file$i, 118, 1, 2755);
-    			add_location(h2, file$i, 121, 1, 2798);
-    			add_location(h3, file$i, 122, 1, 2858);
-    			add_location(p1, file$i, 124, 1, 2989);
-    			add_location(p2, file$i, 127, 1, 3328);
+    			add_location(p0, file$i, 120, 1, 2798);
+    			add_location(h2, file$i, 123, 1, 2841);
+    			add_location(h3, file$i, 124, 1, 2901);
+    			add_location(p1, file$i, 126, 1, 3032);
+    			add_location(p2, file$i, 129, 1, 3371);
     			attr_dev(blockquote, "class", "text-indent");
-    			add_location(blockquote, file$i, 131, 1, 3722);
-    			add_location(p3, file$i, 136, 1, 3968);
-    			add_location(p4, file$i, 139, 1, 4260);
+    			add_location(blockquote, file$i, 133, 1, 3765);
+    			add_location(p3, file$i, 138, 1, 4011);
+    			add_location(p4, file$i, 141, 1, 4303);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p0, anchor);
@@ -6898,47 +6878,28 @@ var app = (function () {
     		block,
     		id: create_default_slot_6$1.name,
     		type: "slot",
-    		source: "(118:0) <Section>",
+    		source: "(120:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (148:0) <Section>
+    // (150:0) <Section>
     function create_default_slot_5$1(ctx) {
     	let h2;
-    	let t1;
-    	let div;
-    	let iframe;
-    	let iframe_src_value;
 
     	const block = {
     		c: function create() {
     			h2 = element("h2");
-    			h2.textContent = "Pacients per Centres de Salut Mental de Catalunya";
-    			t1 = space();
-    			div = element("div");
-    			iframe = element("iframe");
-    			add_location(h2, file$i, 148, 0, 4576);
-    			attr_dev(iframe, "width", "70%");
-    			attr_dev(iframe, "height", "1184");
-    			attr_dev(iframe, "frameborder", "0");
-    			if (iframe.src !== (iframe_src_value = "https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart")) attr_dev(iframe, "src", iframe_src_value);
-    			add_location(iframe, file$i, 150, 1, 4656);
-    			attr_dev(div, "class", "embed svelte-1l5ip68");
-    			add_location(div, file$i, 149, 0, 4635);
+    			h2.textContent = "Pacients per Centres de Salut Mental de Catalunya l'any 2019";
+    			add_location(h2, file$i, 150, 0, 4619);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, div, anchor);
-    			append_dev(div, iframe);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(div);
     		}
     	};
 
@@ -6946,14 +6907,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_5$1.name,
     		type: "slot",
-    		source: "(148:0) <Section>",
+    		source: "(150:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (160:0) <Section>
+    // (162:0) <Section>
     function create_default_slot_4$1(ctx) {
     	let h2;
     	let t1;
@@ -6986,12 +6947,12 @@ var app = (function () {
     			t9 = space();
     			p4 = element("p");
     			p4.textContent = "A l’extrem oposat, els centres que han atès menys persones són el CSM Adults Segarra, tant al 2016 (1,76 pacients/mil habitants) com al 2019 (1,20 pacients/mil habitants) per als majors d’edat. Mentre que a la xarxa d’infants i adolescents han estat el CSMIJ Badalona 1 Est Joan Obiols el 2016 (10,5 pacients/mil habitants) i el CSM Infantil i Juvenil La Mina el 2019 (3,5 pacients/mil habitants).";
-    			add_location(h2, file$i, 160, 1, 4840);
-    			add_location(p0, file$i, 161, 1, 4860);
-    			add_location(p1, file$i, 164, 1, 5145);
-    			add_location(p2, file$i, 167, 0, 5407);
-    			add_location(p3, file$i, 170, 0, 5592);
-    			add_location(p4, file$i, 173, 0, 6065);
+    			add_location(h2, file$i, 162, 1, 4894);
+    			add_location(p0, file$i, 163, 1, 4914);
+    			add_location(p1, file$i, 166, 1, 5199);
+    			add_location(p2, file$i, 169, 0, 5461);
+    			add_location(p3, file$i, 172, 0, 5646);
+    			add_location(p4, file$i, 175, 0, 6119);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -7025,47 +6986,28 @@ var app = (function () {
     		block,
     		id: create_default_slot_4$1.name,
     		type: "slot",
-    		source: "(160:0) <Section>",
+    		source: "(162:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (180:0) <Section>
+    // (182:0) <Section>
     function create_default_slot_3$1(ctx) {
     	let h2;
-    	let t1;
-    	let div;
-    	let iframe;
-    	let iframe_src_value;
 
     	const block = {
     		c: function create() {
     			h2 = element("h2");
     			h2.textContent = "Exploreu les dades";
-    			t1 = space();
-    			div = element("div");
-    			iframe = element("iframe");
-    			add_location(h2, file$i, 180, 0, 6495);
-    			attr_dev(iframe, "width", "70%");
-    			attr_dev(iframe, "height", "864");
-    			attr_dev(iframe, "frameborder", "0");
-    			if (iframe.src !== (iframe_src_value = "https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart")) attr_dev(iframe, "src", iframe_src_value);
-    			add_location(iframe, file$i, 182, 1, 6544);
-    			attr_dev(div, "class", "embed svelte-1l5ip68");
-    			add_location(div, file$i, 181, 0, 6523);
+    			add_location(h2, file$i, 182, 0, 6549);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, div, anchor);
-    			append_dev(div, iframe);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(div);
     		}
     	};
 
@@ -7073,57 +7015,28 @@ var app = (function () {
     		block,
     		id: create_default_slot_3$1.name,
     		type: "slot",
-    		source: "(180:0) <Section>",
+    		source: "(182:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (188:0) <Section>
+    // (190:0) <Section>
     function create_default_slot_2$1(ctx) {
-    	let h2;
-    	let t1;
-    	let br;
-    	let t2;
-    	let mapes;
-    	let current;
-    	mapes = new Tabs_1({ $$inline: true });
+    	let h3;
 
     	const block = {
     		c: function create() {
-    			h2 = element("h2");
-    			h2.textContent = "Exploreu les dades";
-    			t1 = space();
-    			br = element("br");
-    			t2 = space();
-    			create_component(mapes.$$.fragment);
-    			add_location(h2, file$i, 188, 0, 6806);
-    			add_location(br, file$i, 189, 0, 6834);
+    			h3 = element("h3");
+    			h3.textContent = "Pacients atesos als centres de salut mental infantojuvenils";
+    			add_location(h3, file$i, 190, 0, 6860);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h2, anchor);
-    			insert_dev(target, t1, anchor);
-    			insert_dev(target, br, anchor);
-    			insert_dev(target, t2, anchor);
-    			mount_component(mapes, target, anchor);
-    			current = true;
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(mapes.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(mapes.$$.fragment, local);
-    			current = false;
+    			insert_dev(target, h3, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h2);
-    			if (detaching) detach_dev(t1);
-    			if (detaching) detach_dev(br);
-    			if (detaching) detach_dev(t2);
-    			destroy_component(mapes, detaching);
+    			if (detaching) detach_dev(h3);
     		}
     	};
 
@@ -7131,14 +7044,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_2$1.name,
     		type: "slot",
-    		source: "(188:0) <Section>",
+    		source: "(190:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (195:0) <Section>
+    // (197:0) <Section>
     function create_default_slot_1$1(ctx) {
     	let h2;
     	let t1;
@@ -7151,8 +7064,8 @@ var app = (function () {
     			t1 = space();
     			p = element("p");
     			p.textContent = "A continuació trobaras els informes dels darrers anys elaborats per l'Observatori del sistema de salut de Catalunya.";
-    			add_location(h2, file$i, 195, 1, 6885);
-    			add_location(p, file$i, 196, 1, 6969);
+    			add_location(h2, file$i, 197, 1, 6980);
+    			add_location(p, file$i, 198, 1, 7064);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
@@ -7170,14 +7083,14 @@ var app = (function () {
     		block,
     		id: create_default_slot_1$1.name,
     		type: "slot",
-    		source: "(195:0) <Section>",
+    		source: "(197:0) <Section>",
     		ctx
     	});
 
     	return block;
     }
 
-    // (212:0) <Section>
+    // (214:0) <Section>
     function create_default_slot$1(ctx) {
     	let p;
 
@@ -7185,7 +7098,7 @@ var app = (function () {
     		c: function create() {
     			p = element("p");
     			p.textContent = "Descarrega la totalitat de les dades al portal de Transparència i Dades Obertes de la Generalitat.";
-    			add_location(p, file$i, 212, 1, 7331);
+    			add_location(p, file$i, 214, 1, 7426);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -7199,7 +7112,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(212:0) <Section>",
+    		source: "(214:0) <Section>",
     		ctx
     	});
 
@@ -7215,22 +7128,34 @@ var app = (function () {
     	let t2;
     	let section1;
     	let t3;
-    	let divider0;
+    	let div0;
+    	let iframe0;
+    	let iframe0_src_value;
     	let t4;
-    	let section2;
+    	let divider0;
     	let t5;
-    	let section3;
+    	let section2;
     	let t6;
-    	let br;
+    	let section3;
     	let t7;
-    	let section4;
+    	let div1;
+    	let iframe1;
+    	let iframe1_src_value;
     	let t8;
-    	let divider1;
+    	let br0;
     	let t9;
-    	let section5;
+    	let section4;
     	let t10;
-    	let section6;
+    	let br1;
     	let t11;
+    	let mapes;
+    	let t12;
+    	let divider1;
+    	let t13;
+    	let section5;
+    	let t14;
+    	let section6;
+    	let t15;
     	let footer;
     	let current;
     	uxresearch = new UXResearch({ $$inline: true });
@@ -7288,6 +7213,7 @@ var app = (function () {
     			$$inline: true
     		});
 
+    	mapes = new Tabs_1({ $$inline: true });
     	divider1 = new Divider({ $$inline: true });
 
     	section5 = new Section({
@@ -7318,24 +7244,49 @@ var app = (function () {
     			t2 = space();
     			create_component(section1.$$.fragment);
     			t3 = space();
-    			create_component(divider0.$$.fragment);
+    			div0 = element("div");
+    			iframe0 = element("iframe");
     			t4 = space();
-    			create_component(section2.$$.fragment);
+    			create_component(divider0.$$.fragment);
     			t5 = space();
-    			create_component(section3.$$.fragment);
+    			create_component(section2.$$.fragment);
     			t6 = space();
-    			br = element("br");
+    			create_component(section3.$$.fragment);
     			t7 = space();
-    			create_component(section4.$$.fragment);
+    			div1 = element("div");
+    			iframe1 = element("iframe");
     			t8 = space();
-    			create_component(divider1.$$.fragment);
+    			br0 = element("br");
     			t9 = space();
-    			create_component(section5.$$.fragment);
+    			create_component(section4.$$.fragment);
     			t10 = space();
-    			create_component(section6.$$.fragment);
+    			br1 = element("br");
     			t11 = space();
+    			create_component(mapes.$$.fragment);
+    			t12 = space();
+    			create_component(divider1.$$.fragment);
+    			t13 = space();
+    			create_component(section5.$$.fragment);
+    			t14 = space();
+    			create_component(section6.$$.fragment);
+    			t15 = space();
     			create_component(footer.$$.fragment);
-    			add_location(br, file$i, 186, 0, 6791);
+    			attr_dev(iframe0, "width", "80%");
+    			attr_dev(iframe0, "height", "1184");
+    			attr_dev(iframe0, "frameborder", "0");
+    			if (iframe0.src !== (iframe0_src_value = "https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart")) attr_dev(iframe0, "src", iframe0_src_value);
+    			add_location(iframe0, file$i, 153, 1, 4721);
+    			attr_dev(div0, "class", "embed svelte-bj8qo7");
+    			add_location(div0, file$i, 152, 0, 4700);
+    			attr_dev(iframe1, "width", "971");
+    			attr_dev(iframe1, "height", "864");
+    			attr_dev(iframe1, "frameborder", "0");
+    			if (iframe1.src !== (iframe1_src_value = "https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart")) attr_dev(iframe1, "src", iframe1_src_value);
+    			add_location(iframe1, file$i, 185, 1, 6609);
+    			attr_dev(div1, "class", "embed svelte-bj8qo7");
+    			add_location(div1, file$i, 184, 0, 6588);
+    			add_location(br0, file$i, 188, 0, 6845);
+    			add_location(br1, file$i, 192, 0, 6940);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7349,22 +7300,32 @@ var app = (function () {
     			insert_dev(target, t2, anchor);
     			mount_component(section1, target, anchor);
     			insert_dev(target, t3, anchor);
-    			mount_component(divider0, target, anchor);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, iframe0);
     			insert_dev(target, t4, anchor);
-    			mount_component(section2, target, anchor);
+    			mount_component(divider0, target, anchor);
     			insert_dev(target, t5, anchor);
-    			mount_component(section3, target, anchor);
+    			mount_component(section2, target, anchor);
     			insert_dev(target, t6, anchor);
-    			insert_dev(target, br, anchor);
+    			mount_component(section3, target, anchor);
     			insert_dev(target, t7, anchor);
-    			mount_component(section4, target, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, iframe1);
     			insert_dev(target, t8, anchor);
-    			mount_component(divider1, target, anchor);
+    			insert_dev(target, br0, anchor);
     			insert_dev(target, t9, anchor);
-    			mount_component(section5, target, anchor);
+    			mount_component(section4, target, anchor);
     			insert_dev(target, t10, anchor);
-    			mount_component(section6, target, anchor);
+    			insert_dev(target, br1, anchor);
     			insert_dev(target, t11, anchor);
+    			mount_component(mapes, target, anchor);
+    			insert_dev(target, t12, anchor);
+    			mount_component(divider1, target, anchor);
+    			insert_dev(target, t13, anchor);
+    			mount_component(section5, target, anchor);
+    			insert_dev(target, t14, anchor);
+    			mount_component(section6, target, anchor);
+    			insert_dev(target, t15, anchor);
     			mount_component(footer, target, anchor);
     			current = true;
     		},
@@ -7436,6 +7397,7 @@ var app = (function () {
     			transition_in(section2.$$.fragment, local);
     			transition_in(section3.$$.fragment, local);
     			transition_in(section4.$$.fragment, local);
+    			transition_in(mapes.$$.fragment, local);
     			transition_in(divider1.$$.fragment, local);
     			transition_in(section5.$$.fragment, local);
     			transition_in(section6.$$.fragment, local);
@@ -7451,6 +7413,7 @@ var app = (function () {
     			transition_out(section2.$$.fragment, local);
     			transition_out(section3.$$.fragment, local);
     			transition_out(section4.$$.fragment, local);
+    			transition_out(mapes.$$.fragment, local);
     			transition_out(divider1.$$.fragment, local);
     			transition_out(section5.$$.fragment, local);
     			transition_out(section6.$$.fragment, local);
@@ -7466,22 +7429,30 @@ var app = (function () {
     			if (detaching) detach_dev(t2);
     			destroy_component(section1, detaching);
     			if (detaching) detach_dev(t3);
-    			destroy_component(divider0, detaching);
+    			if (detaching) detach_dev(div0);
     			if (detaching) detach_dev(t4);
-    			destroy_component(section2, detaching);
+    			destroy_component(divider0, detaching);
     			if (detaching) detach_dev(t5);
-    			destroy_component(section3, detaching);
+    			destroy_component(section2, detaching);
     			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(br);
+    			destroy_component(section3, detaching);
     			if (detaching) detach_dev(t7);
-    			destroy_component(section4, detaching);
+    			if (detaching) detach_dev(div1);
     			if (detaching) detach_dev(t8);
-    			destroy_component(divider1, detaching);
+    			if (detaching) detach_dev(br0);
     			if (detaching) detach_dev(t9);
-    			destroy_component(section5, detaching);
+    			destroy_component(section4, detaching);
     			if (detaching) detach_dev(t10);
-    			destroy_component(section6, detaching);
+    			if (detaching) detach_dev(br1);
     			if (detaching) detach_dev(t11);
+    			destroy_component(mapes, detaching);
+    			if (detaching) detach_dev(t12);
+    			destroy_component(divider1, detaching);
+    			if (detaching) detach_dev(t13);
+    			destroy_component(section5, detaching);
+    			if (detaching) detach_dev(t14);
+    			destroy_component(section6, detaching);
+    			if (detaching) detach_dev(t15);
     			destroy_component(footer, detaching);
     		}
     	};

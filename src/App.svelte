@@ -99,13 +99,15 @@
 
 <Header bgimage="./img/bg-dark.jpg" bgfixed={true} theme="light">
 	<h1 >Salut mental i adiccions</h1>
-	<br>
 	<p class="inset-medium text-big">
 		Observatori del sistema de salut de Catalunya
-	</p>
-	<p class="inset-medium text-big ">
+		<br>
 		Central de resultats
 	</p>
+	
+	<br>
+	<img src="./img/aquas-head.png" class="logo" alt="aquas catalunya"/>
+	<br>
 	<div class="" style="margin-top: 6em;">
 		Desplaça't per veure l'informe<br />
 		<img src="./img/scroll-down-black.svg" class="svg-icon bounce" alt="down arrow"/>
@@ -146,11 +148,11 @@
 </Section>
 
 <Section>
-<h2>Pacients per Centres de Salut Mental de Catalunya</h2>
-<div class="embed">
-	<iframe width="70%" height="1184" frameborder="0" src="https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart"></iframe>
-</div>
+<h2>Pacients per Centres de Salut Mental de Catalunya l'any 2019</h2>
 </Section>
+<div class="embed">
+	<iframe width="80%" height="1184" frameborder="0" src="https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart"></iframe>
+</div>
 
 
 
@@ -179,17 +181,17 @@ A l’extrem oposat, els centres que han atès menys persones són el CSM Adults
 
 <Section>
 <h2>Exploreu les dades</h2>
+</Section>
 <div class="embed">
-	<iframe width="80%" height="864" frameborder="0"
+	<iframe width="971" height="864" frameborder="0"
 	src="https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
 </div>
-</Section>
 <br>
 <Section>
-<h3>Àrees de gestió assistencial</h3>
+<h3>Pacients atesos als centres de salut mental infantojuvenils</h3>
+</Section>
 <br>
 	<Mapes />
-</Section>
 <Divider />
 
 <Section>
@@ -223,6 +225,9 @@ caption="Fes click per descarregar.">
 		display: flex;
         align-items: center;
 		justify-content: center;
+	}
+	.logo {
+		width: 40%;
 	}
 	.svg-icon {
 		width: 48px;
