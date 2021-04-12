@@ -27,7 +27,7 @@ Scroll control component: [Scroller](https://svelte.dev/repl/76846b7ae27b3a21bec
 
 #### Estructura
 
-- /src fitxers per al desenvolupament, el principal és `App.svelte`
+- _/src_ fitxers per al desenvolupament, el principal és `App.svelte`
 
-- /public build estàtic de l'app per publicar. Inclou fulla d'estils, mèdia i datasets per tal que l'app pugui accedir-hi
+- _/public_ build estàtic de l'app per publicar. Inclou fulla d'estils, mèdia i datasets per tal que l'app pugui accedir-hi
 
