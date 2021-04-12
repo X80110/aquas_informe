@@ -1,5 +1,5 @@
 
-(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35733/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35734/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
 var app = (function () {
     'use strict';
 
@@ -1401,12 +1401,16 @@ var app = (function () {
     	let a1;
     	let t3;
     	let t4;
-    	let hr;
-    	let t5;
-    	let div0;
-    	let t6;
+    	let li2;
     	let a2;
+    	let t5;
+    	let t6;
+    	let hr;
     	let t7;
+    	let div0;
+    	let t8;
+    	let a3;
+    	let t9;
 
     	function select_block_type(ctx, dirty) {
     		if (/*theme*/ ctx[0] == "dark") return create_if_block;
@@ -1431,12 +1435,16 @@ var app = (function () {
     			a1 = element("a");
     			t3 = text("Privacitat i cookies");
     			t4 = space();
-    			hr = element("hr");
-    			t5 = space();
-    			div0 = element("div");
-    			t6 = text("Tot el contingut disponible al portal web Govern Obert de la Generalitat de Catalunya \n\t\t\t");
+    			li2 = element("li");
     			a2 = element("a");
-    			t7 = text("AQuAS");
+    			t5 = text("Accessibilitat");
+    			t6 = space();
+    			hr = element("hr");
+    			t7 = space();
+    			div0 = element("div");
+    			t8 = text("Tot el contingut disponible al portal web Govern Obert de la Generalitat de Catalunya \n\t\t\t");
+    			a3 = element("a");
+    			t9 = text("AQuAS");
     			attr_dev(a0, "href", "https://aquas.gencat.cat/ca/contacte/");
     			attr_dev(a0, "class", "list__link svelte-1aur6tw");
     			attr_dev(a0, "stnyle", a0_stnyle_value = "color: " + themes[/*theme*/ ctx[0]]["muted"]);
@@ -1449,19 +1457,25 @@ var app = (function () {
     			add_location(a1, file$3, 22, 7, 721);
     			attr_dev(li1, "class", "svelte-1aur6tw");
     			add_location(li1, file$3, 22, 3, 717);
+    			attr_dev(a2, "href", "http://web.gencat.cat/ca/menu-ajuda/ajuda/avis_legal/");
+    			attr_dev(a2, "class", "list__link svelte-1aur6tw");
+    			set_style(a2, "color", themes[/*theme*/ ctx[0]]["muted"]);
+    			add_location(a2, file$3, 23, 7, 881);
+    			attr_dev(li2, "class", "svelte-1aur6tw");
+    			add_location(li2, file$3, 23, 3, 877);
     			attr_dev(ul, "class", "svelte-1aur6tw");
     			add_location(ul, file$3, 20, 2, 573);
     			set_style(hr, "border-top-color", themes[/*theme*/ ctx[0]]["muted"]);
     			attr_dev(hr, "class", "svelte-1aur6tw");
-    			add_location(hr, file$3, 24, 2, 884);
-    			attr_dev(a2, "href", "http://governobert.gencat.cat/ca/dades_obertes/");
-    			attr_dev(a2, "class", "external-link svelte-1aur6tw");
-    			attr_dev(a2, "target", "_blank");
-    			attr_dev(a2, "rel", "noopener");
-    			set_style(a2, "color", themes[/*theme*/ ctx[0]]["muted"]);
-    			add_location(a2, file$3, 27, 3, 1059);
+    			add_location(hr, file$3, 25, 2, 1038);
+    			attr_dev(a3, "href", "http://governobert.gencat.cat/ca/dades_obertes/");
+    			attr_dev(a3, "class", "external-link svelte-1aur6tw");
+    			attr_dev(a3, "target", "_blank");
+    			attr_dev(a3, "rel", "noopener");
+    			set_style(a3, "color", themes[/*theme*/ ctx[0]]["muted"]);
+    			add_location(a3, file$3, 28, 3, 1213);
     			attr_dev(div0, "class", "license svelte-1aur6tw");
-    			add_location(div0, file$3, 25, 2, 944);
+    			add_location(div0, file$3, 26, 2, 1098);
     			attr_dev(div1, "class", "col-wide");
     			attr_dev(div1, "data-analytics", "footer");
     			add_location(div1, file$3, 8, 1, 240);
@@ -1486,13 +1500,17 @@ var app = (function () {
     			append_dev(ul, li1);
     			append_dev(li1, a1);
     			append_dev(a1, t3);
-    			append_dev(div1, t4);
+    			append_dev(ul, t4);
+    			append_dev(ul, li2);
+    			append_dev(li2, a2);
+    			append_dev(a2, t5);
+    			append_dev(div1, t6);
     			append_dev(div1, hr);
-    			append_dev(div1, t5);
+    			append_dev(div1, t7);
     			append_dev(div1, div0);
-    			append_dev(div0, t6);
-    			append_dev(div0, a2);
-    			append_dev(a2, t7);
+    			append_dev(div0, t8);
+    			append_dev(div0, a3);
+    			append_dev(a3, t9);
     		},
     		p: function update(ctx, [dirty]) {
     			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
@@ -1514,11 +1532,15 @@ var app = (function () {
     			}
 
     			if (dirty & /*theme*/ 1) {
+    				set_style(a2, "color", themes[/*theme*/ ctx[0]]["muted"]);
+    			}
+
+    			if (dirty & /*theme*/ 1) {
     				set_style(hr, "border-top-color", themes[/*theme*/ ctx[0]]["muted"]);
     			}
 
     			if (dirty & /*theme*/ 1) {
-    				set_style(a2, "color", themes[/*theme*/ ctx[0]]["muted"]);
+    				set_style(a3, "color", themes[/*theme*/ ctx[0]]["muted"]);
     			}
 
     			if (dirty & /*theme*/ 1) {
@@ -6725,13 +6747,13 @@ var app = (function () {
     			add_location(p, file$i, 101, 1, 2399);
     			add_location(br1, file$i, 107, 1, 2520);
     			if (img0.src !== (img0_src_value = "./img/aquas-head.png")) attr_dev(img0, "src", img0_src_value);
-    			attr_dev(img0, "class", "logo svelte-bj8qo7");
+    			attr_dev(img0, "class", "logo svelte-ouik95");
     			attr_dev(img0, "alt", "aquas catalunya");
     			add_location(img0, file$i, 108, 1, 2526);
     			add_location(br2, file$i, 109, 1, 2596);
     			add_location(br3, file$i, 111, 32, 2674);
     			if (img1.src !== (img1_src_value = "./img/scroll-down-black.svg")) attr_dev(img1, "src", img1_src_value);
-    			attr_dev(img1, "class", "svg-icon bounce svelte-bj8qo7");
+    			attr_dev(img1, "class", "svg-icon bounce svelte-ouik95");
     			attr_dev(img1, "alt", "down arrow");
     			add_location(img1, file$i, 112, 2, 2683);
     			attr_dev(div, "class", "");
@@ -7090,21 +7112,55 @@ var app = (function () {
     	return block;
     }
 
-    // (214:0) <Section>
+    // (204:0) <Media col="wide" grid="narrow" caption="Fes click per descarregar.">
     function create_default_slot$1(ctx) {
-    	let p;
+    	let div0;
+    	let t1;
+    	let div1;
+    	let t3;
+    	let div2;
+    	let t5;
+    	let div3;
 
     	const block = {
     		c: function create() {
-    			p = element("p");
-    			p.textContent = "Descarrega la totalitat de les dades al portal de Transparència i Dades Obertes de la Generalitat.";
-    			add_location(p, file$i, 214, 1, 7426);
+    			div0 = element("div");
+    			div0.textContent = "Informe 2020";
+    			t1 = space();
+    			div1 = element("div");
+    			div1.textContent = "Informe 2019";
+    			t3 = space();
+    			div2 = element("div");
+    			div2.textContent = "Informe 2018";
+    			t5 = space();
+    			div3 = element("div");
+    			div3.textContent = "Informe 2017";
+    			attr_dev(div0, "class", "media svelte-ouik95");
+    			add_location(div0, file$i, 207, 0, 7276);
+    			attr_dev(div1, "class", "media svelte-ouik95");
+    			add_location(div1, file$i, 208, 0, 7314);
+    			attr_dev(div2, "class", "media svelte-ouik95");
+    			add_location(div2, file$i, 209, 0, 7352);
+    			attr_dev(div3, "class", "media svelte-ouik95");
+    			add_location(div3, file$i, 210, 0, 7390);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, p, anchor);
+    			insert_dev(target, div0, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, div1, anchor);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, div2, anchor);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, div3, anchor);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(div3);
     		}
     	};
 
@@ -7112,7 +7168,7 @@ var app = (function () {
     		block,
     		id: create_default_slot$1.name,
     		type: "slot",
-    		source: "(214:0) <Section>",
+    		source: "(204:0) <Media col=\\\"wide\\\" grid=\\\"narrow\\\" caption=\\\"Fes click per descarregar.\\\">",
     		ctx
     	});
 
@@ -7154,7 +7210,7 @@ var app = (function () {
     	let t13;
     	let section5;
     	let t14;
-    	let section6;
+    	let media;
     	let t15;
     	let footer;
     	let current;
@@ -7224,8 +7280,11 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	section6 = new Section({
+    	media = new Media({
     			props: {
+    				col: "wide",
+    				grid: "narrow",
+    				caption: "Fes click per descarregar.",
     				$$slots: { default: [create_default_slot$1] },
     				$$scope: { ctx }
     			},
@@ -7268,7 +7327,7 @@ var app = (function () {
     			t13 = space();
     			create_component(section5.$$.fragment);
     			t14 = space();
-    			create_component(section6.$$.fragment);
+    			create_component(media.$$.fragment);
     			t15 = space();
     			create_component(footer.$$.fragment);
     			attr_dev(iframe0, "width", "80%");
@@ -7276,14 +7335,14 @@ var app = (function () {
     			attr_dev(iframe0, "frameborder", "0");
     			if (iframe0.src !== (iframe0_src_value = "https://observablehq.com/embed/@oriolvidal/beeswarm-centres?cells=chart")) attr_dev(iframe0, "src", iframe0_src_value);
     			add_location(iframe0, file$i, 153, 1, 4721);
-    			attr_dev(div0, "class", "embed svelte-bj8qo7");
+    			attr_dev(div0, "class", "embed svelte-ouik95");
     			add_location(div0, file$i, 152, 0, 4700);
     			attr_dev(iframe1, "width", "971");
     			attr_dev(iframe1, "height", "864");
     			attr_dev(iframe1, "frameborder", "0");
     			if (iframe1.src !== (iframe1_src_value = "https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart")) attr_dev(iframe1, "src", iframe1_src_value);
     			add_location(iframe1, file$i, 185, 1, 6609);
-    			attr_dev(div1, "class", "embed svelte-bj8qo7");
+    			attr_dev(div1, "class", "embed svelte-ouik95");
     			add_location(div1, file$i, 184, 0, 6588);
     			add_location(br0, file$i, 188, 0, 6845);
     			add_location(br1, file$i, 192, 0, 6940);
@@ -7324,7 +7383,7 @@ var app = (function () {
     			insert_dev(target, t13, anchor);
     			mount_component(section5, target, anchor);
     			insert_dev(target, t14, anchor);
-    			mount_component(section6, target, anchor);
+    			mount_component(media, target, anchor);
     			insert_dev(target, t15, anchor);
     			mount_component(footer, target, anchor);
     			current = true;
@@ -7379,13 +7438,13 @@ var app = (function () {
     			}
 
     			section5.$set(section5_changes);
-    			const section6_changes = {};
+    			const media_changes = {};
 
     			if (dirty & /*$$scope*/ 2) {
-    				section6_changes.$$scope = { dirty, ctx };
+    				media_changes.$$scope = { dirty, ctx };
     			}
 
-    			section6.$set(section6_changes);
+    			media.$set(media_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -7400,7 +7459,7 @@ var app = (function () {
     			transition_in(mapes.$$.fragment, local);
     			transition_in(divider1.$$.fragment, local);
     			transition_in(section5.$$.fragment, local);
-    			transition_in(section6.$$.fragment, local);
+    			transition_in(media.$$.fragment, local);
     			transition_in(footer.$$.fragment, local);
     			current = true;
     		},
@@ -7416,7 +7475,7 @@ var app = (function () {
     			transition_out(mapes.$$.fragment, local);
     			transition_out(divider1.$$.fragment, local);
     			transition_out(section5.$$.fragment, local);
-    			transition_out(section6.$$.fragment, local);
+    			transition_out(media.$$.fragment, local);
     			transition_out(footer.$$.fragment, local);
     			current = false;
     		},
@@ -7451,7 +7510,7 @@ var app = (function () {
     			if (detaching) detach_dev(t13);
     			destroy_component(section5, detaching);
     			if (detaching) detach_dev(t14);
-    			destroy_component(section6, detaching);
+    			destroy_component(media, detaching);
     			if (detaching) detach_dev(t15);
     			destroy_component(footer, detaching);
     		}

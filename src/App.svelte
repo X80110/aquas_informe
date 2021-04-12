@@ -200,22 +200,18 @@ A l’extrem oposat, els centres que han atès menys persones són el CSM Adults
 		A continuació trobaras els informes dels darrers anys elaborats per l'Observatori del sistema de salut de Catalunya. 
 	</p>
 </Section>
-<!-- 
+
 <Media
 col="wide"
 grid="narrow"
 caption="Fes click per descarregar.">
-<div class="media">2020</div>
-<div class="media">2019</div>
-<div class="media">2018</div>
-<div class="media">2017</div>
+<div class="media">Informe 2020</div>
+<div class="media">Informe 2019</div>
+<div class="media">Informe 2018</div>
+<div class="media">Informe 2017</div>
 </Media>
- -->
-<Section>
-	<p>
-		Descarrega la totalitat de les dades al portal de Transparència i Dades Obertes de la Generalitat. 
-	</p>
-</Section>
+
+
 
 <Footer />
 
@@ -239,7 +235,7 @@ caption="Fes click per descarregar.">
 		animation-name: bounce;
 		animation-timing-function: ease;
 	}
-/* 	@keyframes bounce {
+ 	@keyframes bounce {
 		0%   { transform: translateY(10px); }
 		30%  { transform: translateY(-10px); }
 		50%  { transform: translateY(10px); }
@@ -257,7 +253,7 @@ caption="Fes click per descarregar.">
 		margin-top: 45px;
 		height: 100vh;
 		width: calc(100% - 5px);
-	} */
+	} 
 	/* The properties below make the media DIVs grey, for visual purposes in demo */
 	.media {
 	  background-color: #f0f0f0;
