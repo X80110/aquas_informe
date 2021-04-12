@@ -11,9 +11,10 @@
 	import Media from "./components/Media.svelte"
 	import Divider from "./components/Divider.svelte";
 	import Mapes from "./components/Tabs.svelte"
-	/* import Map from "./components/Map.svelte";
-	import Scroller from "./components/Scroller.svelte"; */
-	import { Tabs, Tab, TabContent, Button } from "carbon-components-svelte";
+
+	import Map from "./components/Map.svelte";
+	import Scroller from "./components/Scroller.svelte"; 
+	
 
 
 	
@@ -28,7 +29,7 @@
 
 	// SCROLLYTELLING CONFIG
 	// Config
-	/* const threshold = 0.65;
+	 const threshold = 0.65;
 	// State
 	let index = [];
 	let indexPrev = [];
@@ -52,15 +53,15 @@
 		() => { map.fitBounds(mapbounds.barcelona) },
 		() => { map.fitBounds(mapbounds.bages) },
 		() => { map.fitBounds(mapbounds.lleida) }
-	]; */
+	]; 
 	
 	// Reactive code to trigger MAP actions
-/* 	$: if (map && index[1] != indexPrev[1]) {
+ 	$: if (map && index[1] != indexPrev[1]) {
 		if (mapActions[+index[1]]) {
 			mapActions[+index[1]]();
 		}
 		indexPrev[1] = index[1];
-	};//console.log(data); */
+	};//console.log(data); 
 
 
 /* 
@@ -182,16 +183,51 @@ A l’extrem oposat, els centres que han atès menys persones són el CSM Adults
 <Section>
 <h2>Exploreu les dades</h2>
 </Section>
+
 <div class="embed">
 	<iframe width="971" height="864" frameborder="0"
 	src="https://observablehq.com/embed/9e82aa763befec21?cells=viewof+scale%2Cviewof+variable%2Cviewof+sex%2Cviewof+edat%2Cviewof+cronic%2Cviewof+nou%2Cviewof+baix%2Cchart"></iframe>
 </div>
 <br>
+<Divider />
 <Section>
 <h3>Pacients atesos als centres de salut mental infantojuvenils</h3>
 </Section>
 <br>
-	<Mapes />
+
+<Mapes />
+
+<Section>
+	<h3>Exemple scrollytelling</h3>
+</Section>
+<br>
+<Scroller {threshold} bind:index={index[1]}>
+	<div slot="background">
+		<figure>
+			<div class="col-full height-full">
+				<Map style={mapstyle} bind:map={map} />
+			</div>
+		</figure>
+	</div>
+
+	<div slot="foreground">
+		<section>
+			<div class="col-medium">
+				<p>Les regions de Catalunya amb més activitat als centres de salut mental són<span class="em em-muted">Barcelona i Tarragona</span>.</p>
+			</div>
+		</section>
+		<section>
+			<div class="col-medium">
+				<p>Al <span class="em em-muted">Bages</span>, en canvi,  s'ha reduit molt el nombre de visites, fins un 23%.</p>
+			</div>
+		</section>
+		<section>
+			<div class="col-medium">
+				<p>Mentre que les mesures que es va prendre <span class="em em-muted">, al CSM Infantil i Juvenil de Lleida</span> han aconseguit que un 53% més de pacients crònics que l'any anterior segueixin sent atesos enguany.</p>
+			</div>
+		</section>
+	</div>
+</Scroller>
 <Divider />
 
 <Section>
@@ -241,7 +277,7 @@ caption="Fes click per descarregar.">
 		50%  { transform: translateY(10px); }
 		100% { transform: translateY(10px); }
 	}
-	.label-block {
+/* 	.label-block {
 		display: inline-block;
 		text-align: right;
 		width: 80px;
@@ -253,7 +289,7 @@ caption="Fes click per descarregar.">
 		margin-top: 45px;
 		height: 100vh;
 		width: calc(100% - 5px);
-	} 
+	}  */
 	/* The properties below make the media DIVs grey, for visual purposes in demo */
 	.media {
 	  background-color: #f0f0f0;
