@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { setContext } from "svelte";
-	import { getData, setColors } from "./utils.js";
+	import { setColors } from "./utils.js";
 	import { themes } from './config.js';
 	import UXResearch from "./components/UXResearch.svelte"
 	import Header from "./components/Header.svelte";
@@ -91,7 +91,6 @@
 				})
 			})
 	 */
-	// Force circles 
 
 </script>
 
@@ -278,20 +277,7 @@ caption="Fes click per descarregar.">
 		50%  { transform: translateY(10px); }
 		100% { transform: translateY(10px); }
 	}
-/* 	.label-block {
-		display: inline-block;
-		text-align: right;
-		width: 80px;
-	}
-	select {
-		width: 210px;
-	}
-	.chart {
-		margin-top: 45px;
-		height: 100vh;
-		width: calc(100% - 5px);
-	}  */
-	/* The properties below make the media DIVs grey, for visual purposes in demo */
+
 	.media {
 	  background-color: #f0f0f0;
 	  display: -webkit-box;
@@ -308,102 +294,4 @@ caption="Fes click per descarregar.">
 	  color: #aaa;
   }
 </style>
-	<!-- 
-	<Scroller {threshold} bind:index={index[0]} splitscreen={true}>
-		<div slot="background">
-			<figure>
-				<div class="col-wide height-full middle">
-					{#if data && xKey && yKey}
-					<div class="chart">
-						<ScatterChart diameter={6} {data} {xKey} {yKey} {catKey} {colors} {categories} {selected} />
-					</div>
-					{/if}
-				</div>
-			</figure>
-		</div>
 	
-		<div slot="foreground">
-			<section>
-				<div class="col-medium">
-					<p>Una de cada set <span class="em em-muted">persones
-						ateses</span> per un CSMA té un <span class="em em-muted"> nivell socioeconòmic</span>
-						<span class="em em-muted">molt baix</span>.</p>
-				</div>
-			</section>
-			<section>
-				<div class="col-medium">
-					<p>La mitjana de <span class="em em-muted">visites per pacient</span> decreix des del 2015.</p>
-				</div>
-			</section>
-			<section>
-				<div class="col-medium">
-					<p>El 88% dels pacients atesos en el 2016 amb <span class="em em-muted">trastorn mental greu</span> van continuar atenent-se en el 2017</p>
-				</div>
-			</section>
-			<section>
-				<div class="col-medium">
-					<h3>Explora les dades</h3>
-					{#if data}
-					<nobr>
-						<span class="label-block">X:</span>
-						<select bind:value={xKey}>
-							{#each Object.keys(datakeys) as key}
-								<option value={key}>{datakeys[key]}</option>
-							{/each}
-						</select>
-					</nobr>
-					<nobr>
-						<span class="label-block">Y:</span>
-						<select bind:value={yKey}>
-							{#each Object.keys(datakeys) as key}
-								<option value={key}>{datakeys[key]}</option>
-							{/each}
-						</select>
-					</nobr>
-					{#if places}
-					<nobr>
-							<span class="label-block">Zona</span>
-	
-							<select bind:value={selected}>
-								<option value={null}>All</option>
-								{#each places as place}
-									<option value={{ value: place.code, col: 'aga' }}>
-										{place.name}
-									</option>
-								{/each}
-							</select>
-						</nobr>
-					{/if}
-					{/if}
-				</div>
-			</section>
-		</div>
-	</Scroller>
-	 -->
-	 <!-- <Scroller {threshold} bind:index={index[1]}>
-		<div slot="background">
-			<figure>
-				<div class="col-full height-full">
-					<Map style={mapstyle} bind:map={map} />
-				</div>
-			</figure>
-		</div>
-		
-		<div slot="foreground">
-			<section>
-				<div class="col-medium">
-					<p>Les regions de Catalunya amb més activitat als centres de salut mental són<span class="em em-muted">Barcelona i Tarragona</span>.</p>
-				</div>
-			</section>
-			<section>
-				<div class="col-medium">
-					<p>Al <span class="em em-muted">Bages</span>, en canvi,  s'ha reduit molt el nombre de visites, fins un 23%.</p>
-				</div>
-			</section>
-			<section>
-				<div class="col-medium">
-					<p>Mentre que les mesures que es va prendre <span class="em em-muted">, al CSM Infantil i Juvenil de Lleida</span> han aconseguit que un 53% més de pacients crònics que l'any anterior segueixin sent atesos enguany.</p>
-				</div>
-			</section>
-		</div>
-	</Scroller> -->
